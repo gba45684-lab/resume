@@ -4,3 +4,4 @@ android/app/build/
 android/.gradle/
 *.jks
 *.keystore
+release.jks.base64
