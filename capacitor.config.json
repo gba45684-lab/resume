@@ -5,6 +5,7 @@
   "plugins": {
     "CapacitorUpdater": {
       "autoUpdate": "atBackground",
+      "defaultChannel": "production",
       "version": "1.0.0",
       "appReadyTimeout": 10000
     }
