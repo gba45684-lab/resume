@@ -24,56 +24,52 @@ jobs:
           fetch-depth: 0
 
       - name: Check Capgo configuration
-        id: config
         env:
           CAPGO_TOKEN: ${{ secrets.CAPGO_TOKEN }}
         run: |
-          if [ -n "$CAPGO_TOKEN" ]; then
-            echo "configured=true" >> "$GITHUB_OUTPUT"
-            echo "Capgo token is configured."
-          else
-            echo "configured=false" >> "$GITHUB_OUTPUT"
-            echo "CAPGO_TOKEN is not configured; skipping OTA deployment safely."
+          if [ -z "$CAPGO_TOKEN" ]; then
+            echo "CAPGO_TOKEN is not configured; OTA cannot be published."
+            exit 1
           fi
 
       - name: Setup Node
-        if: steps.config.outputs.configured == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: npm
 
       - name: Install dependencies
-        if: steps.config.outputs.configured == 'true'
-        run: npm install
+        run: npm ci
 
-      - name: Check changed files
-        if: steps.config.outputs.configured == 'true'
+      - name: Verify Capgo updater is installed
+        run: |
+          node -e "const p=require('./package.json'); if(!p.dependencies?.['@capgo/capacitor-updater'] && !p.devDependencies?.['@capgo/capacitor-updater']) { console.error('@capgo/capacitor-updater is missing from package.json'); process.exit(1) }; console.log('@capgo/capacitor-updater:', p.dependencies?.['@capgo/capacitor-updater'] || p.devDependencies?.['@capgo/capacitor-updater'])"
+
+      - name: Check whether this commit is OTA-safe
         id: changes
         shell: bash
         run: |
           BEFORE="${{ github.event.before }}"
-          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
-            BEFORE="$(git rev-parse HEAD~1 2>/dev/null || echo '')"
-          fi
-          if [ -z "$BEFORE" ]; then
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then BEFORE="$(git rev-parse HEAD~1 2>/dev/null || true)"; fi
+          if [ -z "$BEFORE" ]; then echo "native=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if git diff --name-only "$BEFORE" "${{ github.sha }}" | grep -qE '^(android/|ios/|capacitor\.config\.|package\.json|package-lock\.json|\.github/workflows/)'; then
             echo "native=true" >> "$GITHUB_OUTPUT"
-            echo "No previous commit is available; refusing an automatic OTA."
-            exit 0
-          fi
-          if git diff --name-only "$BEFORE" "${{ github.sha }}" | grep -qE '^(android/|capacitor\.config\.|package\.json|package-lock\.json|\.github/workflows/)'; then
-            echo "native=true" >> "$GITHUB_OUTPUT"
-            echo "Native/package/CI files changed. OTA deployment is blocked."
           else
             echo "native=false" >> "$GITHUB_OUTPUT"
-            echo "Only web-layer changes detected."
           fi
 
-      - name: Stop safely for native changes
-        if: steps.config.outputs.configured == 'true' && steps.changes.outputs.native == 'true'
-        run: echo "Skipping Capgo OTA; a native APK/Play release is required for this change."
+      - name: Stop for native changes
+        if: steps.changes.outputs.native == 'true'
+        run: echo "Native/package/CI changes detected; this commit requires a new APK."
+
+      - name: Build web bundle
+        if: steps.changes.outputs.native == 'false'
+        run: |
+          if npm run | grep -qE '^  build'; then npm run build; fi
+          test -f www/index.html
 
       - name: Verify OTA compatibility
-        if: steps.config.outputs.configured == 'true' && steps.changes.outputs.native == 'false'
+        if: steps.changes.outputs.native == 'false'
         env:
           CAPGO_TOKEN: ${{ secrets.CAPGO_TOKEN }}
         run: |
@@ -81,26 +77,17 @@ jobs:
           echo "Capgo release type: $TYPE"
           test "$TYPE" = "OTA"
 
-      - name: Upload guarded OTA bundle
-        if: steps.config.outputs.configured == 'true' && steps.changes.outputs.native == 'false'
+      - name: Upload OTA bundle
+        if: steps.changes.outputs.native == 'false'
         env:
           CAPGO_TOKEN: ${{ secrets.CAPGO_TOKEN }}
         run: |
-          npx @capgo/cli@latest bundle upload "$APP_ID" \
-            --apikey "$CAPGO_TOKEN" \
-            --path ./www \
-            --channel "$CHANNEL" \
-            --fail-on-incompatible \
-            --auto-min-update-version \
-            --auto-bump patch \
-            --delta \
-            --tus \
-            --keep 5
+          npx @capgo/cli@latest bundle upload "$APP_ID" --apikey "$CAPGO_TOKEN" --path ./www --channel "$CHANNEL" --fail-on-incompatible --auto-min-update-version --auto-bump patch --delta --tus --keep 5
 
-      - name: OTA deployment summary
+      - name: Summary
         if: always()
         run: |
           echo "### Capgo OTA" >> "$GITHUB_STEP_SUMMARY"
           echo "App: $APP_ID" >> "$GITHUB_STEP_SUMMARY"
           echo "Channel: $CHANNEL" >> "$GITHUB_STEP_SUMMARY"
-          echo "Automatic OTA is limited to compatible web-layer changes." >> "$GITHUB_STEP_SUMMARY"
+          echo "Native changes require APK; web-only changes use OTA." >> "$GITHUB_STEP_SUMMARY"
