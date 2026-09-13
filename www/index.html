@@ -2,11 +2,259 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ResumeForge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ResumeForge - 100 Resume Templates</title>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- html2pdf.js bundle -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/templates.css" />
 </head>
 <body>
-  <h1>ResumeForge</h1>
-  <p>This is a placeholder web asset directory for Capacitor sync.</p>
+  <div id="app" class="app-container">
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="logo">
+        <i class="fa-solid fa-file-invoice logo-icon"></i>
+        <span>Resume<strong>Forge</strong></span>
+      </div>
+      <div class="header-actions">
+        <button id="btn-reset-data" class="btn btn-icon-text danger" title="Reset default data">
+          <i class="fa-solid fa-rotate-left"></i> <span>Reset</span>
+        </button>
+        <button id="btn-export-pdf" class="btn btn-primary" title="Download PDF">
+          <i class="fa-solid fa-download"></i> <span>Download PDF</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs for Mobile -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="browser-view">
+        <i class="fa-solid fa-layer-group"></i> <span>100 Templates</span>
+      </button>
+      <button class="nav-tab" data-tab="editor-view">
+        <i class="fa-solid fa-pen-to-square"></i> <span>Text Edit</span>
+      </button>
+      <button class="nav-tab" data-tab="preview-view">
+        <i class="fa-solid fa-eye"></i> <span>Live Preview</span>
+      </button>
+    </nav>
+
+    <!-- Main Workspace -->
+    <main class="app-main">
+
+      <!-- View 1: 100 Templates Browser -->
+      <section id="browser-view" class="view-panel active">
+        <div class="browser-header">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="template-search" placeholder="Search 100 layouts by style, role, tags..." />
+          </div>
+          <div class="category-pills" id="category-pills">
+            <!-- Dynamic Category Pills inserted by JS -->
+          </div>
+        </div>
+
+        <div class="template-grid-header">
+          <span id="templates-count-badge">Showing 100 Templates</span>
+          <span class="lock-notice"><i class="fa-solid fa-shield-halved"></i> Colors & Fonts predefined for perfection</span>
+        </div>
+
+        <div class="templates-grid" id="templates-grid">
+          <!-- 100 Template Cards populated by templates.js & app.js -->
+        </div>
+      </section>
+
+      <!-- View 2: Live Content & Text Editor -->
+      <section id="editor-view" class="view-panel">
+        <div class="editor-header-bar">
+          <div class="current-template-info">
+            <span class="label">Current Layout:</span>
+            <strong id="editor-active-template-name">Modern Teal Executive</strong>
+            <button id="btn-change-template" class="btn-link"><i class="fa-solid fa-repeat"></i> Change Layout</button>
+          </div>
+          <div class="notice-box">
+            <i class="fa-solid fa-circle-info"></i> Edit text & content only. Layout, colors, and typography format are locked to preserve exact design aesthetics.
+          </div>
+        </div>
+
+        <!-- Content Form Sections -->
+        <div class="accordion">
+
+          <!-- Personal Info -->
+          <div class="accordion-item active">
+            <div class="accordion-header">
+              <span><i class="fa-solid fa-user"></i> Personal & Contact Information</span>
+              <i class="fa-solid fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="input-fullName">Full Name</label>
+                  <input type="text" id="input-fullName" class="form-control text-bind" data-key="fullName" placeholder="e.g. Alex Morgan" />
+                </div>
+                <div class="form-group">
+                  <label for="input-jobTitle">Professional Title</label>
+                  <input type="text" id="input-jobTitle" class="form-control text-bind" data-key="jobTitle" placeholder="e.g. Senior Software Engineer" />
+                </div>
+                <div class="form-group">
+                  <label for="input-email">Email Address</label>
+                  <input type="email" id="input-email" class="form-control text-bind" data-key="email" placeholder="alex.morgan@example.com" />
+                </div>
+                <div class="form-group">
+                  <label for="input-phone">Phone Number</label>
+                  <input type="text" id="input-phone" class="form-control text-bind" data-key="phone" placeholder="+1 (555) 019-2834" />
+                </div>
+                <div class="form-group">
+                  <label for="input-location">Location / Address</label>
+                  <input type="text" id="input-location" class="form-control text-bind" data-key="location" placeholder="San Francisco, CA" />
+                </div>
+                <div class="form-group">
+                  <label for="input-website">Website / Portfolio</label>
+                  <input type="text" id="input-website" class="form-control text-bind" data-key="website" placeholder="alexmorgan.dev" />
+                </div>
+                <div class="form-group">
+                  <label for="input-linkedin">LinkedIn</label>
+                  <input type="text" id="input-linkedin" class="form-control text-bind" data-key="linkedin" placeholder="linkedin.com/in/alexmorgan" />
+                </div>
+                <div class="form-group">
+                  <label for="input-github">GitHub / Other Link</label>
+                  <input type="text" id="input-github" class="form-control text-bind" data-key="github" placeholder="github.com/alexmorgan" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Professional Summary -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span><i class="fa-solid fa-align-left"></i> Professional Summary</span>
+              <i class="fa-solid fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="form-group">
+                <label for="input-summary">Summary Bio</label>
+                <textarea id="input-summary" rows="4" class="form-control text-bind" data-key="summary" placeholder="Write a brief overview of your background, experience, and key skills..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Work Experience -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span><i class="fa-solid fa-briefcase"></i> Work Experience</span>
+              <i class="fa-solid fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div id="experience-list" class="dynamic-list"></div>
+              <button id="btn-add-experience" class="btn btn-secondary btn-sm">
+                <i class="fa-solid fa-plus"></i> Add Experience
+              </button>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span><i class="fa-solid fa-graduation-cap"></i> Education</span>
+              <i class="fa-solid fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div id="education-list" class="dynamic-list"></div>
+              <button id="btn-add-education" class="btn btn-secondary btn-sm">
+                <i class="fa-solid fa-plus"></i> Add Education
+              </button>
+            </div>
+          </div>
+
+          <!-- Skills -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span><i class="fa-solid fa-list-check"></i> Skills & Expertise</span>
+              <i class="fa-solid fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="form-group">
+                <label for="input-skills">Skills (comma separated)</label>
+                <textarea id="input-skills" rows="3" class="form-control text-bind" data-key="skills" placeholder="JavaScript, React, Node.js, Project Management, Agile, UI/UX Design"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Projects -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span><i class="fa-solid fa-diagram-project"></i> Key Projects</span>
+              <i class="fa-solid fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div id="projects-list" class="dynamic-list"></div>
+              <button id="btn-add-project" class="btn btn-secondary btn-sm">
+                <i class="fa-solid fa-plus"></i> Add Project
+              </button>
+            </div>
+          </div>
+
+          <!-- Certifications & Languages -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <span><i class="fa-solid fa-certificate"></i> Certifications & Languages</span>
+              <i class="fa-solid fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="form-group">
+                <label for="input-certifications">Certifications (comma separated)</label>
+                <input type="text" id="input-certifications" class="form-control text-bind" data-key="certifications" placeholder="AWS Certified Solutions Architect, PMP Certification" />
+              </div>
+              <div class="form-group" style="margin-top: 12px;">
+                <label for="input-languages">Languages (comma separated)</label>
+                <input type="text" id="input-languages" class="form-control text-bind" data-key="languages" placeholder="English (Native), Spanish (Fluent), German (Basic)" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- View 3: Live Preview Section -->
+      <section id="preview-view" class="view-panel">
+        <div class="preview-toolbar">
+          <div class="preview-info">
+            <span>Template: <strong id="preview-template-title">Template 1</strong></span>
+          </div>
+          <div class="preview-actions">
+            <button id="btn-preview-export" class="btn btn-primary btn-sm">
+              <i class="fa-solid fa-file-pdf"></i> Download PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Scrollable Document Container -->
+        <div class="resume-paper-wrapper">
+          <div id="resume-paper" class="resume-paper template-layout-1">
+            <!-- Dynamic Template Content rendered here -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast / Notification container -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/templates.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
