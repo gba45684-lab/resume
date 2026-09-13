@@ -5,6 +5,8 @@ def releaseStorePassword = System.getenv('RELEASE_STORE_PASSWORD') ?: project.fi
 def releaseKeyAlias = System.getenv('RELEASE_KEY_ALIAS') ?: project.findProperty('RELEASE_KEY_ALIAS') ?: null
 def releaseKeyPassword = System.getenv('RELEASE_KEY_PASSWORD') ?: project.findProperty('RELEASE_KEY_PASSWORD') ?: null
 
+def hasReleaseSigning = releaseStorePassword && releaseKeyAlias && releaseKeyPassword && file(releaseKeyStorePath).exists()
+
 android {
     namespace "com.krapal.resumeforge"
     compileSdk rootProject.ext.compileSdkVersion
@@ -16,14 +18,15 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
-             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
-             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
+    // Always create the release signing config so Gradle configuration does not
+    // fail when this public repository is building the debug APK without secrets.
     signingConfigs {
-        if (releaseStorePassword && releaseKeyAlias && releaseKeyPassword && file(releaseKeyStorePath).exists()) {
-            release {
+        release {
+            if (hasReleaseSigning) {
                 storeFile file(releaseKeyStorePath)
                 storePassword releaseStorePassword
                 keyAlias releaseKeyAlias
@@ -31,11 +34,15 @@ android {
             }
         }
     }
+
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            if (signingConfigs.release != null) {
+            if (hasReleaseSigning) {
                 signingConfig signingConfigs.release
             }
         }
