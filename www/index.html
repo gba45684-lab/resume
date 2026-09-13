@@ -3,26 +3,48 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<title>Resume — 100 Templates</title>
+<meta name="theme-color" content="#f7f7f8">
+<title>Resume Studio — 100 Templates</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="app">
-<header class="topbar"><div class="brand">Resume</div><div class="top-actions"><button id="templatesBtn" class="ghost">Templates <span>100</span></button><button id="previewBtn" class="ghost">Preview</button><button id="pdfBtn" class="primary">Export PDF</button></div></header>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">R</span><div><strong>Resume Studio</strong><small>Professional resume builder</small></div></div>
+  <div class="top-actions">
+    <button id="templatesBtn" class="tool-btn"><span>Templates</span><b>100</b></button>
+    <button id="previewBtn" class="tool-btn">Preview</button>
+    <button id="pdfBtn" class="primary">Export PDF</button>
+  </div>
+</header>
 <main class="workspace">
-<section class="editor-panel"><div class="section-title"><div><h1>Edit resume</h1><p>Content only. Template design is locked.</p></div><span id="saveState">Saved</span></div>
-<form id="resumeForm" autocomplete="off">
-<section class="form-section"><h2>Personal</h2><div class="grid"><label>Full name<input data-path="personal.name" placeholder="Your name"></label><label>Professional title<input data-path="personal.title" placeholder="Product Manager"></label><label>Email<input data-path="personal.email" type="email" placeholder="name@email.com"></label><label>Phone<input data-path="personal.phone" placeholder="+91 98765 43210"></label><label>Location<input data-path="personal.location" placeholder="New Delhi, India"></label><label>Website / LinkedIn<input data-path="personal.website" placeholder="linkedin.com/in/yourname"></label></div><label>Photo URL (optional)<input data-path="personal.photo" placeholder="https://..."></label></section>
-<section class="form-section"><h2>Summary</h2><textarea data-path="summary" rows="4" placeholder="A concise professional summary..."></textarea></section>
-<section class="form-section"><div class="row-head"><h2>Experience</h2><button type="button" class="small" data-add="experience">+ Add</button></div><div id="experienceFields"></div></section>
-<section class="form-section"><div class="row-head"><h2>Education</h2><button type="button" class="small" data-add="education">+ Add</button></div><div id="educationFields"></div></section>
-<section class="form-section"><h2>Skills</h2><textarea data-path="skills" rows="3" placeholder="JavaScript, Excel, Communication, Leadership"></textarea></section>
-<section class="form-section"><h2>Projects</h2><textarea data-path="projects" rows="4" placeholder="Project name — what you built and the result"></textarea></section>
-<section class="form-section"><h2>Certifications & other</h2><textarea data-path="certifications" rows="3" placeholder="Certification — Issuer — Year"></textarea></section>
-</form></section>
-<section class="preview-panel"><div class="preview-head"><strong id="templateName">Template 01</strong><button id="closePreview" class="ghost mobile-only">Edit</button></div><div class="paper-wrap"><article id="resumePaper" class="resume-paper"></article></div></section>
-</main></div>
-<div id="templateSheet" class="sheet hidden"><div class="sheet-card"><div class="sheet-head"><h2>Choose template</h2><button id="closeTemplates" class="ghost">Close</button></div><div id="templateGrid" class="template-grid"></div></div></div>
+<section class="editor-panel">
+  <div class="editor-head">
+    <div><span class="eyebrow">RESUME BUILDER</span><h1>Edit your resume</h1><p>Write your content. The selected template controls the design.</p></div>
+    <span id="saveState" class="save-state">Saved</span>
+  </div>
+  <div class="progress"><span id="progressBar"></span></div>
+  <form id="resumeForm" autocomplete="off">
+    <section class="form-section" data-section="personal"><div class="section-heading"><div class="section-icon">01</div><div><h2>Personal details</h2><p>Make it easy to contact you</p></div></div>
+      <div class="grid"><label>Full name<input data-path="personal.name" placeholder="Your name"></label><label>Professional title<input data-path="personal.title" placeholder="Product Manager"></label><label>Email<input data-path="personal.email" type="email" placeholder="name@email.com"></label><label>Phone<input data-path="personal.phone" placeholder="+91 98765 43210"></label><label>Location<input data-path="personal.location" placeholder="New Delhi, India"></label><label>Website / LinkedIn<input data-path="personal.website" placeholder="linkedin.com/in/yourname"></label></div>
+      <label>Photo URL <span class="optional">optional</span><input data-path="personal.photo" placeholder="https://..."></label>
+    </section>
+    <section class="form-section" data-section="summary"><div class="section-heading"><div class="section-icon">02</div><div><h2>Profile summary</h2><p>A strong 2–4 line introduction</p></div></div><textarea data-path="summary" rows="5" placeholder="A concise professional summary..."></textarea></section>
+    <section class="form-section" data-section="experience"><div class="row-head"><div class="section-heading"><div class="section-icon">03</div><div><h2>Experience</h2><p>Show impact, ownership and results</p></div></div><button type="button" class="add-btn" data-add="experience">+ Add role</button></div><div id="experienceFields"></div></section>
+    <section class="form-section" data-section="education"><div class="row-head"><div class="section-heading"><div class="section-icon">04</div><div><h2>Education</h2><p>Degrees, schools and relevant details</p></div></div><button type="button" class="add-btn" data-add="education">+ Add education</button></div><div id="educationFields"></div></section>
+    <section class="form-section" data-section="skills"><div class="section-heading"><div class="section-icon">05</div><div><h2>Skills</h2><p>Separate skills with commas</p></div></div><textarea data-path="skills" rows="3" placeholder="JavaScript, Excel, Communication, Leadership"></textarea></section>
+    <section class="form-section" data-section="projects"><div class="section-heading"><div class="section-icon">06</div><div><h2>Projects</h2><p>Highlight meaningful work</p></div></div><textarea data-path="projects" rows="4" placeholder="Project name — what you built and the result"></textarea></section>
+    <section class="form-section" data-section="certifications"><div class="section-heading"><div class="section-icon">07</div><div><h2>Certifications & other</h2><p>Certifications, awards or extras</p></div></div><textarea data-path="certifications" rows="3" placeholder="Certification — Issuer — Year"></textarea></section>
+  </form>
+</section>
+<section class="preview-panel">
+  <div class="preview-toolbar"><div><span class="eyebrow">LIVE CANVAS</span><strong id="templateName">Template 01</strong></div><div class="preview-actions"><button id="zoomOut" class="icon-btn" aria-label="Zoom out">−</button><span id="zoomLabel">80%</span><button id="zoomIn" class="icon-btn" aria-label="Zoom in">+</button><button id="closePreview" class="ghost mobile-only">Edit</button></div></div>
+  <div class="canvas"><div id="paperStage" class="paper-stage"><article id="resumePaper" class="resume-paper"></article></div></div>
+</section>
+</main>
+</div>
+<div id="templateSheet" class="sheet hidden"><div class="sheet-card"><div class="sheet-head"><div><span class="eyebrow">DESIGN LIBRARY</span><h2>Choose your template</h2><p>100 fixed designs — edit content only</p></div><button id="closeTemplates" class="icon-btn">×</button></div><div class="template-tools"><input id="templateSearch" placeholder="Search templates, styles or layouts…"><span id="templateCount">100 templates</span></div><div id="templateGrid" class="template-grid"></div></div></div>
+<nav class="mobile-bar"><button id="mobileEdit">Edit</button><button id="mobileTemplates">Templates</button><button id="mobilePreview">Preview</button><button id="mobilePdf">PDF</button></nav>
 <script src="js/templates.js"></script><script src="js/app.js"></script>
-</body></html>
+</body>
+</html>
