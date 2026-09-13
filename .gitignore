@@ -5,3 +5,4 @@ android/.gradle/
 *.jks
 *.keystore
 release.jks.base64
+.capgo_key*
