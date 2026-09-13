@@ -6,6 +6,17 @@
 <meta name="theme-color" content="#f7f7f8">
 <title>Resume Studio — 100 Templates</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+.preview-template-switch{display:inline-flex;align-items:center;gap:8px;border:1px solid #dddde6;background:#fff;border-radius:9px;padding:7px 10px;font-size:10px;font-weight:800;color:#292934;cursor:pointer;transition:.16s}
+.preview-template-switch:hover{border-color:#aaa6ff;background:#faf9ff;transform:translateY(-1px)}
+.preview-template-switch .chev{color:#635bff;font-size:12px}
+.template-card .template-meta{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:0 3px}
+.template-card .template-type{font-size:7px;text-transform:uppercase;letter-spacing:.8px;color:#8d8d98;font-weight:800}
+.template-card .use-template{font-size:8px;color:#635bff;font-weight:800;opacity:0;transition:.15s}
+.template-card:hover .use-template,.template-card.active .use-template{opacity:1}
+.template-card .thumb{position:relative}
+.template-card .thumb-badge{position:absolute;left:7px;top:7px;z-index:3;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border:1px solid rgba(0,0,0,.06);border-radius:6px;padding:4px 6px;font-size:7px;font-weight:800;color:#555560}
+</style>
 </head>
 <body>
 <div class="app">
@@ -38,7 +49,10 @@
   </form>
 </section>
 <section class="preview-panel">
-  <div class="preview-toolbar"><div><span class="eyebrow">LIVE CANVAS</span><strong id="templateName">Template 01</strong></div><div class="preview-actions"><button id="zoomOut" class="icon-btn" aria-label="Zoom out">−</button><span id="zoomLabel">80%</span><button id="zoomIn" class="icon-btn" aria-label="Zoom in">+</button><button id="closePreview" class="ghost mobile-only">Edit</button></div></div>
+  <div class="preview-toolbar">
+    <div><span class="eyebrow">LIVE CANVAS</span><button id="liveTemplateBtn" class="preview-template-switch" type="button"><strong id="templateName">Template 01</strong><span class="chev">⌄</span></button></div>
+    <div class="preview-actions"><button id="zoomOut" class="icon-btn" aria-label="Zoom out">−</button><span id="zoomLabel">80%</span><button id="zoomIn" class="icon-btn" aria-label="Zoom in">+</button><button id="closePreview" class="ghost mobile-only">Edit</button></div>
+  </div>
   <div class="canvas"><div id="paperStage" class="paper-stage"><article id="resumePaper" class="resume-paper"></article></div></div>
 </section>
 </main>
