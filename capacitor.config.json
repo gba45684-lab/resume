@@ -1,8 +1,5 @@
 {
   "appId": "com.krapal.resumeforge",
-  "appName": "ResumeForge",
-  "webDir": "www",
-  "android": {
-    "allowMixedContent": true
-  }
+  "appName": "Resume",
+  "webDir": "www"
 }
