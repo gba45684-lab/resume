@@ -1,17 +1,9 @@
 {
-  "name": "resumeforge",
+  "name": "resume-mobile",
   "version": "1.0.0",
   "private": true,
-  "description": "ResumeForge — Professional Resume Builder",
-  "scripts": {
-    "sync": "cap sync",
-    "open:android": "cap open android"
-  },
-  "dependencies": {
-    "@capacitor/core": "^6.1.2",
-    "@capacitor/android": "^6.1.2"
-  },
-  "devDependencies": {
-    "@capacitor/cli": "^6.1.2"
-  }
+  "description": "Simple offline mobile resume builder with 100 fixed templates",
+  "scripts": {"sync":"cap sync","open:android":"cap open android","build:android":"cap sync android && cd android && ./gradlew assembleDebug"},
+  "dependencies": {"@capacitor/core":"^6.1.2","@capacitor/android":"^6.1.2"},
+  "devDependencies": {"@capacitor/cli":"^6.1.2"}
 }
