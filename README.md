@@ -1,23 +1,24 @@
-# Resume — simple mobile resume builder
+# Resume Studio — 100-template mobile resume builder
 
-This repository is now a clean, simple resume app built for mobile.
+A clean, offline-first resume builder for Android and web with a premium editor experience inspired by modern Figma/Canva-style workflows while using original resume layouts.
 
-## Core features
-- **100 fixed, original resume templates** inspired by common professional resume patterns across the web
-- Every template has a predefined **font, color, spacing and layout**
-- User can edit **text/content only**
-- Live preview while typing
-- Mobile-friendly editor and preview mode
-- Personal info, summary, experience, education, skills, projects and certifications
-- Auto-save to **localStorage**
-- Works without an account and keeps resume data on the device
-- **Export PDF** through the device/browser print-to-PDF flow
-- Capacitor Android project and GitHub Actions APK build
+## Features
+- **100 fixed resume templates** with predefined typography, colors, spacing and layout
+- Each template is design-locked: users edit **content/text only**
+- Premium editor UI with live canvas preview, zoom controls and responsive mobile navigation
+- Template library with visual thumbnails and search
+- Personal details, summary, experience, education, skills, projects and certifications
+- Live updates while typing
+- Add/remove multiple experience and education entries
+- Automatic localStorage saving with visible save state
+- Works offline without an account
+- Browser/device **Export PDF** using the native print-to-PDF flow
+- Capacitor Android project with GitHub Actions debug APK build
 
-## Important template rule
-The 100 designs are original implementations. They are informed by current resume-design categories and ATS/readability practices rather than copying proprietary template artwork or assets from another product.
+## Template system
+The template library contains 100 deterministic, original template definitions across professional, modern, minimal, executive, creative, editorial, ATS, portfolio, academic and premium families. Designs use fixed typography, color, spacing and structural rules so editing content does not accidentally change the chosen design.
 
-## Build
+## Local build
 ```bash
 npm install
 npx cap sync android
@@ -27,3 +28,6 @@ cd android
 
 APK output:
 `android/app/build/outputs/apk/debug/app-debug.apk`
+
+## GitHub Actions
+Pushes to `main` and manual workflow runs build the debug APK and upload it as the `resume-debug-apk` artifact. The Android debug build does not require a release keystore.
