@@ -17,23 +17,37 @@ jobs:
   deploy:
     name: Deploy web-only changes to Capgo
     runs-on: ubuntu-latest
-    if: ${{ secrets.CAPGO_TOKEN != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Check Capgo configuration
+        id: config
+        env:
+          CAPGO_TOKEN: ${{ secrets.CAPGO_TOKEN }}
+        run: |
+          if [ -n "$CAPGO_TOKEN" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+            echo "Capgo token is configured."
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "CAPGO_TOKEN is not configured; skipping OTA deployment safely."
+          fi
+
       - name: Setup Node
+        if: steps.config.outputs.configured == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: npm
 
       - name: Install dependencies
+        if: steps.config.outputs.configured == 'true'
         run: npm install
 
       - name: Check changed files
+        if: steps.config.outputs.configured == 'true'
         id: changes
         shell: bash
         run: |
@@ -55,20 +69,20 @@ jobs:
           fi
 
       - name: Stop safely for native changes
-        if: steps.changes.outputs.native == 'true'
+        if: steps.config.outputs.configured == 'true' && steps.changes.outputs.native == 'true'
         run: echo "Skipping Capgo OTA; a native APK/Play release is required for this change."
 
       - name: Verify OTA compatibility
-        if: steps.changes.outputs.native == 'false'
+        if: steps.config.outputs.configured == 'true' && steps.changes.outputs.native == 'false'
         env:
           CAPGO_TOKEN: ${{ secrets.CAPGO_TOKEN }}
         run: |
-          TYPE="$(npx @capgo/cli@latest bundle releaseType "$APP_ID" --channel "$CHANNEL" --apikey "$CAPGO_TOKEN" | tail -n 1 | tr -d '[:space:]')"
+          TYPE="$(npx @capgo/cli@latest bundle releaseType "$APP_ID" --channel "$CHANNEL" --apikey "$CAPGO_TOKEN" | grep -E '^(OTA|native)$' | tail -n 1 | tr -d '[:space:]')"
           echo "Capgo release type: $TYPE"
           test "$TYPE" = "OTA"
 
       - name: Upload guarded OTA bundle
-        if: steps.changes.outputs.native == 'false'
+        if: steps.config.outputs.configured == 'true' && steps.changes.outputs.native == 'false'
         env:
           CAPGO_TOKEN: ${{ secrets.CAPGO_TOKEN }}
         run: |
