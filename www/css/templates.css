@@ -1,0 +1,3855 @@
+/* 100 Dynamic Layout CSS Rules */
+
+
+.resume-container {
+  width: 100%;
+  box-sizing: border-box;
+  color: #334155;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.resume-container h1, .resume-container h2, .resume-container h3, .resume-container h4 {
+  margin: 0;
+  padding: 0;
+}
+
+.resume-item {
+  margin-bottom: 12px;
+}
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.item-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.item-date {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+.item-subtitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 4px;
+}
+.item-desc {
+  font-size: 0.82rem;
+  color: #334155;
+}
+
+.skills-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.skill-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.two-col-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.detail-list, .sidebar-list {
+  padding-left: 18px;
+  font-size: 0.82rem;
+}
+
+/* Sidebar Layout Core */
+.resume-container[class*="layout-type-left-sidebar"],
+.resume-container[class*="layout-type-compact-2col"] {
+  display: flex;
+  min-height: 100%;
+}
+.resume-sidebar {
+  width: 32%;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.resume-main {
+  width: 68%;
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  margin-bottom: 6px;
+  word-break: break-word;
+}
+.sidebar-heading {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+.sidebar-header .user-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.sidebar-header .user-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+/* Single Column Header Base */
+.resume-header {
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.resume-header .user-name {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+.resume-header .user-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.header-contact-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+.header-contact-bar span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.resume-body {
+  padding: 0 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* Template 1 Unique Styling Rules */
+.template-layout-1 {
+  font-family: 'Inter', sans-serif;
+  color: #1e293b;
+}
+.template-layout-1 .user-name {
+  color: #2563eb;
+}
+.template-layout-1 .user-title {
+  color: #1e40af;
+}
+.template-layout-1 .section-title,
+.template-layout-1 .sidebar-heading {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+.template-layout-1 .item-title {
+  color: #1e40af;
+}
+.template-layout-1 .skill-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #2563eb33;
+}
+.template-layout-1 .resume-header {
+  background: #eff6ff;
+  border-left: 6px solid #2563eb;
+}
+.template-layout-1 .resume-sidebar {
+  background: #eff6ff;
+  border-right: 2px solid #2563eb22;
+}
+.template-layout-1 .contact-item i,
+.template-layout-1 .header-contact-bar i {
+  color: #2563eb;
+}
+
+/* Template 2 Unique Styling Rules */
+.template-layout-2 {
+  font-family: 'Poppins', sans-serif;
+  color: #0f172a;
+}
+.template-layout-2 .user-name {
+  color: #0d9488;
+}
+.template-layout-2 .user-title {
+  color: #115e59;
+}
+.template-layout-2 .section-title,
+.template-layout-2 .sidebar-heading {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+}
+.template-layout-2 .item-title {
+  color: #115e59;
+}
+.template-layout-2 .skill-badge {
+  background: #f0fdf4;
+  color: #0d9488;
+  border: 1px solid #0d948833;
+}
+.template-layout-2 .resume-header {
+  background: #f0fdf4;
+  border-left: 6px solid #0d9488;
+}
+.template-layout-2 .resume-sidebar {
+  background: #f0fdf4;
+  border-right: 2px solid #0d948822;
+}
+.template-layout-2 .contact-item i,
+.template-layout-2 .header-contact-bar i {
+  color: #0d9488;
+}
+
+/* Template 3 Unique Styling Rules */
+.template-layout-3 {
+  font-family: 'Montserrat', sans-serif;
+  color: #1e1b4b;
+}
+.template-layout-3 .user-name {
+  color: #4f46e5;
+}
+.template-layout-3 .user-title {
+  color: #3730a3;
+}
+.template-layout-3 .section-title,
+.template-layout-3 .sidebar-heading {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+.template-layout-3 .item-title {
+  color: #3730a3;
+}
+.template-layout-3 .skill-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #4f46e533;
+}
+.template-layout-3 .resume-header {
+  background: #eef2ff;
+  border-left: 6px solid #4f46e5;
+}
+.template-layout-3 .resume-sidebar {
+  background: #eef2ff;
+  border-right: 2px solid #4f46e522;
+}
+.template-layout-3 .contact-item i,
+.template-layout-3 .header-contact-bar i {
+  color: #4f46e5;
+}
+
+/* Template 4 Unique Styling Rules */
+.template-layout-4 {
+  font-family: 'Roboto', sans-serif;
+  color: #064e3b;
+}
+.template-layout-4 .user-name {
+  color: #059669;
+}
+.template-layout-4 .user-title {
+  color: #065f46;
+}
+.template-layout-4 .section-title,
+.template-layout-4 .sidebar-heading {
+  color: #059669;
+  border-bottom-color: #059669;
+}
+.template-layout-4 .item-title {
+  color: #065f46;
+}
+.template-layout-4 .skill-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #05966933;
+}
+.template-layout-4 .resume-header {
+  background: #ecfdf5;
+  border-left: 6px solid #059669;
+}
+.template-layout-4 .resume-sidebar {
+  background: #ecfdf5;
+  border-right: 2px solid #05966922;
+}
+.template-layout-4 .contact-item i,
+.template-layout-4 .header-contact-bar i {
+  color: #059669;
+}
+
+/* Template 5 Unique Styling Rules */
+.template-layout-5 {
+  font-family: 'Outfit', sans-serif;
+  color: #450a0a;
+}
+.template-layout-5 .user-name {
+  color: #dc2626;
+}
+.template-layout-5 .user-title {
+  color: #991b1b;
+}
+.template-layout-5 .section-title,
+.template-layout-5 .sidebar-heading {
+  color: #dc2626;
+  border-bottom-color: #dc2626;
+}
+.template-layout-5 .item-title {
+  color: #991b1b;
+}
+.template-layout-5 .skill-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #dc262633;
+}
+.template-layout-5 .resume-header {
+  background: #fef2f2;
+  border-left: 6px solid #dc2626;
+}
+.template-layout-5 .resume-sidebar {
+  background: #fef2f2;
+  border-right: 2px solid #dc262622;
+}
+.template-layout-5 .contact-item i,
+.template-layout-5 .header-contact-bar i {
+  color: #dc2626;
+}
+
+/* Template 6 Unique Styling Rules */
+.template-layout-6 {
+  font-family: 'Lora', serif;
+  color: #451a03;
+}
+.template-layout-6 .user-name {
+  color: #d97706;
+}
+.template-layout-6 .user-title {
+  color: #92400e;
+}
+.template-layout-6 .section-title,
+.template-layout-6 .sidebar-heading {
+  color: #d97706;
+  border-bottom-color: #d97706;
+}
+.template-layout-6 .item-title {
+  color: #92400e;
+}
+.template-layout-6 .skill-badge {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #d9770633;
+}
+.template-layout-6 .resume-header {
+  background: #fffbeb;
+  border-left: 6px solid #d97706;
+}
+.template-layout-6 .resume-sidebar {
+  background: #fffbeb;
+  border-right: 2px solid #d9770622;
+}
+.template-layout-6 .contact-item i,
+.template-layout-6 .header-contact-bar i {
+  color: #d97706;
+}
+
+/* Template 7 Unique Styling Rules */
+.template-layout-7 {
+  font-family: 'Merriweather', serif;
+  color: #2e1065;
+}
+.template-layout-7 .user-name {
+  color: #7c3aed;
+}
+.template-layout-7 .user-title {
+  color: #5b21b6;
+}
+.template-layout-7 .section-title,
+.template-layout-7 .sidebar-heading {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
+.template-layout-7 .item-title {
+  color: #5b21b6;
+}
+.template-layout-7 .skill-badge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed33;
+}
+.template-layout-7 .resume-header {
+  background: #f5f3ff;
+  border-left: 6px solid #7c3aed;
+}
+.template-layout-7 .resume-sidebar {
+  background: #f5f3ff;
+  border-right: 2px solid #7c3aed22;
+}
+.template-layout-7 .contact-item i,
+.template-layout-7 .header-contact-bar i {
+  color: #7c3aed;
+}
+
+/* Template 8 Unique Styling Rules */
+.template-layout-8 {
+  font-family: 'Roboto Mono', monospace;
+  color: #0c4a6e;
+}
+.template-layout-8 .user-name {
+  color: #0284c7;
+}
+.template-layout-8 .user-title {
+  color: #075985;
+}
+.template-layout-8 .section-title,
+.template-layout-8 .sidebar-heading {
+  color: #0284c7;
+  border-bottom-color: #0284c7;
+}
+.template-layout-8 .item-title {
+  color: #075985;
+}
+.template-layout-8 .skill-badge {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #0284c733;
+}
+.template-layout-8 .resume-header {
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+}
+.template-layout-8 .resume-sidebar {
+  background: #f0f9ff;
+  border-right: 2px solid #0284c722;
+}
+.template-layout-8 .contact-item i,
+.template-layout-8 .header-contact-bar i {
+  color: #0284c7;
+}
+
+/* Template 9 Unique Styling Rules */
+.template-layout-9 {
+  font-family: 'Open Sans', sans-serif;
+  color: #500724;
+}
+.template-layout-9 .user-name {
+  color: #be185d;
+}
+.template-layout-9 .user-title {
+  color: #831843;
+}
+.template-layout-9 .section-title,
+.template-layout-9 .sidebar-heading {
+  color: #be185d;
+  border-bottom-color: #be185d;
+}
+.template-layout-9 .item-title {
+  color: #831843;
+}
+.template-layout-9 .skill-badge {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #be185d33;
+}
+.template-layout-9 .resume-header {
+  background: #fdf2f8;
+  border-left: 6px solid #be185d;
+}
+.template-layout-9 .resume-sidebar {
+  background: #fdf2f8;
+  border-right: 2px solid #be185d22;
+}
+.template-layout-9 .contact-item i,
+.template-layout-9 .header-contact-bar i {
+  color: #be185d;
+}
+
+/* Template 10 Unique Styling Rules */
+.template-layout-10 {
+  font-family: 'Inter', sans-serif;
+  color: #020617;
+}
+.template-layout-10 .user-name {
+  color: #334155;
+}
+.template-layout-10 .user-title {
+  color: #0f172a;
+}
+.template-layout-10 .section-title,
+.template-layout-10 .sidebar-heading {
+  color: #334155;
+  border-bottom-color: #334155;
+}
+.template-layout-10 .item-title {
+  color: #0f172a;
+}
+.template-layout-10 .skill-badge {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #33415533;
+}
+.template-layout-10 .resume-header {
+  background: #f8fafc;
+  border-left: 6px solid #334155;
+}
+.template-layout-10 .resume-sidebar {
+  background: #f8fafc;
+  border-right: 2px solid #33415522;
+}
+.template-layout-10 .contact-item i,
+.template-layout-10 .header-contact-bar i {
+  color: #334155;
+}
+
+/* Template 11 Unique Styling Rules */
+.template-layout-11 {
+  font-family: 'Poppins', sans-serif;
+  color: #1e293b;
+}
+.template-layout-11 .user-name {
+  color: #2563eb;
+}
+.template-layout-11 .user-title {
+  color: #1e40af;
+}
+.template-layout-11 .section-title,
+.template-layout-11 .sidebar-heading {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+.template-layout-11 .item-title {
+  color: #1e40af;
+}
+.template-layout-11 .skill-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #2563eb33;
+}
+.template-layout-11 .resume-header {
+  background: #eff6ff;
+  border-left: 6px solid #2563eb;
+}
+.template-layout-11 .resume-sidebar {
+  background: #eff6ff;
+  border-right: 2px solid #2563eb22;
+}
+.template-layout-11 .contact-item i,
+.template-layout-11 .header-contact-bar i {
+  color: #2563eb;
+}
+
+/* Template 12 Unique Styling Rules */
+.template-layout-12 {
+  font-family: 'Montserrat', sans-serif;
+  color: #0f172a;
+}
+.template-layout-12 .user-name {
+  color: #0d9488;
+}
+.template-layout-12 .user-title {
+  color: #115e59;
+}
+.template-layout-12 .section-title,
+.template-layout-12 .sidebar-heading {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+}
+.template-layout-12 .item-title {
+  color: #115e59;
+}
+.template-layout-12 .skill-badge {
+  background: #f0fdf4;
+  color: #0d9488;
+  border: 1px solid #0d948833;
+}
+.template-layout-12 .resume-header {
+  background: #f0fdf4;
+  border-left: 6px solid #0d9488;
+}
+.template-layout-12 .resume-sidebar {
+  background: #f0fdf4;
+  border-right: 2px solid #0d948822;
+}
+.template-layout-12 .contact-item i,
+.template-layout-12 .header-contact-bar i {
+  color: #0d9488;
+}
+
+/* Template 13 Unique Styling Rules */
+.template-layout-13 {
+  font-family: 'Roboto', sans-serif;
+  color: #1e1b4b;
+}
+.template-layout-13 .user-name {
+  color: #4f46e5;
+}
+.template-layout-13 .user-title {
+  color: #3730a3;
+}
+.template-layout-13 .section-title,
+.template-layout-13 .sidebar-heading {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+.template-layout-13 .item-title {
+  color: #3730a3;
+}
+.template-layout-13 .skill-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #4f46e533;
+}
+.template-layout-13 .resume-header {
+  background: #eef2ff;
+  border-left: 6px solid #4f46e5;
+}
+.template-layout-13 .resume-sidebar {
+  background: #eef2ff;
+  border-right: 2px solid #4f46e522;
+}
+.template-layout-13 .contact-item i,
+.template-layout-13 .header-contact-bar i {
+  color: #4f46e5;
+}
+
+/* Template 14 Unique Styling Rules */
+.template-layout-14 {
+  font-family: 'Outfit', sans-serif;
+  color: #064e3b;
+}
+.template-layout-14 .user-name {
+  color: #059669;
+}
+.template-layout-14 .user-title {
+  color: #065f46;
+}
+.template-layout-14 .section-title,
+.template-layout-14 .sidebar-heading {
+  color: #059669;
+  border-bottom-color: #059669;
+}
+.template-layout-14 .item-title {
+  color: #065f46;
+}
+.template-layout-14 .skill-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #05966933;
+}
+.template-layout-14 .resume-header {
+  background: #ecfdf5;
+  border-left: 6px solid #059669;
+}
+.template-layout-14 .resume-sidebar {
+  background: #ecfdf5;
+  border-right: 2px solid #05966922;
+}
+.template-layout-14 .contact-item i,
+.template-layout-14 .header-contact-bar i {
+  color: #059669;
+}
+
+/* Template 15 Unique Styling Rules */
+.template-layout-15 {
+  font-family: 'Lora', serif;
+  color: #450a0a;
+}
+.template-layout-15 .user-name {
+  color: #dc2626;
+}
+.template-layout-15 .user-title {
+  color: #991b1b;
+}
+.template-layout-15 .section-title,
+.template-layout-15 .sidebar-heading {
+  color: #dc2626;
+  border-bottom-color: #dc2626;
+}
+.template-layout-15 .item-title {
+  color: #991b1b;
+}
+.template-layout-15 .skill-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #dc262633;
+}
+.template-layout-15 .resume-header {
+  background: #fef2f2;
+  border-left: 6px solid #dc2626;
+}
+.template-layout-15 .resume-sidebar {
+  background: #fef2f2;
+  border-right: 2px solid #dc262622;
+}
+.template-layout-15 .contact-item i,
+.template-layout-15 .header-contact-bar i {
+  color: #dc2626;
+}
+
+/* Template 16 Unique Styling Rules */
+.template-layout-16 {
+  font-family: 'Merriweather', serif;
+  color: #451a03;
+}
+.template-layout-16 .user-name {
+  color: #d97706;
+}
+.template-layout-16 .user-title {
+  color: #92400e;
+}
+.template-layout-16 .section-title,
+.template-layout-16 .sidebar-heading {
+  color: #d97706;
+  border-bottom-color: #d97706;
+}
+.template-layout-16 .item-title {
+  color: #92400e;
+}
+.template-layout-16 .skill-badge {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #d9770633;
+}
+.template-layout-16 .resume-header {
+  background: #fffbeb;
+  border-left: 6px solid #d97706;
+}
+.template-layout-16 .resume-sidebar {
+  background: #fffbeb;
+  border-right: 2px solid #d9770622;
+}
+.template-layout-16 .contact-item i,
+.template-layout-16 .header-contact-bar i {
+  color: #d97706;
+}
+
+/* Template 17 Unique Styling Rules */
+.template-layout-17 {
+  font-family: 'Roboto Mono', monospace;
+  color: #2e1065;
+}
+.template-layout-17 .user-name {
+  color: #7c3aed;
+}
+.template-layout-17 .user-title {
+  color: #5b21b6;
+}
+.template-layout-17 .section-title,
+.template-layout-17 .sidebar-heading {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
+.template-layout-17 .item-title {
+  color: #5b21b6;
+}
+.template-layout-17 .skill-badge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed33;
+}
+.template-layout-17 .resume-header {
+  background: #f5f3ff;
+  border-left: 6px solid #7c3aed;
+}
+.template-layout-17 .resume-sidebar {
+  background: #f5f3ff;
+  border-right: 2px solid #7c3aed22;
+}
+.template-layout-17 .contact-item i,
+.template-layout-17 .header-contact-bar i {
+  color: #7c3aed;
+}
+
+/* Template 18 Unique Styling Rules */
+.template-layout-18 {
+  font-family: 'Open Sans', sans-serif;
+  color: #0c4a6e;
+}
+.template-layout-18 .user-name {
+  color: #0284c7;
+}
+.template-layout-18 .user-title {
+  color: #075985;
+}
+.template-layout-18 .section-title,
+.template-layout-18 .sidebar-heading {
+  color: #0284c7;
+  border-bottom-color: #0284c7;
+}
+.template-layout-18 .item-title {
+  color: #075985;
+}
+.template-layout-18 .skill-badge {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #0284c733;
+}
+.template-layout-18 .resume-header {
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+}
+.template-layout-18 .resume-sidebar {
+  background: #f0f9ff;
+  border-right: 2px solid #0284c722;
+}
+.template-layout-18 .contact-item i,
+.template-layout-18 .header-contact-bar i {
+  color: #0284c7;
+}
+
+/* Template 19 Unique Styling Rules */
+.template-layout-19 {
+  font-family: 'Inter', sans-serif;
+  color: #500724;
+}
+.template-layout-19 .user-name {
+  color: #be185d;
+}
+.template-layout-19 .user-title {
+  color: #831843;
+}
+.template-layout-19 .section-title,
+.template-layout-19 .sidebar-heading {
+  color: #be185d;
+  border-bottom-color: #be185d;
+}
+.template-layout-19 .item-title {
+  color: #831843;
+}
+.template-layout-19 .skill-badge {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #be185d33;
+}
+.template-layout-19 .resume-header {
+  background: #fdf2f8;
+  border-left: 6px solid #be185d;
+}
+.template-layout-19 .resume-sidebar {
+  background: #fdf2f8;
+  border-right: 2px solid #be185d22;
+}
+.template-layout-19 .contact-item i,
+.template-layout-19 .header-contact-bar i {
+  color: #be185d;
+}
+
+/* Template 20 Unique Styling Rules */
+.template-layout-20 {
+  font-family: 'Poppins', sans-serif;
+  color: #020617;
+}
+.template-layout-20 .user-name {
+  color: #334155;
+}
+.template-layout-20 .user-title {
+  color: #0f172a;
+}
+.template-layout-20 .section-title,
+.template-layout-20 .sidebar-heading {
+  color: #334155;
+  border-bottom-color: #334155;
+}
+.template-layout-20 .item-title {
+  color: #0f172a;
+}
+.template-layout-20 .skill-badge {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #33415533;
+}
+.template-layout-20 .resume-header {
+  background: #f8fafc;
+  border-left: 6px solid #334155;
+}
+.template-layout-20 .resume-sidebar {
+  background: #f8fafc;
+  border-right: 2px solid #33415522;
+}
+.template-layout-20 .contact-item i,
+.template-layout-20 .header-contact-bar i {
+  color: #334155;
+}
+
+/* Template 21 Unique Styling Rules */
+.template-layout-21 {
+  font-family: 'Montserrat', sans-serif;
+  color: #1e293b;
+}
+.template-layout-21 .user-name {
+  color: #2563eb;
+}
+.template-layout-21 .user-title {
+  color: #1e40af;
+}
+.template-layout-21 .section-title,
+.template-layout-21 .sidebar-heading {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+.template-layout-21 .item-title {
+  color: #1e40af;
+}
+.template-layout-21 .skill-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #2563eb33;
+}
+.template-layout-21 .resume-header {
+  background: #eff6ff;
+  border-left: 6px solid #2563eb;
+}
+.template-layout-21 .resume-sidebar {
+  background: #eff6ff;
+  border-right: 2px solid #2563eb22;
+}
+.template-layout-21 .contact-item i,
+.template-layout-21 .header-contact-bar i {
+  color: #2563eb;
+}
+
+/* Template 22 Unique Styling Rules */
+.template-layout-22 {
+  font-family: 'Roboto', sans-serif;
+  color: #0f172a;
+}
+.template-layout-22 .user-name {
+  color: #0d9488;
+}
+.template-layout-22 .user-title {
+  color: #115e59;
+}
+.template-layout-22 .section-title,
+.template-layout-22 .sidebar-heading {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+}
+.template-layout-22 .item-title {
+  color: #115e59;
+}
+.template-layout-22 .skill-badge {
+  background: #f0fdf4;
+  color: #0d9488;
+  border: 1px solid #0d948833;
+}
+.template-layout-22 .resume-header {
+  background: #f0fdf4;
+  border-left: 6px solid #0d9488;
+}
+.template-layout-22 .resume-sidebar {
+  background: #f0fdf4;
+  border-right: 2px solid #0d948822;
+}
+.template-layout-22 .contact-item i,
+.template-layout-22 .header-contact-bar i {
+  color: #0d9488;
+}
+
+/* Template 23 Unique Styling Rules */
+.template-layout-23 {
+  font-family: 'Outfit', sans-serif;
+  color: #1e1b4b;
+}
+.template-layout-23 .user-name {
+  color: #4f46e5;
+}
+.template-layout-23 .user-title {
+  color: #3730a3;
+}
+.template-layout-23 .section-title,
+.template-layout-23 .sidebar-heading {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+.template-layout-23 .item-title {
+  color: #3730a3;
+}
+.template-layout-23 .skill-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #4f46e533;
+}
+.template-layout-23 .resume-header {
+  background: #eef2ff;
+  border-left: 6px solid #4f46e5;
+}
+.template-layout-23 .resume-sidebar {
+  background: #eef2ff;
+  border-right: 2px solid #4f46e522;
+}
+.template-layout-23 .contact-item i,
+.template-layout-23 .header-contact-bar i {
+  color: #4f46e5;
+}
+
+/* Template 24 Unique Styling Rules */
+.template-layout-24 {
+  font-family: 'Lora', serif;
+  color: #064e3b;
+}
+.template-layout-24 .user-name {
+  color: #059669;
+}
+.template-layout-24 .user-title {
+  color: #065f46;
+}
+.template-layout-24 .section-title,
+.template-layout-24 .sidebar-heading {
+  color: #059669;
+  border-bottom-color: #059669;
+}
+.template-layout-24 .item-title {
+  color: #065f46;
+}
+.template-layout-24 .skill-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #05966933;
+}
+.template-layout-24 .resume-header {
+  background: #ecfdf5;
+  border-left: 6px solid #059669;
+}
+.template-layout-24 .resume-sidebar {
+  background: #ecfdf5;
+  border-right: 2px solid #05966922;
+}
+.template-layout-24 .contact-item i,
+.template-layout-24 .header-contact-bar i {
+  color: #059669;
+}
+
+/* Template 25 Unique Styling Rules */
+.template-layout-25 {
+  font-family: 'Merriweather', serif;
+  color: #450a0a;
+}
+.template-layout-25 .user-name {
+  color: #dc2626;
+}
+.template-layout-25 .user-title {
+  color: #991b1b;
+}
+.template-layout-25 .section-title,
+.template-layout-25 .sidebar-heading {
+  color: #dc2626;
+  border-bottom-color: #dc2626;
+}
+.template-layout-25 .item-title {
+  color: #991b1b;
+}
+.template-layout-25 .skill-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #dc262633;
+}
+.template-layout-25 .resume-header {
+  background: #fef2f2;
+  border-left: 6px solid #dc2626;
+}
+.template-layout-25 .resume-sidebar {
+  background: #fef2f2;
+  border-right: 2px solid #dc262622;
+}
+.template-layout-25 .contact-item i,
+.template-layout-25 .header-contact-bar i {
+  color: #dc2626;
+}
+
+/* Template 26 Unique Styling Rules */
+.template-layout-26 {
+  font-family: 'Roboto Mono', monospace;
+  color: #451a03;
+}
+.template-layout-26 .user-name {
+  color: #d97706;
+}
+.template-layout-26 .user-title {
+  color: #92400e;
+}
+.template-layout-26 .section-title,
+.template-layout-26 .sidebar-heading {
+  color: #d97706;
+  border-bottom-color: #d97706;
+}
+.template-layout-26 .item-title {
+  color: #92400e;
+}
+.template-layout-26 .skill-badge {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #d9770633;
+}
+.template-layout-26 .resume-header {
+  background: #fffbeb;
+  border-left: 6px solid #d97706;
+}
+.template-layout-26 .resume-sidebar {
+  background: #fffbeb;
+  border-right: 2px solid #d9770622;
+}
+.template-layout-26 .contact-item i,
+.template-layout-26 .header-contact-bar i {
+  color: #d97706;
+}
+
+/* Template 27 Unique Styling Rules */
+.template-layout-27 {
+  font-family: 'Open Sans', sans-serif;
+  color: #2e1065;
+}
+.template-layout-27 .user-name {
+  color: #7c3aed;
+}
+.template-layout-27 .user-title {
+  color: #5b21b6;
+}
+.template-layout-27 .section-title,
+.template-layout-27 .sidebar-heading {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
+.template-layout-27 .item-title {
+  color: #5b21b6;
+}
+.template-layout-27 .skill-badge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed33;
+}
+.template-layout-27 .resume-header {
+  background: #f5f3ff;
+  border-left: 6px solid #7c3aed;
+}
+.template-layout-27 .resume-sidebar {
+  background: #f5f3ff;
+  border-right: 2px solid #7c3aed22;
+}
+.template-layout-27 .contact-item i,
+.template-layout-27 .header-contact-bar i {
+  color: #7c3aed;
+}
+
+/* Template 28 Unique Styling Rules */
+.template-layout-28 {
+  font-family: 'Inter', sans-serif;
+  color: #0c4a6e;
+}
+.template-layout-28 .user-name {
+  color: #0284c7;
+}
+.template-layout-28 .user-title {
+  color: #075985;
+}
+.template-layout-28 .section-title,
+.template-layout-28 .sidebar-heading {
+  color: #0284c7;
+  border-bottom-color: #0284c7;
+}
+.template-layout-28 .item-title {
+  color: #075985;
+}
+.template-layout-28 .skill-badge {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #0284c733;
+}
+.template-layout-28 .resume-header {
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+}
+.template-layout-28 .resume-sidebar {
+  background: #f0f9ff;
+  border-right: 2px solid #0284c722;
+}
+.template-layout-28 .contact-item i,
+.template-layout-28 .header-contact-bar i {
+  color: #0284c7;
+}
+
+/* Template 29 Unique Styling Rules */
+.template-layout-29 {
+  font-family: 'Poppins', sans-serif;
+  color: #500724;
+}
+.template-layout-29 .user-name {
+  color: #be185d;
+}
+.template-layout-29 .user-title {
+  color: #831843;
+}
+.template-layout-29 .section-title,
+.template-layout-29 .sidebar-heading {
+  color: #be185d;
+  border-bottom-color: #be185d;
+}
+.template-layout-29 .item-title {
+  color: #831843;
+}
+.template-layout-29 .skill-badge {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #be185d33;
+}
+.template-layout-29 .resume-header {
+  background: #fdf2f8;
+  border-left: 6px solid #be185d;
+}
+.template-layout-29 .resume-sidebar {
+  background: #fdf2f8;
+  border-right: 2px solid #be185d22;
+}
+.template-layout-29 .contact-item i,
+.template-layout-29 .header-contact-bar i {
+  color: #be185d;
+}
+
+/* Template 30 Unique Styling Rules */
+.template-layout-30 {
+  font-family: 'Montserrat', sans-serif;
+  color: #020617;
+}
+.template-layout-30 .user-name {
+  color: #334155;
+}
+.template-layout-30 .user-title {
+  color: #0f172a;
+}
+.template-layout-30 .section-title,
+.template-layout-30 .sidebar-heading {
+  color: #334155;
+  border-bottom-color: #334155;
+}
+.template-layout-30 .item-title {
+  color: #0f172a;
+}
+.template-layout-30 .skill-badge {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #33415533;
+}
+.template-layout-30 .resume-header {
+  background: #f8fafc;
+  border-left: 6px solid #334155;
+}
+.template-layout-30 .resume-sidebar {
+  background: #f8fafc;
+  border-right: 2px solid #33415522;
+}
+.template-layout-30 .contact-item i,
+.template-layout-30 .header-contact-bar i {
+  color: #334155;
+}
+
+/* Template 31 Unique Styling Rules */
+.template-layout-31 {
+  font-family: 'Roboto', sans-serif;
+  color: #1e293b;
+}
+.template-layout-31 .user-name {
+  color: #2563eb;
+}
+.template-layout-31 .user-title {
+  color: #1e40af;
+}
+.template-layout-31 .section-title,
+.template-layout-31 .sidebar-heading {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+.template-layout-31 .item-title {
+  color: #1e40af;
+}
+.template-layout-31 .skill-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #2563eb33;
+}
+.template-layout-31 .resume-header {
+  background: #eff6ff;
+  border-left: 6px solid #2563eb;
+}
+.template-layout-31 .resume-sidebar {
+  background: #eff6ff;
+  border-right: 2px solid #2563eb22;
+}
+.template-layout-31 .contact-item i,
+.template-layout-31 .header-contact-bar i {
+  color: #2563eb;
+}
+
+/* Template 32 Unique Styling Rules */
+.template-layout-32 {
+  font-family: 'Outfit', sans-serif;
+  color: #0f172a;
+}
+.template-layout-32 .user-name {
+  color: #0d9488;
+}
+.template-layout-32 .user-title {
+  color: #115e59;
+}
+.template-layout-32 .section-title,
+.template-layout-32 .sidebar-heading {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+}
+.template-layout-32 .item-title {
+  color: #115e59;
+}
+.template-layout-32 .skill-badge {
+  background: #f0fdf4;
+  color: #0d9488;
+  border: 1px solid #0d948833;
+}
+.template-layout-32 .resume-header {
+  background: #f0fdf4;
+  border-left: 6px solid #0d9488;
+}
+.template-layout-32 .resume-sidebar {
+  background: #f0fdf4;
+  border-right: 2px solid #0d948822;
+}
+.template-layout-32 .contact-item i,
+.template-layout-32 .header-contact-bar i {
+  color: #0d9488;
+}
+
+/* Template 33 Unique Styling Rules */
+.template-layout-33 {
+  font-family: 'Lora', serif;
+  color: #1e1b4b;
+}
+.template-layout-33 .user-name {
+  color: #4f46e5;
+}
+.template-layout-33 .user-title {
+  color: #3730a3;
+}
+.template-layout-33 .section-title,
+.template-layout-33 .sidebar-heading {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+.template-layout-33 .item-title {
+  color: #3730a3;
+}
+.template-layout-33 .skill-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #4f46e533;
+}
+.template-layout-33 .resume-header {
+  background: #eef2ff;
+  border-left: 6px solid #4f46e5;
+}
+.template-layout-33 .resume-sidebar {
+  background: #eef2ff;
+  border-right: 2px solid #4f46e522;
+}
+.template-layout-33 .contact-item i,
+.template-layout-33 .header-contact-bar i {
+  color: #4f46e5;
+}
+
+/* Template 34 Unique Styling Rules */
+.template-layout-34 {
+  font-family: 'Merriweather', serif;
+  color: #064e3b;
+}
+.template-layout-34 .user-name {
+  color: #059669;
+}
+.template-layout-34 .user-title {
+  color: #065f46;
+}
+.template-layout-34 .section-title,
+.template-layout-34 .sidebar-heading {
+  color: #059669;
+  border-bottom-color: #059669;
+}
+.template-layout-34 .item-title {
+  color: #065f46;
+}
+.template-layout-34 .skill-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #05966933;
+}
+.template-layout-34 .resume-header {
+  background: #ecfdf5;
+  border-left: 6px solid #059669;
+}
+.template-layout-34 .resume-sidebar {
+  background: #ecfdf5;
+  border-right: 2px solid #05966922;
+}
+.template-layout-34 .contact-item i,
+.template-layout-34 .header-contact-bar i {
+  color: #059669;
+}
+
+/* Template 35 Unique Styling Rules */
+.template-layout-35 {
+  font-family: 'Roboto Mono', monospace;
+  color: #450a0a;
+}
+.template-layout-35 .user-name {
+  color: #dc2626;
+}
+.template-layout-35 .user-title {
+  color: #991b1b;
+}
+.template-layout-35 .section-title,
+.template-layout-35 .sidebar-heading {
+  color: #dc2626;
+  border-bottom-color: #dc2626;
+}
+.template-layout-35 .item-title {
+  color: #991b1b;
+}
+.template-layout-35 .skill-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #dc262633;
+}
+.template-layout-35 .resume-header {
+  background: #fef2f2;
+  border-left: 6px solid #dc2626;
+}
+.template-layout-35 .resume-sidebar {
+  background: #fef2f2;
+  border-right: 2px solid #dc262622;
+}
+.template-layout-35 .contact-item i,
+.template-layout-35 .header-contact-bar i {
+  color: #dc2626;
+}
+
+/* Template 36 Unique Styling Rules */
+.template-layout-36 {
+  font-family: 'Open Sans', sans-serif;
+  color: #451a03;
+}
+.template-layout-36 .user-name {
+  color: #d97706;
+}
+.template-layout-36 .user-title {
+  color: #92400e;
+}
+.template-layout-36 .section-title,
+.template-layout-36 .sidebar-heading {
+  color: #d97706;
+  border-bottom-color: #d97706;
+}
+.template-layout-36 .item-title {
+  color: #92400e;
+}
+.template-layout-36 .skill-badge {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #d9770633;
+}
+.template-layout-36 .resume-header {
+  background: #fffbeb;
+  border-left: 6px solid #d97706;
+}
+.template-layout-36 .resume-sidebar {
+  background: #fffbeb;
+  border-right: 2px solid #d9770622;
+}
+.template-layout-36 .contact-item i,
+.template-layout-36 .header-contact-bar i {
+  color: #d97706;
+}
+
+/* Template 37 Unique Styling Rules */
+.template-layout-37 {
+  font-family: 'Inter', sans-serif;
+  color: #2e1065;
+}
+.template-layout-37 .user-name {
+  color: #7c3aed;
+}
+.template-layout-37 .user-title {
+  color: #5b21b6;
+}
+.template-layout-37 .section-title,
+.template-layout-37 .sidebar-heading {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
+.template-layout-37 .item-title {
+  color: #5b21b6;
+}
+.template-layout-37 .skill-badge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed33;
+}
+.template-layout-37 .resume-header {
+  background: #f5f3ff;
+  border-left: 6px solid #7c3aed;
+}
+.template-layout-37 .resume-sidebar {
+  background: #f5f3ff;
+  border-right: 2px solid #7c3aed22;
+}
+.template-layout-37 .contact-item i,
+.template-layout-37 .header-contact-bar i {
+  color: #7c3aed;
+}
+
+/* Template 38 Unique Styling Rules */
+.template-layout-38 {
+  font-family: 'Poppins', sans-serif;
+  color: #0c4a6e;
+}
+.template-layout-38 .user-name {
+  color: #0284c7;
+}
+.template-layout-38 .user-title {
+  color: #075985;
+}
+.template-layout-38 .section-title,
+.template-layout-38 .sidebar-heading {
+  color: #0284c7;
+  border-bottom-color: #0284c7;
+}
+.template-layout-38 .item-title {
+  color: #075985;
+}
+.template-layout-38 .skill-badge {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #0284c733;
+}
+.template-layout-38 .resume-header {
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+}
+.template-layout-38 .resume-sidebar {
+  background: #f0f9ff;
+  border-right: 2px solid #0284c722;
+}
+.template-layout-38 .contact-item i,
+.template-layout-38 .header-contact-bar i {
+  color: #0284c7;
+}
+
+/* Template 39 Unique Styling Rules */
+.template-layout-39 {
+  font-family: 'Montserrat', sans-serif;
+  color: #500724;
+}
+.template-layout-39 .user-name {
+  color: #be185d;
+}
+.template-layout-39 .user-title {
+  color: #831843;
+}
+.template-layout-39 .section-title,
+.template-layout-39 .sidebar-heading {
+  color: #be185d;
+  border-bottom-color: #be185d;
+}
+.template-layout-39 .item-title {
+  color: #831843;
+}
+.template-layout-39 .skill-badge {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #be185d33;
+}
+.template-layout-39 .resume-header {
+  background: #fdf2f8;
+  border-left: 6px solid #be185d;
+}
+.template-layout-39 .resume-sidebar {
+  background: #fdf2f8;
+  border-right: 2px solid #be185d22;
+}
+.template-layout-39 .contact-item i,
+.template-layout-39 .header-contact-bar i {
+  color: #be185d;
+}
+
+/* Template 40 Unique Styling Rules */
+.template-layout-40 {
+  font-family: 'Roboto', sans-serif;
+  color: #020617;
+}
+.template-layout-40 .user-name {
+  color: #334155;
+}
+.template-layout-40 .user-title {
+  color: #0f172a;
+}
+.template-layout-40 .section-title,
+.template-layout-40 .sidebar-heading {
+  color: #334155;
+  border-bottom-color: #334155;
+}
+.template-layout-40 .item-title {
+  color: #0f172a;
+}
+.template-layout-40 .skill-badge {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #33415533;
+}
+.template-layout-40 .resume-header {
+  background: #f8fafc;
+  border-left: 6px solid #334155;
+}
+.template-layout-40 .resume-sidebar {
+  background: #f8fafc;
+  border-right: 2px solid #33415522;
+}
+.template-layout-40 .contact-item i,
+.template-layout-40 .header-contact-bar i {
+  color: #334155;
+}
+
+/* Template 41 Unique Styling Rules */
+.template-layout-41 {
+  font-family: 'Outfit', sans-serif;
+  color: #1e293b;
+}
+.template-layout-41 .user-name {
+  color: #2563eb;
+}
+.template-layout-41 .user-title {
+  color: #1e40af;
+}
+.template-layout-41 .section-title,
+.template-layout-41 .sidebar-heading {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+.template-layout-41 .item-title {
+  color: #1e40af;
+}
+.template-layout-41 .skill-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #2563eb33;
+}
+.template-layout-41 .resume-header {
+  background: #eff6ff;
+  border-left: 6px solid #2563eb;
+}
+.template-layout-41 .resume-sidebar {
+  background: #eff6ff;
+  border-right: 2px solid #2563eb22;
+}
+.template-layout-41 .contact-item i,
+.template-layout-41 .header-contact-bar i {
+  color: #2563eb;
+}
+
+/* Template 42 Unique Styling Rules */
+.template-layout-42 {
+  font-family: 'Lora', serif;
+  color: #0f172a;
+}
+.template-layout-42 .user-name {
+  color: #0d9488;
+}
+.template-layout-42 .user-title {
+  color: #115e59;
+}
+.template-layout-42 .section-title,
+.template-layout-42 .sidebar-heading {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+}
+.template-layout-42 .item-title {
+  color: #115e59;
+}
+.template-layout-42 .skill-badge {
+  background: #f0fdf4;
+  color: #0d9488;
+  border: 1px solid #0d948833;
+}
+.template-layout-42 .resume-header {
+  background: #f0fdf4;
+  border-left: 6px solid #0d9488;
+}
+.template-layout-42 .resume-sidebar {
+  background: #f0fdf4;
+  border-right: 2px solid #0d948822;
+}
+.template-layout-42 .contact-item i,
+.template-layout-42 .header-contact-bar i {
+  color: #0d9488;
+}
+
+/* Template 43 Unique Styling Rules */
+.template-layout-43 {
+  font-family: 'Merriweather', serif;
+  color: #1e1b4b;
+}
+.template-layout-43 .user-name {
+  color: #4f46e5;
+}
+.template-layout-43 .user-title {
+  color: #3730a3;
+}
+.template-layout-43 .section-title,
+.template-layout-43 .sidebar-heading {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+.template-layout-43 .item-title {
+  color: #3730a3;
+}
+.template-layout-43 .skill-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #4f46e533;
+}
+.template-layout-43 .resume-header {
+  background: #eef2ff;
+  border-left: 6px solid #4f46e5;
+}
+.template-layout-43 .resume-sidebar {
+  background: #eef2ff;
+  border-right: 2px solid #4f46e522;
+}
+.template-layout-43 .contact-item i,
+.template-layout-43 .header-contact-bar i {
+  color: #4f46e5;
+}
+
+/* Template 44 Unique Styling Rules */
+.template-layout-44 {
+  font-family: 'Roboto Mono', monospace;
+  color: #064e3b;
+}
+.template-layout-44 .user-name {
+  color: #059669;
+}
+.template-layout-44 .user-title {
+  color: #065f46;
+}
+.template-layout-44 .section-title,
+.template-layout-44 .sidebar-heading {
+  color: #059669;
+  border-bottom-color: #059669;
+}
+.template-layout-44 .item-title {
+  color: #065f46;
+}
+.template-layout-44 .skill-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #05966933;
+}
+.template-layout-44 .resume-header {
+  background: #ecfdf5;
+  border-left: 6px solid #059669;
+}
+.template-layout-44 .resume-sidebar {
+  background: #ecfdf5;
+  border-right: 2px solid #05966922;
+}
+.template-layout-44 .contact-item i,
+.template-layout-44 .header-contact-bar i {
+  color: #059669;
+}
+
+/* Template 45 Unique Styling Rules */
+.template-layout-45 {
+  font-family: 'Open Sans', sans-serif;
+  color: #450a0a;
+}
+.template-layout-45 .user-name {
+  color: #dc2626;
+}
+.template-layout-45 .user-title {
+  color: #991b1b;
+}
+.template-layout-45 .section-title,
+.template-layout-45 .sidebar-heading {
+  color: #dc2626;
+  border-bottom-color: #dc2626;
+}
+.template-layout-45 .item-title {
+  color: #991b1b;
+}
+.template-layout-45 .skill-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #dc262633;
+}
+.template-layout-45 .resume-header {
+  background: #fef2f2;
+  border-left: 6px solid #dc2626;
+}
+.template-layout-45 .resume-sidebar {
+  background: #fef2f2;
+  border-right: 2px solid #dc262622;
+}
+.template-layout-45 .contact-item i,
+.template-layout-45 .header-contact-bar i {
+  color: #dc2626;
+}
+
+/* Template 46 Unique Styling Rules */
+.template-layout-46 {
+  font-family: 'Inter', sans-serif;
+  color: #451a03;
+}
+.template-layout-46 .user-name {
+  color: #d97706;
+}
+.template-layout-46 .user-title {
+  color: #92400e;
+}
+.template-layout-46 .section-title,
+.template-layout-46 .sidebar-heading {
+  color: #d97706;
+  border-bottom-color: #d97706;
+}
+.template-layout-46 .item-title {
+  color: #92400e;
+}
+.template-layout-46 .skill-badge {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #d9770633;
+}
+.template-layout-46 .resume-header {
+  background: #fffbeb;
+  border-left: 6px solid #d97706;
+}
+.template-layout-46 .resume-sidebar {
+  background: #fffbeb;
+  border-right: 2px solid #d9770622;
+}
+.template-layout-46 .contact-item i,
+.template-layout-46 .header-contact-bar i {
+  color: #d97706;
+}
+
+/* Template 47 Unique Styling Rules */
+.template-layout-47 {
+  font-family: 'Poppins', sans-serif;
+  color: #2e1065;
+}
+.template-layout-47 .user-name {
+  color: #7c3aed;
+}
+.template-layout-47 .user-title {
+  color: #5b21b6;
+}
+.template-layout-47 .section-title,
+.template-layout-47 .sidebar-heading {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
+.template-layout-47 .item-title {
+  color: #5b21b6;
+}
+.template-layout-47 .skill-badge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed33;
+}
+.template-layout-47 .resume-header {
+  background: #f5f3ff;
+  border-left: 6px solid #7c3aed;
+}
+.template-layout-47 .resume-sidebar {
+  background: #f5f3ff;
+  border-right: 2px solid #7c3aed22;
+}
+.template-layout-47 .contact-item i,
+.template-layout-47 .header-contact-bar i {
+  color: #7c3aed;
+}
+
+/* Template 48 Unique Styling Rules */
+.template-layout-48 {
+  font-family: 'Montserrat', sans-serif;
+  color: #0c4a6e;
+}
+.template-layout-48 .user-name {
+  color: #0284c7;
+}
+.template-layout-48 .user-title {
+  color: #075985;
+}
+.template-layout-48 .section-title,
+.template-layout-48 .sidebar-heading {
+  color: #0284c7;
+  border-bottom-color: #0284c7;
+}
+.template-layout-48 .item-title {
+  color: #075985;
+}
+.template-layout-48 .skill-badge {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #0284c733;
+}
+.template-layout-48 .resume-header {
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+}
+.template-layout-48 .resume-sidebar {
+  background: #f0f9ff;
+  border-right: 2px solid #0284c722;
+}
+.template-layout-48 .contact-item i,
+.template-layout-48 .header-contact-bar i {
+  color: #0284c7;
+}
+
+/* Template 49 Unique Styling Rules */
+.template-layout-49 {
+  font-family: 'Roboto', sans-serif;
+  color: #500724;
+}
+.template-layout-49 .user-name {
+  color: #be185d;
+}
+.template-layout-49 .user-title {
+  color: #831843;
+}
+.template-layout-49 .section-title,
+.template-layout-49 .sidebar-heading {
+  color: #be185d;
+  border-bottom-color: #be185d;
+}
+.template-layout-49 .item-title {
+  color: #831843;
+}
+.template-layout-49 .skill-badge {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #be185d33;
+}
+.template-layout-49 .resume-header {
+  background: #fdf2f8;
+  border-left: 6px solid #be185d;
+}
+.template-layout-49 .resume-sidebar {
+  background: #fdf2f8;
+  border-right: 2px solid #be185d22;
+}
+.template-layout-49 .contact-item i,
+.template-layout-49 .header-contact-bar i {
+  color: #be185d;
+}
+
+/* Template 50 Unique Styling Rules */
+.template-layout-50 {
+  font-family: 'Outfit', sans-serif;
+  color: #020617;
+}
+.template-layout-50 .user-name {
+  color: #334155;
+}
+.template-layout-50 .user-title {
+  color: #0f172a;
+}
+.template-layout-50 .section-title,
+.template-layout-50 .sidebar-heading {
+  color: #334155;
+  border-bottom-color: #334155;
+}
+.template-layout-50 .item-title {
+  color: #0f172a;
+}
+.template-layout-50 .skill-badge {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #33415533;
+}
+.template-layout-50 .resume-header {
+  background: #f8fafc;
+  border-left: 6px solid #334155;
+}
+.template-layout-50 .resume-sidebar {
+  background: #f8fafc;
+  border-right: 2px solid #33415522;
+}
+.template-layout-50 .contact-item i,
+.template-layout-50 .header-contact-bar i {
+  color: #334155;
+}
+
+/* Template 51 Unique Styling Rules */
+.template-layout-51 {
+  font-family: 'Lora', serif;
+  color: #1e293b;
+}
+.template-layout-51 .user-name {
+  color: #2563eb;
+}
+.template-layout-51 .user-title {
+  color: #1e40af;
+}
+.template-layout-51 .section-title,
+.template-layout-51 .sidebar-heading {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+.template-layout-51 .item-title {
+  color: #1e40af;
+}
+.template-layout-51 .skill-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #2563eb33;
+}
+.template-layout-51 .resume-header {
+  background: #eff6ff;
+  border-left: 6px solid #2563eb;
+}
+.template-layout-51 .resume-sidebar {
+  background: #eff6ff;
+  border-right: 2px solid #2563eb22;
+}
+.template-layout-51 .contact-item i,
+.template-layout-51 .header-contact-bar i {
+  color: #2563eb;
+}
+
+/* Template 52 Unique Styling Rules */
+.template-layout-52 {
+  font-family: 'Merriweather', serif;
+  color: #0f172a;
+}
+.template-layout-52 .user-name {
+  color: #0d9488;
+}
+.template-layout-52 .user-title {
+  color: #115e59;
+}
+.template-layout-52 .section-title,
+.template-layout-52 .sidebar-heading {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+}
+.template-layout-52 .item-title {
+  color: #115e59;
+}
+.template-layout-52 .skill-badge {
+  background: #f0fdf4;
+  color: #0d9488;
+  border: 1px solid #0d948833;
+}
+.template-layout-52 .resume-header {
+  background: #f0fdf4;
+  border-left: 6px solid #0d9488;
+}
+.template-layout-52 .resume-sidebar {
+  background: #f0fdf4;
+  border-right: 2px solid #0d948822;
+}
+.template-layout-52 .contact-item i,
+.template-layout-52 .header-contact-bar i {
+  color: #0d9488;
+}
+
+/* Template 53 Unique Styling Rules */
+.template-layout-53 {
+  font-family: 'Roboto Mono', monospace;
+  color: #1e1b4b;
+}
+.template-layout-53 .user-name {
+  color: #4f46e5;
+}
+.template-layout-53 .user-title {
+  color: #3730a3;
+}
+.template-layout-53 .section-title,
+.template-layout-53 .sidebar-heading {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+.template-layout-53 .item-title {
+  color: #3730a3;
+}
+.template-layout-53 .skill-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #4f46e533;
+}
+.template-layout-53 .resume-header {
+  background: #eef2ff;
+  border-left: 6px solid #4f46e5;
+}
+.template-layout-53 .resume-sidebar {
+  background: #eef2ff;
+  border-right: 2px solid #4f46e522;
+}
+.template-layout-53 .contact-item i,
+.template-layout-53 .header-contact-bar i {
+  color: #4f46e5;
+}
+
+/* Template 54 Unique Styling Rules */
+.template-layout-54 {
+  font-family: 'Open Sans', sans-serif;
+  color: #064e3b;
+}
+.template-layout-54 .user-name {
+  color: #059669;
+}
+.template-layout-54 .user-title {
+  color: #065f46;
+}
+.template-layout-54 .section-title,
+.template-layout-54 .sidebar-heading {
+  color: #059669;
+  border-bottom-color: #059669;
+}
+.template-layout-54 .item-title {
+  color: #065f46;
+}
+.template-layout-54 .skill-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #05966933;
+}
+.template-layout-54 .resume-header {
+  background: #ecfdf5;
+  border-left: 6px solid #059669;
+}
+.template-layout-54 .resume-sidebar {
+  background: #ecfdf5;
+  border-right: 2px solid #05966922;
+}
+.template-layout-54 .contact-item i,
+.template-layout-54 .header-contact-bar i {
+  color: #059669;
+}
+
+/* Template 55 Unique Styling Rules */
+.template-layout-55 {
+  font-family: 'Inter', sans-serif;
+  color: #450a0a;
+}
+.template-layout-55 .user-name {
+  color: #dc2626;
+}
+.template-layout-55 .user-title {
+  color: #991b1b;
+}
+.template-layout-55 .section-title,
+.template-layout-55 .sidebar-heading {
+  color: #dc2626;
+  border-bottom-color: #dc2626;
+}
+.template-layout-55 .item-title {
+  color: #991b1b;
+}
+.template-layout-55 .skill-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #dc262633;
+}
+.template-layout-55 .resume-header {
+  background: #fef2f2;
+  border-left: 6px solid #dc2626;
+}
+.template-layout-55 .resume-sidebar {
+  background: #fef2f2;
+  border-right: 2px solid #dc262622;
+}
+.template-layout-55 .contact-item i,
+.template-layout-55 .header-contact-bar i {
+  color: #dc2626;
+}
+
+/* Template 56 Unique Styling Rules */
+.template-layout-56 {
+  font-family: 'Poppins', sans-serif;
+  color: #451a03;
+}
+.template-layout-56 .user-name {
+  color: #d97706;
+}
+.template-layout-56 .user-title {
+  color: #92400e;
+}
+.template-layout-56 .section-title,
+.template-layout-56 .sidebar-heading {
+  color: #d97706;
+  border-bottom-color: #d97706;
+}
+.template-layout-56 .item-title {
+  color: #92400e;
+}
+.template-layout-56 .skill-badge {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #d9770633;
+}
+.template-layout-56 .resume-header {
+  background: #fffbeb;
+  border-left: 6px solid #d97706;
+}
+.template-layout-56 .resume-sidebar {
+  background: #fffbeb;
+  border-right: 2px solid #d9770622;
+}
+.template-layout-56 .contact-item i,
+.template-layout-56 .header-contact-bar i {
+  color: #d97706;
+}
+
+/* Template 57 Unique Styling Rules */
+.template-layout-57 {
+  font-family: 'Montserrat', sans-serif;
+  color: #2e1065;
+}
+.template-layout-57 .user-name {
+  color: #7c3aed;
+}
+.template-layout-57 .user-title {
+  color: #5b21b6;
+}
+.template-layout-57 .section-title,
+.template-layout-57 .sidebar-heading {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
+.template-layout-57 .item-title {
+  color: #5b21b6;
+}
+.template-layout-57 .skill-badge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed33;
+}
+.template-layout-57 .resume-header {
+  background: #f5f3ff;
+  border-left: 6px solid #7c3aed;
+}
+.template-layout-57 .resume-sidebar {
+  background: #f5f3ff;
+  border-right: 2px solid #7c3aed22;
+}
+.template-layout-57 .contact-item i,
+.template-layout-57 .header-contact-bar i {
+  color: #7c3aed;
+}
+
+/* Template 58 Unique Styling Rules */
+.template-layout-58 {
+  font-family: 'Roboto', sans-serif;
+  color: #0c4a6e;
+}
+.template-layout-58 .user-name {
+  color: #0284c7;
+}
+.template-layout-58 .user-title {
+  color: #075985;
+}
+.template-layout-58 .section-title,
+.template-layout-58 .sidebar-heading {
+  color: #0284c7;
+  border-bottom-color: #0284c7;
+}
+.template-layout-58 .item-title {
+  color: #075985;
+}
+.template-layout-58 .skill-badge {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #0284c733;
+}
+.template-layout-58 .resume-header {
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+}
+.template-layout-58 .resume-sidebar {
+  background: #f0f9ff;
+  border-right: 2px solid #0284c722;
+}
+.template-layout-58 .contact-item i,
+.template-layout-58 .header-contact-bar i {
+  color: #0284c7;
+}
+
+/* Template 59 Unique Styling Rules */
+.template-layout-59 {
+  font-family: 'Outfit', sans-serif;
+  color: #500724;
+}
+.template-layout-59 .user-name {
+  color: #be185d;
+}
+.template-layout-59 .user-title {
+  color: #831843;
+}
+.template-layout-59 .section-title,
+.template-layout-59 .sidebar-heading {
+  color: #be185d;
+  border-bottom-color: #be185d;
+}
+.template-layout-59 .item-title {
+  color: #831843;
+}
+.template-layout-59 .skill-badge {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #be185d33;
+}
+.template-layout-59 .resume-header {
+  background: #fdf2f8;
+  border-left: 6px solid #be185d;
+}
+.template-layout-59 .resume-sidebar {
+  background: #fdf2f8;
+  border-right: 2px solid #be185d22;
+}
+.template-layout-59 .contact-item i,
+.template-layout-59 .header-contact-bar i {
+  color: #be185d;
+}
+
+/* Template 60 Unique Styling Rules */
+.template-layout-60 {
+  font-family: 'Lora', serif;
+  color: #020617;
+}
+.template-layout-60 .user-name {
+  color: #334155;
+}
+.template-layout-60 .user-title {
+  color: #0f172a;
+}
+.template-layout-60 .section-title,
+.template-layout-60 .sidebar-heading {
+  color: #334155;
+  border-bottom-color: #334155;
+}
+.template-layout-60 .item-title {
+  color: #0f172a;
+}
+.template-layout-60 .skill-badge {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #33415533;
+}
+.template-layout-60 .resume-header {
+  background: #f8fafc;
+  border-left: 6px solid #334155;
+}
+.template-layout-60 .resume-sidebar {
+  background: #f8fafc;
+  border-right: 2px solid #33415522;
+}
+.template-layout-60 .contact-item i,
+.template-layout-60 .header-contact-bar i {
+  color: #334155;
+}
+
+/* Template 61 Unique Styling Rules */
+.template-layout-61 {
+  font-family: 'Merriweather', serif;
+  color: #1e293b;
+}
+.template-layout-61 .user-name {
+  color: #2563eb;
+}
+.template-layout-61 .user-title {
+  color: #1e40af;
+}
+.template-layout-61 .section-title,
+.template-layout-61 .sidebar-heading {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+.template-layout-61 .item-title {
+  color: #1e40af;
+}
+.template-layout-61 .skill-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #2563eb33;
+}
+.template-layout-61 .resume-header {
+  background: #eff6ff;
+  border-left: 6px solid #2563eb;
+}
+.template-layout-61 .resume-sidebar {
+  background: #eff6ff;
+  border-right: 2px solid #2563eb22;
+}
+.template-layout-61 .contact-item i,
+.template-layout-61 .header-contact-bar i {
+  color: #2563eb;
+}
+
+/* Template 62 Unique Styling Rules */
+.template-layout-62 {
+  font-family: 'Roboto Mono', monospace;
+  color: #0f172a;
+}
+.template-layout-62 .user-name {
+  color: #0d9488;
+}
+.template-layout-62 .user-title {
+  color: #115e59;
+}
+.template-layout-62 .section-title,
+.template-layout-62 .sidebar-heading {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+}
+.template-layout-62 .item-title {
+  color: #115e59;
+}
+.template-layout-62 .skill-badge {
+  background: #f0fdf4;
+  color: #0d9488;
+  border: 1px solid #0d948833;
+}
+.template-layout-62 .resume-header {
+  background: #f0fdf4;
+  border-left: 6px solid #0d9488;
+}
+.template-layout-62 .resume-sidebar {
+  background: #f0fdf4;
+  border-right: 2px solid #0d948822;
+}
+.template-layout-62 .contact-item i,
+.template-layout-62 .header-contact-bar i {
+  color: #0d9488;
+}
+
+/* Template 63 Unique Styling Rules */
+.template-layout-63 {
+  font-family: 'Open Sans', sans-serif;
+  color: #1e1b4b;
+}
+.template-layout-63 .user-name {
+  color: #4f46e5;
+}
+.template-layout-63 .user-title {
+  color: #3730a3;
+}
+.template-layout-63 .section-title,
+.template-layout-63 .sidebar-heading {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+.template-layout-63 .item-title {
+  color: #3730a3;
+}
+.template-layout-63 .skill-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #4f46e533;
+}
+.template-layout-63 .resume-header {
+  background: #eef2ff;
+  border-left: 6px solid #4f46e5;
+}
+.template-layout-63 .resume-sidebar {
+  background: #eef2ff;
+  border-right: 2px solid #4f46e522;
+}
+.template-layout-63 .contact-item i,
+.template-layout-63 .header-contact-bar i {
+  color: #4f46e5;
+}
+
+/* Template 64 Unique Styling Rules */
+.template-layout-64 {
+  font-family: 'Inter', sans-serif;
+  color: #064e3b;
+}
+.template-layout-64 .user-name {
+  color: #059669;
+}
+.template-layout-64 .user-title {
+  color: #065f46;
+}
+.template-layout-64 .section-title,
+.template-layout-64 .sidebar-heading {
+  color: #059669;
+  border-bottom-color: #059669;
+}
+.template-layout-64 .item-title {
+  color: #065f46;
+}
+.template-layout-64 .skill-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #05966933;
+}
+.template-layout-64 .resume-header {
+  background: #ecfdf5;
+  border-left: 6px solid #059669;
+}
+.template-layout-64 .resume-sidebar {
+  background: #ecfdf5;
+  border-right: 2px solid #05966922;
+}
+.template-layout-64 .contact-item i,
+.template-layout-64 .header-contact-bar i {
+  color: #059669;
+}
+
+/* Template 65 Unique Styling Rules */
+.template-layout-65 {
+  font-family: 'Poppins', sans-serif;
+  color: #450a0a;
+}
+.template-layout-65 .user-name {
+  color: #dc2626;
+}
+.template-layout-65 .user-title {
+  color: #991b1b;
+}
+.template-layout-65 .section-title,
+.template-layout-65 .sidebar-heading {
+  color: #dc2626;
+  border-bottom-color: #dc2626;
+}
+.template-layout-65 .item-title {
+  color: #991b1b;
+}
+.template-layout-65 .skill-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #dc262633;
+}
+.template-layout-65 .resume-header {
+  background: #fef2f2;
+  border-left: 6px solid #dc2626;
+}
+.template-layout-65 .resume-sidebar {
+  background: #fef2f2;
+  border-right: 2px solid #dc262622;
+}
+.template-layout-65 .contact-item i,
+.template-layout-65 .header-contact-bar i {
+  color: #dc2626;
+}
+
+/* Template 66 Unique Styling Rules */
+.template-layout-66 {
+  font-family: 'Montserrat', sans-serif;
+  color: #451a03;
+}
+.template-layout-66 .user-name {
+  color: #d97706;
+}
+.template-layout-66 .user-title {
+  color: #92400e;
+}
+.template-layout-66 .section-title,
+.template-layout-66 .sidebar-heading {
+  color: #d97706;
+  border-bottom-color: #d97706;
+}
+.template-layout-66 .item-title {
+  color: #92400e;
+}
+.template-layout-66 .skill-badge {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #d9770633;
+}
+.template-layout-66 .resume-header {
+  background: #fffbeb;
+  border-left: 6px solid #d97706;
+}
+.template-layout-66 .resume-sidebar {
+  background: #fffbeb;
+  border-right: 2px solid #d9770622;
+}
+.template-layout-66 .contact-item i,
+.template-layout-66 .header-contact-bar i {
+  color: #d97706;
+}
+
+/* Template 67 Unique Styling Rules */
+.template-layout-67 {
+  font-family: 'Roboto', sans-serif;
+  color: #2e1065;
+}
+.template-layout-67 .user-name {
+  color: #7c3aed;
+}
+.template-layout-67 .user-title {
+  color: #5b21b6;
+}
+.template-layout-67 .section-title,
+.template-layout-67 .sidebar-heading {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
+.template-layout-67 .item-title {
+  color: #5b21b6;
+}
+.template-layout-67 .skill-badge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed33;
+}
+.template-layout-67 .resume-header {
+  background: #f5f3ff;
+  border-left: 6px solid #7c3aed;
+}
+.template-layout-67 .resume-sidebar {
+  background: #f5f3ff;
+  border-right: 2px solid #7c3aed22;
+}
+.template-layout-67 .contact-item i,
+.template-layout-67 .header-contact-bar i {
+  color: #7c3aed;
+}
+
+/* Template 68 Unique Styling Rules */
+.template-layout-68 {
+  font-family: 'Outfit', sans-serif;
+  color: #0c4a6e;
+}
+.template-layout-68 .user-name {
+  color: #0284c7;
+}
+.template-layout-68 .user-title {
+  color: #075985;
+}
+.template-layout-68 .section-title,
+.template-layout-68 .sidebar-heading {
+  color: #0284c7;
+  border-bottom-color: #0284c7;
+}
+.template-layout-68 .item-title {
+  color: #075985;
+}
+.template-layout-68 .skill-badge {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #0284c733;
+}
+.template-layout-68 .resume-header {
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+}
+.template-layout-68 .resume-sidebar {
+  background: #f0f9ff;
+  border-right: 2px solid #0284c722;
+}
+.template-layout-68 .contact-item i,
+.template-layout-68 .header-contact-bar i {
+  color: #0284c7;
+}
+
+/* Template 69 Unique Styling Rules */
+.template-layout-69 {
+  font-family: 'Lora', serif;
+  color: #500724;
+}
+.template-layout-69 .user-name {
+  color: #be185d;
+}
+.template-layout-69 .user-title {
+  color: #831843;
+}
+.template-layout-69 .section-title,
+.template-layout-69 .sidebar-heading {
+  color: #be185d;
+  border-bottom-color: #be185d;
+}
+.template-layout-69 .item-title {
+  color: #831843;
+}
+.template-layout-69 .skill-badge {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #be185d33;
+}
+.template-layout-69 .resume-header {
+  background: #fdf2f8;
+  border-left: 6px solid #be185d;
+}
+.template-layout-69 .resume-sidebar {
+  background: #fdf2f8;
+  border-right: 2px solid #be185d22;
+}
+.template-layout-69 .contact-item i,
+.template-layout-69 .header-contact-bar i {
+  color: #be185d;
+}
+
+/* Template 70 Unique Styling Rules */
+.template-layout-70 {
+  font-family: 'Merriweather', serif;
+  color: #020617;
+}
+.template-layout-70 .user-name {
+  color: #334155;
+}
+.template-layout-70 .user-title {
+  color: #0f172a;
+}
+.template-layout-70 .section-title,
+.template-layout-70 .sidebar-heading {
+  color: #334155;
+  border-bottom-color: #334155;
+}
+.template-layout-70 .item-title {
+  color: #0f172a;
+}
+.template-layout-70 .skill-badge {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #33415533;
+}
+.template-layout-70 .resume-header {
+  background: #f8fafc;
+  border-left: 6px solid #334155;
+}
+.template-layout-70 .resume-sidebar {
+  background: #f8fafc;
+  border-right: 2px solid #33415522;
+}
+.template-layout-70 .contact-item i,
+.template-layout-70 .header-contact-bar i {
+  color: #334155;
+}
+
+/* Template 71 Unique Styling Rules */
+.template-layout-71 {
+  font-family: 'Roboto Mono', monospace;
+  color: #1e293b;
+}
+.template-layout-71 .user-name {
+  color: #2563eb;
+}
+.template-layout-71 .user-title {
+  color: #1e40af;
+}
+.template-layout-71 .section-title,
+.template-layout-71 .sidebar-heading {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+.template-layout-71 .item-title {
+  color: #1e40af;
+}
+.template-layout-71 .skill-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #2563eb33;
+}
+.template-layout-71 .resume-header {
+  background: #eff6ff;
+  border-left: 6px solid #2563eb;
+}
+.template-layout-71 .resume-sidebar {
+  background: #eff6ff;
+  border-right: 2px solid #2563eb22;
+}
+.template-layout-71 .contact-item i,
+.template-layout-71 .header-contact-bar i {
+  color: #2563eb;
+}
+
+/* Template 72 Unique Styling Rules */
+.template-layout-72 {
+  font-family: 'Open Sans', sans-serif;
+  color: #0f172a;
+}
+.template-layout-72 .user-name {
+  color: #0d9488;
+}
+.template-layout-72 .user-title {
+  color: #115e59;
+}
+.template-layout-72 .section-title,
+.template-layout-72 .sidebar-heading {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+}
+.template-layout-72 .item-title {
+  color: #115e59;
+}
+.template-layout-72 .skill-badge {
+  background: #f0fdf4;
+  color: #0d9488;
+  border: 1px solid #0d948833;
+}
+.template-layout-72 .resume-header {
+  background: #f0fdf4;
+  border-left: 6px solid #0d9488;
+}
+.template-layout-72 .resume-sidebar {
+  background: #f0fdf4;
+  border-right: 2px solid #0d948822;
+}
+.template-layout-72 .contact-item i,
+.template-layout-72 .header-contact-bar i {
+  color: #0d9488;
+}
+
+/* Template 73 Unique Styling Rules */
+.template-layout-73 {
+  font-family: 'Inter', sans-serif;
+  color: #1e1b4b;
+}
+.template-layout-73 .user-name {
+  color: #4f46e5;
+}
+.template-layout-73 .user-title {
+  color: #3730a3;
+}
+.template-layout-73 .section-title,
+.template-layout-73 .sidebar-heading {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+.template-layout-73 .item-title {
+  color: #3730a3;
+}
+.template-layout-73 .skill-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #4f46e533;
+}
+.template-layout-73 .resume-header {
+  background: #eef2ff;
+  border-left: 6px solid #4f46e5;
+}
+.template-layout-73 .resume-sidebar {
+  background: #eef2ff;
+  border-right: 2px solid #4f46e522;
+}
+.template-layout-73 .contact-item i,
+.template-layout-73 .header-contact-bar i {
+  color: #4f46e5;
+}
+
+/* Template 74 Unique Styling Rules */
+.template-layout-74 {
+  font-family: 'Poppins', sans-serif;
+  color: #064e3b;
+}
+.template-layout-74 .user-name {
+  color: #059669;
+}
+.template-layout-74 .user-title {
+  color: #065f46;
+}
+.template-layout-74 .section-title,
+.template-layout-74 .sidebar-heading {
+  color: #059669;
+  border-bottom-color: #059669;
+}
+.template-layout-74 .item-title {
+  color: #065f46;
+}
+.template-layout-74 .skill-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #05966933;
+}
+.template-layout-74 .resume-header {
+  background: #ecfdf5;
+  border-left: 6px solid #059669;
+}
+.template-layout-74 .resume-sidebar {
+  background: #ecfdf5;
+  border-right: 2px solid #05966922;
+}
+.template-layout-74 .contact-item i,
+.template-layout-74 .header-contact-bar i {
+  color: #059669;
+}
+
+/* Template 75 Unique Styling Rules */
+.template-layout-75 {
+  font-family: 'Montserrat', sans-serif;
+  color: #450a0a;
+}
+.template-layout-75 .user-name {
+  color: #dc2626;
+}
+.template-layout-75 .user-title {
+  color: #991b1b;
+}
+.template-layout-75 .section-title,
+.template-layout-75 .sidebar-heading {
+  color: #dc2626;
+  border-bottom-color: #dc2626;
+}
+.template-layout-75 .item-title {
+  color: #991b1b;
+}
+.template-layout-75 .skill-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #dc262633;
+}
+.template-layout-75 .resume-header {
+  background: #fef2f2;
+  border-left: 6px solid #dc2626;
+}
+.template-layout-75 .resume-sidebar {
+  background: #fef2f2;
+  border-right: 2px solid #dc262622;
+}
+.template-layout-75 .contact-item i,
+.template-layout-75 .header-contact-bar i {
+  color: #dc2626;
+}
+
+/* Template 76 Unique Styling Rules */
+.template-layout-76 {
+  font-family: 'Roboto', sans-serif;
+  color: #451a03;
+}
+.template-layout-76 .user-name {
+  color: #d97706;
+}
+.template-layout-76 .user-title {
+  color: #92400e;
+}
+.template-layout-76 .section-title,
+.template-layout-76 .sidebar-heading {
+  color: #d97706;
+  border-bottom-color: #d97706;
+}
+.template-layout-76 .item-title {
+  color: #92400e;
+}
+.template-layout-76 .skill-badge {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #d9770633;
+}
+.template-layout-76 .resume-header {
+  background: #fffbeb;
+  border-left: 6px solid #d97706;
+}
+.template-layout-76 .resume-sidebar {
+  background: #fffbeb;
+  border-right: 2px solid #d9770622;
+}
+.template-layout-76 .contact-item i,
+.template-layout-76 .header-contact-bar i {
+  color: #d97706;
+}
+
+/* Template 77 Unique Styling Rules */
+.template-layout-77 {
+  font-family: 'Outfit', sans-serif;
+  color: #2e1065;
+}
+.template-layout-77 .user-name {
+  color: #7c3aed;
+}
+.template-layout-77 .user-title {
+  color: #5b21b6;
+}
+.template-layout-77 .section-title,
+.template-layout-77 .sidebar-heading {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
+.template-layout-77 .item-title {
+  color: #5b21b6;
+}
+.template-layout-77 .skill-badge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed33;
+}
+.template-layout-77 .resume-header {
+  background: #f5f3ff;
+  border-left: 6px solid #7c3aed;
+}
+.template-layout-77 .resume-sidebar {
+  background: #f5f3ff;
+  border-right: 2px solid #7c3aed22;
+}
+.template-layout-77 .contact-item i,
+.template-layout-77 .header-contact-bar i {
+  color: #7c3aed;
+}
+
+/* Template 78 Unique Styling Rules */
+.template-layout-78 {
+  font-family: 'Lora', serif;
+  color: #0c4a6e;
+}
+.template-layout-78 .user-name {
+  color: #0284c7;
+}
+.template-layout-78 .user-title {
+  color: #075985;
+}
+.template-layout-78 .section-title,
+.template-layout-78 .sidebar-heading {
+  color: #0284c7;
+  border-bottom-color: #0284c7;
+}
+.template-layout-78 .item-title {
+  color: #075985;
+}
+.template-layout-78 .skill-badge {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #0284c733;
+}
+.template-layout-78 .resume-header {
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+}
+.template-layout-78 .resume-sidebar {
+  background: #f0f9ff;
+  border-right: 2px solid #0284c722;
+}
+.template-layout-78 .contact-item i,
+.template-layout-78 .header-contact-bar i {
+  color: #0284c7;
+}
+
+/* Template 79 Unique Styling Rules */
+.template-layout-79 {
+  font-family: 'Merriweather', serif;
+  color: #500724;
+}
+.template-layout-79 .user-name {
+  color: #be185d;
+}
+.template-layout-79 .user-title {
+  color: #831843;
+}
+.template-layout-79 .section-title,
+.template-layout-79 .sidebar-heading {
+  color: #be185d;
+  border-bottom-color: #be185d;
+}
+.template-layout-79 .item-title {
+  color: #831843;
+}
+.template-layout-79 .skill-badge {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #be185d33;
+}
+.template-layout-79 .resume-header {
+  background: #fdf2f8;
+  border-left: 6px solid #be185d;
+}
+.template-layout-79 .resume-sidebar {
+  background: #fdf2f8;
+  border-right: 2px solid #be185d22;
+}
+.template-layout-79 .contact-item i,
+.template-layout-79 .header-contact-bar i {
+  color: #be185d;
+}
+
+/* Template 80 Unique Styling Rules */
+.template-layout-80 {
+  font-family: 'Roboto Mono', monospace;
+  color: #020617;
+}
+.template-layout-80 .user-name {
+  color: #334155;
+}
+.template-layout-80 .user-title {
+  color: #0f172a;
+}
+.template-layout-80 .section-title,
+.template-layout-80 .sidebar-heading {
+  color: #334155;
+  border-bottom-color: #334155;
+}
+.template-layout-80 .item-title {
+  color: #0f172a;
+}
+.template-layout-80 .skill-badge {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #33415533;
+}
+.template-layout-80 .resume-header {
+  background: #f8fafc;
+  border-left: 6px solid #334155;
+}
+.template-layout-80 .resume-sidebar {
+  background: #f8fafc;
+  border-right: 2px solid #33415522;
+}
+.template-layout-80 .contact-item i,
+.template-layout-80 .header-contact-bar i {
+  color: #334155;
+}
+
+/* Template 81 Unique Styling Rules */
+.template-layout-81 {
+  font-family: 'Open Sans', sans-serif;
+  color: #1e293b;
+}
+.template-layout-81 .user-name {
+  color: #2563eb;
+}
+.template-layout-81 .user-title {
+  color: #1e40af;
+}
+.template-layout-81 .section-title,
+.template-layout-81 .sidebar-heading {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+.template-layout-81 .item-title {
+  color: #1e40af;
+}
+.template-layout-81 .skill-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #2563eb33;
+}
+.template-layout-81 .resume-header {
+  background: #eff6ff;
+  border-left: 6px solid #2563eb;
+}
+.template-layout-81 .resume-sidebar {
+  background: #eff6ff;
+  border-right: 2px solid #2563eb22;
+}
+.template-layout-81 .contact-item i,
+.template-layout-81 .header-contact-bar i {
+  color: #2563eb;
+}
+
+/* Template 82 Unique Styling Rules */
+.template-layout-82 {
+  font-family: 'Inter', sans-serif;
+  color: #0f172a;
+}
+.template-layout-82 .user-name {
+  color: #0d9488;
+}
+.template-layout-82 .user-title {
+  color: #115e59;
+}
+.template-layout-82 .section-title,
+.template-layout-82 .sidebar-heading {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+}
+.template-layout-82 .item-title {
+  color: #115e59;
+}
+.template-layout-82 .skill-badge {
+  background: #f0fdf4;
+  color: #0d9488;
+  border: 1px solid #0d948833;
+}
+.template-layout-82 .resume-header {
+  background: #f0fdf4;
+  border-left: 6px solid #0d9488;
+}
+.template-layout-82 .resume-sidebar {
+  background: #f0fdf4;
+  border-right: 2px solid #0d948822;
+}
+.template-layout-82 .contact-item i,
+.template-layout-82 .header-contact-bar i {
+  color: #0d9488;
+}
+
+/* Template 83 Unique Styling Rules */
+.template-layout-83 {
+  font-family: 'Poppins', sans-serif;
+  color: #1e1b4b;
+}
+.template-layout-83 .user-name {
+  color: #4f46e5;
+}
+.template-layout-83 .user-title {
+  color: #3730a3;
+}
+.template-layout-83 .section-title,
+.template-layout-83 .sidebar-heading {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+.template-layout-83 .item-title {
+  color: #3730a3;
+}
+.template-layout-83 .skill-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #4f46e533;
+}
+.template-layout-83 .resume-header {
+  background: #eef2ff;
+  border-left: 6px solid #4f46e5;
+}
+.template-layout-83 .resume-sidebar {
+  background: #eef2ff;
+  border-right: 2px solid #4f46e522;
+}
+.template-layout-83 .contact-item i,
+.template-layout-83 .header-contact-bar i {
+  color: #4f46e5;
+}
+
+/* Template 84 Unique Styling Rules */
+.template-layout-84 {
+  font-family: 'Montserrat', sans-serif;
+  color: #064e3b;
+}
+.template-layout-84 .user-name {
+  color: #059669;
+}
+.template-layout-84 .user-title {
+  color: #065f46;
+}
+.template-layout-84 .section-title,
+.template-layout-84 .sidebar-heading {
+  color: #059669;
+  border-bottom-color: #059669;
+}
+.template-layout-84 .item-title {
+  color: #065f46;
+}
+.template-layout-84 .skill-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #05966933;
+}
+.template-layout-84 .resume-header {
+  background: #ecfdf5;
+  border-left: 6px solid #059669;
+}
+.template-layout-84 .resume-sidebar {
+  background: #ecfdf5;
+  border-right: 2px solid #05966922;
+}
+.template-layout-84 .contact-item i,
+.template-layout-84 .header-contact-bar i {
+  color: #059669;
+}
+
+/* Template 85 Unique Styling Rules */
+.template-layout-85 {
+  font-family: 'Roboto', sans-serif;
+  color: #450a0a;
+}
+.template-layout-85 .user-name {
+  color: #dc2626;
+}
+.template-layout-85 .user-title {
+  color: #991b1b;
+}
+.template-layout-85 .section-title,
+.template-layout-85 .sidebar-heading {
+  color: #dc2626;
+  border-bottom-color: #dc2626;
+}
+.template-layout-85 .item-title {
+  color: #991b1b;
+}
+.template-layout-85 .skill-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #dc262633;
+}
+.template-layout-85 .resume-header {
+  background: #fef2f2;
+  border-left: 6px solid #dc2626;
+}
+.template-layout-85 .resume-sidebar {
+  background: #fef2f2;
+  border-right: 2px solid #dc262622;
+}
+.template-layout-85 .contact-item i,
+.template-layout-85 .header-contact-bar i {
+  color: #dc2626;
+}
+
+/* Template 86 Unique Styling Rules */
+.template-layout-86 {
+  font-family: 'Outfit', sans-serif;
+  color: #451a03;
+}
+.template-layout-86 .user-name {
+  color: #d97706;
+}
+.template-layout-86 .user-title {
+  color: #92400e;
+}
+.template-layout-86 .section-title,
+.template-layout-86 .sidebar-heading {
+  color: #d97706;
+  border-bottom-color: #d97706;
+}
+.template-layout-86 .item-title {
+  color: #92400e;
+}
+.template-layout-86 .skill-badge {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #d9770633;
+}
+.template-layout-86 .resume-header {
+  background: #fffbeb;
+  border-left: 6px solid #d97706;
+}
+.template-layout-86 .resume-sidebar {
+  background: #fffbeb;
+  border-right: 2px solid #d9770622;
+}
+.template-layout-86 .contact-item i,
+.template-layout-86 .header-contact-bar i {
+  color: #d97706;
+}
+
+/* Template 87 Unique Styling Rules */
+.template-layout-87 {
+  font-family: 'Lora', serif;
+  color: #2e1065;
+}
+.template-layout-87 .user-name {
+  color: #7c3aed;
+}
+.template-layout-87 .user-title {
+  color: #5b21b6;
+}
+.template-layout-87 .section-title,
+.template-layout-87 .sidebar-heading {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
+.template-layout-87 .item-title {
+  color: #5b21b6;
+}
+.template-layout-87 .skill-badge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed33;
+}
+.template-layout-87 .resume-header {
+  background: #f5f3ff;
+  border-left: 6px solid #7c3aed;
+}
+.template-layout-87 .resume-sidebar {
+  background: #f5f3ff;
+  border-right: 2px solid #7c3aed22;
+}
+.template-layout-87 .contact-item i,
+.template-layout-87 .header-contact-bar i {
+  color: #7c3aed;
+}
+
+/* Template 88 Unique Styling Rules */
+.template-layout-88 {
+  font-family: 'Merriweather', serif;
+  color: #0c4a6e;
+}
+.template-layout-88 .user-name {
+  color: #0284c7;
+}
+.template-layout-88 .user-title {
+  color: #075985;
+}
+.template-layout-88 .section-title,
+.template-layout-88 .sidebar-heading {
+  color: #0284c7;
+  border-bottom-color: #0284c7;
+}
+.template-layout-88 .item-title {
+  color: #075985;
+}
+.template-layout-88 .skill-badge {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #0284c733;
+}
+.template-layout-88 .resume-header {
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+}
+.template-layout-88 .resume-sidebar {
+  background: #f0f9ff;
+  border-right: 2px solid #0284c722;
+}
+.template-layout-88 .contact-item i,
+.template-layout-88 .header-contact-bar i {
+  color: #0284c7;
+}
+
+/* Template 89 Unique Styling Rules */
+.template-layout-89 {
+  font-family: 'Roboto Mono', monospace;
+  color: #500724;
+}
+.template-layout-89 .user-name {
+  color: #be185d;
+}
+.template-layout-89 .user-title {
+  color: #831843;
+}
+.template-layout-89 .section-title,
+.template-layout-89 .sidebar-heading {
+  color: #be185d;
+  border-bottom-color: #be185d;
+}
+.template-layout-89 .item-title {
+  color: #831843;
+}
+.template-layout-89 .skill-badge {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #be185d33;
+}
+.template-layout-89 .resume-header {
+  background: #fdf2f8;
+  border-left: 6px solid #be185d;
+}
+.template-layout-89 .resume-sidebar {
+  background: #fdf2f8;
+  border-right: 2px solid #be185d22;
+}
+.template-layout-89 .contact-item i,
+.template-layout-89 .header-contact-bar i {
+  color: #be185d;
+}
+
+/* Template 90 Unique Styling Rules */
+.template-layout-90 {
+  font-family: 'Open Sans', sans-serif;
+  color: #020617;
+}
+.template-layout-90 .user-name {
+  color: #334155;
+}
+.template-layout-90 .user-title {
+  color: #0f172a;
+}
+.template-layout-90 .section-title,
+.template-layout-90 .sidebar-heading {
+  color: #334155;
+  border-bottom-color: #334155;
+}
+.template-layout-90 .item-title {
+  color: #0f172a;
+}
+.template-layout-90 .skill-badge {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #33415533;
+}
+.template-layout-90 .resume-header {
+  background: #f8fafc;
+  border-left: 6px solid #334155;
+}
+.template-layout-90 .resume-sidebar {
+  background: #f8fafc;
+  border-right: 2px solid #33415522;
+}
+.template-layout-90 .contact-item i,
+.template-layout-90 .header-contact-bar i {
+  color: #334155;
+}
+
+/* Template 91 Unique Styling Rules */
+.template-layout-91 {
+  font-family: 'Inter', sans-serif;
+  color: #1e293b;
+}
+.template-layout-91 .user-name {
+  color: #2563eb;
+}
+.template-layout-91 .user-title {
+  color: #1e40af;
+}
+.template-layout-91 .section-title,
+.template-layout-91 .sidebar-heading {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+.template-layout-91 .item-title {
+  color: #1e40af;
+}
+.template-layout-91 .skill-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #2563eb33;
+}
+.template-layout-91 .resume-header {
+  background: #eff6ff;
+  border-left: 6px solid #2563eb;
+}
+.template-layout-91 .resume-sidebar {
+  background: #eff6ff;
+  border-right: 2px solid #2563eb22;
+}
+.template-layout-91 .contact-item i,
+.template-layout-91 .header-contact-bar i {
+  color: #2563eb;
+}
+
+/* Template 92 Unique Styling Rules */
+.template-layout-92 {
+  font-family: 'Poppins', sans-serif;
+  color: #0f172a;
+}
+.template-layout-92 .user-name {
+  color: #0d9488;
+}
+.template-layout-92 .user-title {
+  color: #115e59;
+}
+.template-layout-92 .section-title,
+.template-layout-92 .sidebar-heading {
+  color: #0d9488;
+  border-bottom-color: #0d9488;
+}
+.template-layout-92 .item-title {
+  color: #115e59;
+}
+.template-layout-92 .skill-badge {
+  background: #f0fdf4;
+  color: #0d9488;
+  border: 1px solid #0d948833;
+}
+.template-layout-92 .resume-header {
+  background: #f0fdf4;
+  border-left: 6px solid #0d9488;
+}
+.template-layout-92 .resume-sidebar {
+  background: #f0fdf4;
+  border-right: 2px solid #0d948822;
+}
+.template-layout-92 .contact-item i,
+.template-layout-92 .header-contact-bar i {
+  color: #0d9488;
+}
+
+/* Template 93 Unique Styling Rules */
+.template-layout-93 {
+  font-family: 'Montserrat', sans-serif;
+  color: #1e1b4b;
+}
+.template-layout-93 .user-name {
+  color: #4f46e5;
+}
+.template-layout-93 .user-title {
+  color: #3730a3;
+}
+.template-layout-93 .section-title,
+.template-layout-93 .sidebar-heading {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+.template-layout-93 .item-title {
+  color: #3730a3;
+}
+.template-layout-93 .skill-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #4f46e533;
+}
+.template-layout-93 .resume-header {
+  background: #eef2ff;
+  border-left: 6px solid #4f46e5;
+}
+.template-layout-93 .resume-sidebar {
+  background: #eef2ff;
+  border-right: 2px solid #4f46e522;
+}
+.template-layout-93 .contact-item i,
+.template-layout-93 .header-contact-bar i {
+  color: #4f46e5;
+}
+
+/* Template 94 Unique Styling Rules */
+.template-layout-94 {
+  font-family: 'Roboto', sans-serif;
+  color: #064e3b;
+}
+.template-layout-94 .user-name {
+  color: #059669;
+}
+.template-layout-94 .user-title {
+  color: #065f46;
+}
+.template-layout-94 .section-title,
+.template-layout-94 .sidebar-heading {
+  color: #059669;
+  border-bottom-color: #059669;
+}
+.template-layout-94 .item-title {
+  color: #065f46;
+}
+.template-layout-94 .skill-badge {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #05966933;
+}
+.template-layout-94 .resume-header {
+  background: #ecfdf5;
+  border-left: 6px solid #059669;
+}
+.template-layout-94 .resume-sidebar {
+  background: #ecfdf5;
+  border-right: 2px solid #05966922;
+}
+.template-layout-94 .contact-item i,
+.template-layout-94 .header-contact-bar i {
+  color: #059669;
+}
+
+/* Template 95 Unique Styling Rules */
+.template-layout-95 {
+  font-family: 'Outfit', sans-serif;
+  color: #450a0a;
+}
+.template-layout-95 .user-name {
+  color: #dc2626;
+}
+.template-layout-95 .user-title {
+  color: #991b1b;
+}
+.template-layout-95 .section-title,
+.template-layout-95 .sidebar-heading {
+  color: #dc2626;
+  border-bottom-color: #dc2626;
+}
+.template-layout-95 .item-title {
+  color: #991b1b;
+}
+.template-layout-95 .skill-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #dc262633;
+}
+.template-layout-95 .resume-header {
+  background: #fef2f2;
+  border-left: 6px solid #dc2626;
+}
+.template-layout-95 .resume-sidebar {
+  background: #fef2f2;
+  border-right: 2px solid #dc262622;
+}
+.template-layout-95 .contact-item i,
+.template-layout-95 .header-contact-bar i {
+  color: #dc2626;
+}
+
+/* Template 96 Unique Styling Rules */
+.template-layout-96 {
+  font-family: 'Lora', serif;
+  color: #451a03;
+}
+.template-layout-96 .user-name {
+  color: #d97706;
+}
+.template-layout-96 .user-title {
+  color: #92400e;
+}
+.template-layout-96 .section-title,
+.template-layout-96 .sidebar-heading {
+  color: #d97706;
+  border-bottom-color: #d97706;
+}
+.template-layout-96 .item-title {
+  color: #92400e;
+}
+.template-layout-96 .skill-badge {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #d9770633;
+}
+.template-layout-96 .resume-header {
+  background: #fffbeb;
+  border-left: 6px solid #d97706;
+}
+.template-layout-96 .resume-sidebar {
+  background: #fffbeb;
+  border-right: 2px solid #d9770622;
+}
+.template-layout-96 .contact-item i,
+.template-layout-96 .header-contact-bar i {
+  color: #d97706;
+}
+
+/* Template 97 Unique Styling Rules */
+.template-layout-97 {
+  font-family: 'Merriweather', serif;
+  color: #2e1065;
+}
+.template-layout-97 .user-name {
+  color: #7c3aed;
+}
+.template-layout-97 .user-title {
+  color: #5b21b6;
+}
+.template-layout-97 .section-title,
+.template-layout-97 .sidebar-heading {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+}
+.template-layout-97 .item-title {
+  color: #5b21b6;
+}
+.template-layout-97 .skill-badge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #7c3aed33;
+}
+.template-layout-97 .resume-header {
+  background: #f5f3ff;
+  border-left: 6px solid #7c3aed;
+}
+.template-layout-97 .resume-sidebar {
+  background: #f5f3ff;
+  border-right: 2px solid #7c3aed22;
+}
+.template-layout-97 .contact-item i,
+.template-layout-97 .header-contact-bar i {
+  color: #7c3aed;
+}
+
+/* Template 98 Unique Styling Rules */
+.template-layout-98 {
+  font-family: 'Roboto Mono', monospace;
+  color: #0c4a6e;
+}
+.template-layout-98 .user-name {
+  color: #0284c7;
+}
+.template-layout-98 .user-title {
+  color: #075985;
+}
+.template-layout-98 .section-title,
+.template-layout-98 .sidebar-heading {
+  color: #0284c7;
+  border-bottom-color: #0284c7;
+}
+.template-layout-98 .item-title {
+  color: #075985;
+}
+.template-layout-98 .skill-badge {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #0284c733;
+}
+.template-layout-98 .resume-header {
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+}
+.template-layout-98 .resume-sidebar {
+  background: #f0f9ff;
+  border-right: 2px solid #0284c722;
+}
+.template-layout-98 .contact-item i,
+.template-layout-98 .header-contact-bar i {
+  color: #0284c7;
+}
+
+/* Template 99 Unique Styling Rules */
+.template-layout-99 {
+  font-family: 'Open Sans', sans-serif;
+  color: #500724;
+}
+.template-layout-99 .user-name {
+  color: #be185d;
+}
+.template-layout-99 .user-title {
+  color: #831843;
+}
+.template-layout-99 .section-title,
+.template-layout-99 .sidebar-heading {
+  color: #be185d;
+  border-bottom-color: #be185d;
+}
+.template-layout-99 .item-title {
+  color: #831843;
+}
+.template-layout-99 .skill-badge {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #be185d33;
+}
+.template-layout-99 .resume-header {
+  background: #fdf2f8;
+  border-left: 6px solid #be185d;
+}
+.template-layout-99 .resume-sidebar {
+  background: #fdf2f8;
+  border-right: 2px solid #be185d22;
+}
+.template-layout-99 .contact-item i,
+.template-layout-99 .header-contact-bar i {
+  color: #be185d;
+}
+
+/* Template 100 Unique Styling Rules */
+.template-layout-100 {
+  font-family: 'Inter', sans-serif;
+  color: #020617;
+}
+.template-layout-100 .user-name {
+  color: #334155;
+}
+.template-layout-100 .user-title {
+  color: #0f172a;
+}
+.template-layout-100 .section-title,
+.template-layout-100 .sidebar-heading {
+  color: #334155;
+  border-bottom-color: #334155;
+}
+.template-layout-100 .item-title {
+  color: #0f172a;
+}
+.template-layout-100 .skill-badge {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #33415533;
+}
+.template-layout-100 .resume-header {
+  background: #f8fafc;
+  border-left: 6px solid #334155;
+}
+.template-layout-100 .resume-sidebar {
+  background: #f8fafc;
+  border-right: 2px solid #33415522;
+}
+.template-layout-100 .contact-item i,
+.template-layout-100 .header-contact-bar i {
+  color: #334155;
+}
