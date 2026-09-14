@@ -3,7 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "description": "Simple offline mobile resume builder with 100 fixed templates",
-  "scripts": {"sync":"cap sync","open:android":"cap open android","build:android":"cap sync android && cd android && ./gradlew assembleDebug"},
-  "dependencies": {"@capacitor/core":"^6.1.2","@capacitor/android":"^6.1.2","@capgo/capacitor-updater":"lts-v6"},
-  "devDependencies": {"@capacitor/cli":"^6.1.2"}
+  "scripts": {
+    "sync": "cap sync",
+    "open:android": "cap open android",
+    "build:android": "cap sync android && cd android && ./gradlew assembleDebug",
+    "build": "node scripts/check-project.mjs"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/android": "^6.1.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
 }
