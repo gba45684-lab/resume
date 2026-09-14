@@ -1,5 +1,5 @@
 // ResuMate1-style OTA publisher.
-// Usage: node scripts/publish-ota.mjs <build-number> <out-dir>
+// Bundles only assets actually referenced by www/index.html so redesigns can remove unused CSS without breaking OTA.
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 
@@ -12,14 +12,17 @@ const marker = 'window.__RESUMATE_BUILD__ = 0;';
 let html = await readFile('www/index.html', 'utf8');
 if (!html.includes(marker)) throw new Error(`expected to find "${marker}" in www/index.html`);
 
+const cssRefs = [...html.matchAll(/<link\s+rel=["']stylesheet["']\s+href=["']([^"']+)["']\s*\/?\s*>/gi)].map(m => m[1]);
+const scriptRefs = [...html.matchAll(/<script\s+src=["']([^"']+)["']\s*>\s*<\/script>/gi)].map(m => m[1]);
+const allowedCss = new Set(['css/style.css','css/components.css','css/template-variants.css']);
+const allowedScripts = new Set(['js/ota-bootstrap.js','js/templates.js','js/app.js']);
 const assets = [
-  ['css/style.css', 'style'],
-  ['css/components.css', 'style'],
-  ['css/template-variants.css', 'style'],
-  ['js/ota-bootstrap.js', 'script'],
-  ['js/templates.js', 'script'],
-  ['js/app.js', 'script']
+  ...cssRefs.filter(x => allowedCss.has(x)).map(x => [x,'style']),
+  ...scriptRefs.filter(x => allowedScripts.has(x)).map(x => [x,'script'])
 ];
+if (!assets.some(([asset]) => asset === 'js/app.js')) throw new Error('www/index.html must reference js/app.js');
+if (!assets.some(([asset]) => asset === 'js/templates.js')) throw new Error('www/index.html must reference js/templates.js');
+if (!assets.some(([asset]) => asset === 'js/ota-bootstrap.js')) throw new Error('www/index.html must reference js/ota-bootstrap.js');
 
 for (const [asset, kind] of assets) {
   const source = await readFile(`www/${asset}`, 'utf8');
@@ -30,9 +33,10 @@ for (const [asset, kind] of assets) {
   const tag = kind === 'style'
     ? `<style data-ota-inline="${asset}">\n${source}\n</style>`
     : `<script data-ota-inline="${asset}">\n${sourceWithMarker}\n</script>`;
+  const escapedAsset = asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const pattern = kind === 'style'
-    ? new RegExp(`<link\\s+rel=["']stylesheet["']\\s+href=["']${asset.replace('/', '\\/')}["']\\s*/?>`, 'i')
-    : new RegExp(`<script\\s+src=["']${asset.replace('/', '\\/')}["']\\s*>\\s*</script>`, 'i');
+    ? new RegExp(`<link\\s+rel=["']stylesheet["']\\s+href=["']${escapedAsset}["']\\s*/?>`, 'i')
+    : new RegExp(`<script\\s+src=["']${escapedAsset}["']\\s*>\\s*</script>`, 'i');
   if (!pattern.test(html)) throw new Error(`Missing ${kind} reference for ${asset} in www/index.html`);
   html = html.replace(pattern, tag);
 }
