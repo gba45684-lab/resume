@@ -24,7 +24,12 @@ const assets = [
 for (const [asset, kind] of assets) {
   const source = await readFile(`www/${asset}`, 'utf8');
   const escaped = source.replace(/<\/script/gi, '<\\/script');
-  const tag = kind === 'style' ? `<style data-ota-inline="${asset}">\n${source}\n</style>` : `<script data-ota-inline="${asset}">\n${escaped}\n</script>`;
+  const sourceWithMarker = asset === 'js/ota-bootstrap.js'
+    ? `window.__RESUMATE_OTA_PAYLOAD__ = true;\n${escaped}`
+    : escaped;
+  const tag = kind === 'style'
+    ? `<style data-ota-inline="${asset}">\n${source}\n</style>`
+    : `<script data-ota-inline="${asset}">\n${sourceWithMarker}\n</script>`;
   const pattern = kind === 'style'
     ? new RegExp(`<link\\s+rel=["']stylesheet["']\\s+href=["']${asset.replace('/', '\\/')}["']\\s*/?>`, 'i')
     : new RegExp(`<script\\s+src=["']${asset.replace('/', '\\/')}["']\\s*>\\s*</script>`, 'i');
@@ -34,17 +39,17 @@ for (const [asset, kind] of assets) {
 
 html = html.replace(marker, `window.__RESUMATE_BUILD__ = ${build};`);
 
-// An OTA payload must be self-contained; only the user-supplied photo URL may remain external.
 const externalScripts = [...html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)].map(m => m[1]);
 if (externalScripts.length) throw new Error(`OTA bundle still has external scripts: ${externalScripts.join(', ')}`);
 const externalStyles = [...html.matchAll(/<link[^>]+href=["']([^"']+)["']/gi)].map(m => m[1]);
 if (externalStyles.length) throw new Error(`OTA bundle still has external stylesheets: ${externalStyles.join(', ')}`);
+if (!html.includes('window.__RESUMATE_OTA_PAYLOAD__ = true;')) throw new Error('OTA payload marker missing');
 
 const sha256 = createHash('sha256').update(html, 'utf8').digest('hex');
 const manifest = {
   version: `1.0.${build}`,
   build,
-  schemaVersion: 2,
+  schemaVersion: 3,
   updated: new Date().toISOString(),
   sha256,
   rollbackEnabled: true,
