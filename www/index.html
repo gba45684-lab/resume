@@ -1,12 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f7f7f9">
-<title>Resume Studio — Full CV Builder</title><link rel="stylesheet" href="css/style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f7f9">
+<title>Resume Studio — Full CV Builder</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/template-variants.css">
 </head>
-<body data-ota="github-branch"><script>window.__RESUMATE_BUILD__ = 0;</script><script src="js/ota-bootstrap.js"></script><div class="app">
-<header class="topbar"><div class="brand"><span class="brand-mark">R</span><div><strong>Resume Studio</strong><small>Full CV & Resume Builder</small></div></div><div class="top-actions"><button id="templatesBtn" class="tool-btn">Templates <b>100</b></button><button id="importBtn" class="tool-btn">Import</button><button id="previewBtn" class="tool-btn">Preview</button><button id="pdfBtn" class="primary">Export PDF</button></div></header>
-<main class="workspace"><section class="editor-panel"><div class="editor-head"><div><span class="eyebrow">FULL CV BUILDER</span><h1>Build your professional CV</h1><p>Complete every section, then switch between 100 original editable layouts.</p></div><span id="saveState" class="save-state">Saved</span></div><div class="progress"><span id="progressBar"></span></div>
+<body data-ota="github-branch">
+<script>window.__RESUMATE_BUILD__ = 0;</script>
+<script src="js/ota-bootstrap.js"></script>
+<div class="app">
+<header class="topbar"><div class="brand"><span class="brand-mark">R</span><div><strong>Resume Studio</strong><small>Full CV & Resume Builder</small></div></div><div class="top-actions"><button id="templatesBtn" class="tool-btn" type="button">Templates <b>100</b></button><button id="importBtn" class="tool-btn" type="button">Import</button><button id="previewBtn" class="tool-btn" type="button">Preview</button><button id="pdfBtn" class="primary" type="button">Export PDF</button></div></header>
+<main class="workspace">
+<section class="editor-panel">
+<div class="editor-head"><div><span class="eyebrow">FULL CV BUILDER</span><h1>Build your professional CV</h1><p>Complete every section, then switch between 100 original editable layouts.</p></div><span id="saveState" class="save-state">Saved</span></div>
+<div class="progress"><span id="progressBar"></span></div>
 <form id="resumeForm" autocomplete="off">
 <section class="form-section"><div class="section-heading"><div class="section-icon">01</div><div><h2>Personal & contact</h2><p>Name, title, photo and contact details</p></div></div><div class="grid"><label>Full name<input data-path="personal.name" placeholder="Alex Morgan"></label><label>Professional title<input data-path="personal.title" placeholder="Senior Product Manager"></label><label>Email<input data-path="personal.email" type="email" placeholder="alex@email.com"></label><label>Phone<input data-path="personal.phone" placeholder="+91 98765 43210"></label><label>Location<input data-path="personal.location" placeholder="New Delhi, India"></label><label>Website / LinkedIn<input data-path="personal.website" placeholder="linkedin.com/in/yourname"></label></div><label>Photo URL <span class="optional">optional</span><input data-path="personal.photo" placeholder="https://..."></label></section>
 <section class="form-section"><div class="section-heading"><div class="section-icon">02</div><div><h2>Professional summary</h2><p>Positioning statement or career objective</p></div></div><textarea data-path="summary" rows="5" placeholder="Write a concise 2–4 line professional summary..."></textarea></section>
@@ -20,9 +31,16 @@
 <section class="form-section"><div class="row-head"><div class="section-heading"><div class="section-icon">10</div><div><h2>Volunteer & leadership</h2><p>Community, clubs and leadership experience</p></div></div><button type="button" class="add-btn" data-add="volunteer">+ Add</button></div><div id="volunteerFields"></div></section>
 <section class="form-section"><div class="row-head"><div class="section-heading"><div class="section-icon">11</div><div><h2>Publications</h2><p>Articles, research, talks and publications</p></div></div><button type="button" class="add-btn" data-add="publication">+ Add</button></div><div id="publicationFields"></div></section>
 <section class="form-section"><div class="section-heading"><div class="section-icon">12</div><div><h2>Interests & references</h2><p>Optional supporting information</p></div></div><label>Interests<textarea data-path="interests" rows="2" placeholder="Finance, travel, photography, technology"></textarea></label><label>References<textarea data-path="references" rows="3" placeholder="Available on request, or list professional references"></textarea></label></section>
-</form></section>
-<section class="preview-panel"><div class="preview-toolbar"><div><span class="eyebrow">LIVE CANVAS</span><button id="liveTemplateBtn" class="preview-template-switch" type="button"><strong id="templateName">01 Apex</strong><span class="chev">⌄</span></button></div><div class="preview-actions"><button id="zoomOut" class="icon-btn">−</button><span id="zoomLabel">80%</span><button id="zoomIn" class="icon-btn">+</button><button id="closePreview" class="ghost mobile-only">Edit</button></div></div><div class="canvas"><div id="paperStage" class="paper-stage"><article id="resumePaper" class="resume-paper"></article></div></div></section></main></div>
-<div id="templateSheet" class="sheet hidden"><div class="sheet-card"><div class="sheet-head"><div><span class="eyebrow">DESIGN LIBRARY</span><h2>100 editable CV templates</h2><p>Original HTML/CSS layouts inspired by professional design patterns. Third-party PSD binaries are not redistributed.</p></div><button id="closeTemplates" class="icon-btn">×</button></div><div class="template-tools"><input id="templateSearch" placeholder="Search templates, category or layout…"><span id="templateCount">100 templates</span></div><div id="templateGrid" class="template-grid"></div></div></div>
-<input id="importFile" type="file" accept=".json,.txt,.html,.htm,.pdf,.docx" hidden>
-<nav class="mobile-bar"><button id="mobileEdit">Edit</button><button id="mobileTemplates">Templates</button><button id="mobilePreview">Preview</button><button id="mobilePdf">PDF</button></nav>
-<script src="js/templates.js"></script><script src="js/app.js"></script><script>window.__RESUMATE_OTA_READY__?.();</script></body></html>
+</form>
+</section>
+<section class="preview-panel">
+<div class="preview-toolbar"><div><span class="eyebrow">LIVE CANVAS</span><button id="liveTemplateBtn" class="preview-template-switch" type="button"><strong id="templateName">01 Apex</strong><span class="chev">⌄</span></button></div><div class="preview-actions"><button id="zoomOut" class="icon-btn" type="button" aria-label="Zoom out">−</button><span id="zoomLabel">80%</span><button id="zoomIn" class="icon-btn" type="button" aria-label="Zoom in">+</button><button id="closePreview" class="ghost mobile-only" type="button">Edit</button></div></div>
+<div class="canvas"><div id="paperStage" class="paper-stage"><article id="resumePaper" class="resume-paper"></article></div></div>
+</section>
+</main></div>
+<div id="templateSheet" class="sheet hidden"><div class="sheet-card"><div class="sheet-head"><div><span class="eyebrow">DESIGN LIBRARY</span><h2>100 editable CV templates</h2><p>Original HTML/CSS layouts inspired by professional design patterns. Third-party PSD binaries are not redistributed.</p></div><button id="closeTemplates" class="icon-btn" type="button" aria-label="Close templates">×</button></div><div class="template-tools"><input id="templateSearch" placeholder="Search templates, category or layout…"><span id="templateCount">100 templates</span></div><div id="templateGrid" class="template-grid"></div></div></div>
+<input id="importFile" type="file" accept=".json,.txt,.html,.htm" hidden>
+<nav class="mobile-bar"><button id="mobileEdit" type="button">Edit</button><button id="mobileTemplates" type="button">Templates</button><button id="mobilePreview" type="button">Preview</button><button id="mobilePdf" type="button">PDF</button></nav>
+<script src="js/templates.js"></script>
+<script src="js/app.js"></script>
+</body></html>
