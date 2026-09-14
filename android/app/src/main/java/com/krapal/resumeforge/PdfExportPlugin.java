@@ -1,6 +1,10 @@
 package com.krapal.resumeforge;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -15,6 +19,8 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
 import android.os.ParcelFileDescriptor;
 
+import androidx.core.app.NotificationCompat;
+
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -23,6 +29,9 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 
 @CapacitorPlugin(name = "PdfExport")
 public class PdfExportPlugin extends Plugin {
+    private static final String CHANNEL_ID = "resumate_downloads";
+    private static final int NOTIFICATION_ID = 240914;
+
     @PluginMethod
     public void savePdf(PluginCall call) {
         final String html = call.getString("html", "");
@@ -70,6 +79,7 @@ public class PdfExportPlugin extends Plugin {
                                 done.put(MediaStore.Downloads.IS_PENDING, 0);
                                 getContext().getContentResolver().update(uri, done, null, null);
                             }
+                            showDownloadNotification(uri, fileName);
                             JSObject result = new JSObject();
                             result.put("uri", uri.toString());
                             result.put("fileName", fileName);
@@ -82,6 +92,27 @@ public class PdfExportPlugin extends Plugin {
             }
             @Override public void onLayoutFailed(CharSequence error) { cleanup(view); call.reject(error == null ? "PDF layout failed" : error.toString()); }
         }, null);
+    }
+
+    private void showDownloadNotification(Uri uri, String fileName) {
+        NotificationManager manager = (NotificationManager) getContext().getSystemService(NotificationManager.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            manager.createNotificationChannel(new NotificationChannel(CHANNEL_ID, "ResuMate Downloads", NotificationManager.IMPORTANCE_DEFAULT));
+        }
+        Intent open = new Intent(Intent.ACTION_VIEW);
+        open.setDataAndType(uri, "application/pdf");
+        open.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+        if (Build.VERSION.SDK_INT >= 23) flags |= PendingIntent.FLAG_IMMUTABLE;
+        PendingIntent pending = PendingIntent.getActivity(getContext(), NOTIFICATION_ID, open, flags);
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
+            .setSmallIcon(com.krapal.resumeforge.R.mipmap.ic_launcher)
+            .setContentTitle("Resume PDF downloaded")
+            .setContentText(fileName)
+            .setAutoCancel(true)
+            .setContentIntent(pending)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        manager.notify(NOTIFICATION_ID, notification.build());
     }
 
     private void cleanup(WebView view) { try { view.stopLoading(); view.destroy(); } catch (Exception ignored) {} }
