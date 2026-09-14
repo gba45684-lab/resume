@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f7f7f9">
 <title>Resume Studio — Full CV Builder</title><link rel="stylesheet" href="css/style.css">
 </head>
-<body><div class="app">
+<body><script>window.__RESUMATE_BUILD__ = 0;</script><script src="js/ota-bootstrap.js"></script><div class="app">
 <header class="topbar"><div class="brand"><span class="brand-mark">R</span><div><strong>Resume Studio</strong><small>Full CV & Resume Builder</small></div></div><div class="top-actions"><button id="templatesBtn" class="tool-btn">Templates <b>100</b></button><button id="importBtn" class="tool-btn">Import</button><button id="previewBtn" class="tool-btn">Preview</button><button id="pdfBtn" class="primary">Export PDF</button></div></header>
 <main class="workspace"><section class="editor-panel"><div class="editor-head"><div><span class="eyebrow">FULL CV BUILDER</span><h1>Build your professional CV</h1><p>Complete every section, then switch between 100 original editable layouts.</p></div><span id="saveState" class="save-state">Saved</span></div><div class="progress"><span id="progressBar"></span></div>
 <form id="resumeForm" autocomplete="off">
@@ -25,4 +25,4 @@
 <div id="templateSheet" class="sheet hidden"><div class="sheet-card"><div class="sheet-head"><div><span class="eyebrow">DESIGN LIBRARY</span><h2>100 editable CV templates</h2><p>Original HTML/CSS layouts inspired by professional design patterns. Third-party PSD binaries are not redistributed.</p></div><button id="closeTemplates" class="icon-btn">×</button></div><div class="template-tools"><input id="templateSearch" placeholder="Search templates, category or layout…"><span id="templateCount">100 templates</span></div><div id="templateGrid" class="template-grid"></div></div></div>
 <input id="importFile" type="file" accept=".json,.txt,.html,.htm,.pdf,.docx" hidden>
 <nav class="mobile-bar"><button id="mobileEdit">Edit</button><button id="mobileTemplates">Templates</button><button id="mobilePreview">Preview</button><button id="mobilePdf">PDF</button></nav>
-<script src="js/templates.js"></script><script src="js/app.js"></script></body></html>
+<script src="js/templates.js"></script><script src="js/app.js"></script><script>window.__RESUMATE_OTA_READY__?.();</script></body></html>
