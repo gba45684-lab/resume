@@ -1,0 +1,43 @@
+/* Final UI/UX integrity layer — keeps the existing warm paper/espresso visual language. */
+html{background:var(--paper,#f8f1e6);overflow-x:hidden}
+body{overflow-x:hidden}
+.app-shell{width:100%;isolation:isolate}
+.screen{min-width:0;overflow-x:hidden}
+.screen button,.screen a,input,textarea{touch-action:manipulation}
+button:disabled{cursor:not-allowed;opacity:.55}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #8d3b28;outline-offset:2px}
+.bottom-nav{padding-bottom:max(8px,env(safe-area-inset-bottom));height:auto;min-height:64px}
+.nav-item{min-height:48px}
+.nav-item span{line-height:1}
+.header-icon{touch-action:manipulation}
+.premium-chip{min-width:72px}
+.hero-card,.action-card,.editor-card,.tip-card,.section-block,.preview-shell{max-width:100%}
+.action-item{min-height:66px}
+.card-row{overscroll-behavior-x:contain}
+.edit-grid{min-width:0}
+.field{min-width:0}
+.field input,.field textarea{max-width:100%}
+.preview-canvas{overscroll-behavior:contain;scrollbar-width:thin}
+.paper-wrap{display:flex;justify-content:center;min-width:0}
+.resume-paper{flex:0 0 auto;transform-origin:top center}
+/* Avoid the common double-render look when a screen contains stale hidden content. */
+.screen:not(.active){visibility:hidden;pointer-events:none}
+.screen.active{visibility:visible}
+/* Keep the fixed navigation from obscuring the last controls. */
+.screen{padding-bottom:calc(104px + env(safe-area-inset-bottom))}
+@media(max-width:520px){
+ .app-header{grid-template-columns:38px 1fr 76px;padding-inline:14px}
+ .screen{padding-inline:14px}
+ .screen-title{font-size:24px}
+ .hero-title{font-size:28px}
+ .hero-art{transform:scale(.86);transform-origin:top right;right:0}
+ .action-card{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .action-label{font-size:7.5px}
+ .preview-canvas{padding:10px}
+ .resume-paper{transform:scale(.43);transform-origin:top center;margin-bottom:-640px}
+}
+@media(min-width:521px){
+ .screen{padding-inline:24px}
+ .hero-card{padding:26px 24px}
+}
+@media(prefers-reduced-motion:reduce){.screen{animation:none!important}}
