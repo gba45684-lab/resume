@@ -49,10 +49,14 @@
     return false;
   };
 
+  const getCachedBuild = () => {
+    try { return Number(localStorage.getItem(KEY_BUILD) || 0); } catch { return 0; }
+  };
+
   const activateCached = () => {
     try {
       const html = localStorage.getItem(KEY_HTML);
-      const build = Number(localStorage.getItem(KEY_BUILD) || 0);
+      const build = getCachedBuild();
       if (!html || build <= CURRENT) return false;
       localStorage.setItem(KEY_ATTEMPT, String(build));
       document.open();
@@ -63,13 +67,16 @@
     return false;
   };
 
-  const checkForUpdate = async () => {
+  const checkForUpdate = async (baseline = CURRENT) => {
     try {
       const response = await fetch(`${MANIFEST_URL}?t=${Date.now()}`, { cache: 'no-store' });
       if (!response.ok) return;
       const manifest = await response.json();
       const remoteBuild = Number(manifest.build || 0);
-      if (!remoteBuild || remoteBuild <= CURRENT) return;
+      // IMPORTANT: when a cached OTA payload is already active, compare the
+      // remote build against that cached build, not the native shell's 0.
+      // Otherwise every startup reloads the same OTA bundle forever.
+      if (!remoteBuild || remoteBuild <= baseline) return;
       const htmlResponse = await fetch(`${BUILD_URL}?t=${Date.now()}`, { cache: 'no-store' });
       if (!htmlResponse.ok) return;
       const html = await htmlResponse.text();
@@ -100,12 +107,12 @@
 
   if (rollbackPending()) return;
 
-  // If an older OTA bundle is cached, activate it immediately but still check
-  // GitHub for a newer bundle. The previous implementation returned here,
-  // which permanently stopped OTA updates after the first cached update.
+  // Activate an existing OTA immediately, but check for a newer build using
+  // the cached build as the baseline. This prevents an infinite reload loop.
   if (activateCached()) {
-    setTimeout(() => { void checkForUpdate(); }, 1200);
+    const cachedBuild = getCachedBuild();
+    setTimeout(() => { void checkForUpdate(cachedBuild); }, 1200);
     return;
   }
-  void checkForUpdate();
+  void checkForUpdate(CURRENT);
 })();
