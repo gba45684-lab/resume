@@ -9,6 +9,7 @@ on:
       - 'www/index.html'
       - 'www/js/ota-bootstrap.js'
       - 'scripts/publish-ota.mjs'
+      - '.github/workflows/publish-ota.yml'
   workflow_dispatch: {}
 
 concurrency:
@@ -33,11 +34,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Set up GitHub CLI authentication
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh auth setup-git
-
       - name: Determine next build number
         id: build
         run: |
@@ -59,15 +55,17 @@ jobs:
         run: node scripts/publish-ota.mjs "${{ steps.build.outputs.next }}" ota-out
 
       - name: Publish to ota branch
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -e
           cd ota-out
           git init -q
-          git remote add origin "https://github.com/${{ github.repository }}.git"
           git config user.name "resumate-ota-bot"
           git config user.email "actions@users.noreply.github.com"
           git add index.html version.json
           git commit -q -m "OTA build ${{ steps.build.outputs.next }} (from ${{ github.sha }})"
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
           git push --force origin HEAD:ota
 
       - name: Summary
