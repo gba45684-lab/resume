@@ -1,398 +1,138 @@
 (() => {
-  'use strict';
+'use strict';
 
-  const STORAGE_KEY = 'resume_app_v2';
-  const TEMPLATE_KEY = 'resume_template';
-  const MAX_TEMPLATES = 100;
-  const SAVE_DELAY = 350;
-  let saveTimer = null;
-  let state;
-  let selected = 1;
-  let zoom = 0.8;
+const STORAGE_KEY='resumate_resume_v3';
+const TEMPLATE_KEY='resumate_template_v3';
+const DESIGN_KEY='resumate_design_v3';
+const MAX_TEMPLATES=100;
+let state, selected=1, editorTab='content', currentScreen='home', detailTemplate=1, saveTimer=0;
 
-  const defaults = {
-    personal: {
-      name: 'Alex Morgan', title: 'Senior Product Manager', email: 'alex@example.com',
-      phone: '+91 98765 43210', location: 'New Delhi, India', website: 'linkedin.com/in/alexmorgan', photo: ''
-    },
-    summary: 'Product-focused professional with 6+ years of experience delivering customer-facing products, improving processes and leading cross-functional teams. Strong record of translating business goals into measurable outcomes.',
-    experience: [{ role: 'Senior Product Manager', company: 'Example Technologies', location: 'New Delhi, India', start: '2023', end: 'Present', details: 'Led product strategy from discovery to launch across engineering, design and commercial teams.\nIncreased activation by 28% through data-driven experiments and onboarding improvements.\nBuilt quarterly roadmap and KPI framework used by leadership.' }],
-    education: [{ degree: 'Bachelor of Business Administration', school: 'University of Delhi', location: 'New Delhi, India', year: '2020', grade: '8.4/10', details: 'Relevant coursework: Strategy, Finance, Marketing and Analytics.' }],
-    skills: [{ name: 'Product Strategy', level: 'Expert' }, { name: 'Project Management', level: 'Advanced' }, { name: 'Data Analytics', level: 'Advanced' }, { name: 'Excel', level: 'Advanced' }, { name: 'Leadership', level: 'Advanced' }],
-    projects: [{ name: 'Customer Insights Dashboard', description: 'Built a reporting workflow that reduced manual reporting time by 60% and gave stakeholders weekly visibility into product KPIs.', technologies: 'SQL, Excel, Power BI', url: '' }],
-    certifications: [{ name: 'Google Project Management', issuer: 'Google', year: '2024', url: '' }],
-    achievements: [{ title: 'Product Excellence Award', description: 'Recognized for leading a cross-functional launch that exceeded adoption target by 35%.', year: '2024' }],
-    languages: [{ name: 'English', level: 'Fluent' }, { name: 'Hindi', level: 'Native' }],
-    volunteer: [{ role: 'Volunteer Mentor', organization: 'Career Mentors Network', year: '2023–Present', details: 'Mentor early-career professionals on resumes, interviews and career planning.' }],
-    publications: [{ title: 'Building Better Customer Onboarding', publisher: 'Product Journal', year: '2024', url: '' }],
-    interests: 'Technology, personal finance, photography, travel',
-    references: 'Available on request.'
-  };
+const defaults={
+ personal:{name:'Alex Morgan',title:'Senior Product Manager',email:'alex@example.com',phone:'+91 98765 43210',location:'New Delhi, India',website:'linkedin.com/in/alexmorgan',photo:''},
+ summary:'Product-focused professional with 6+ years of experience delivering customer-facing products, improving processes and leading cross-functional teams. Strong record of translating business goals into measurable outcomes.',
+ experience:[{role:'Senior Product Manager',company:'Example Technologies',location:'New Delhi, India',start:'2023',end:'Present',details:'Led product strategy from discovery to launch across engineering, design and commercial teams.\nIncreased activation by 28% through data-driven experiments and onboarding improvements.\nBuilt quarterly roadmap and KPI framework used by leadership.'}],
+ education:[{degree:'Bachelor of Business Administration',school:'University of Delhi',location:'New Delhi, India',year:'2020',grade:'8.4/10',details:'Relevant coursework: Strategy, Finance, Marketing and Analytics.'}],
+ skills:[{name:'Product Strategy',level:'Expert'},{name:'Project Management',level:'Advanced'},{name:'Data Analytics',level:'Advanced'},{name:'Excel',level:'Advanced'},{name:'Leadership',level:'Advanced'}],
+ projects:[{name:'Customer Insights Dashboard',description:'Built a reporting workflow that reduced manual reporting time by 60% and gave stakeholders weekly visibility into product KPIs.',technologies:'SQL, Excel, Power BI',url:''}],
+ certifications:[{name:'Google Project Management',issuer:'Google',year:'2024',url:''}],
+ achievements:[{title:'Product Excellence Award',description:'Recognized for leading a cross-functional launch that exceeded adoption target by 35%.',year:'2024'}],
+ languages:[{name:'English',level:'Fluent'},{name:'Hindi',level:'Native'}],
+ volunteer:[{role:'Volunteer Mentor',organization:'Career Mentors Network',year:'2023–Present',details:'Mentor early-career professionals on resumes, interviews and career planning.'}],
+ publications:[{title:'Building Better Customer Onboarding',publisher:'Product Journal',year:'2024',url:''}],
+ interests:'Technology, personal finance, photography, travel',
+ references:'Available on request.'
+};
+const designDefaults={font:'Arial',accent:'#6b2d1f',sectionStyle:'modern',pageStyle:'light',density:'comfortable'};
+const configs={
+ experience:{label:'Experience',fields:[['role','Role / job title'],['company','Company'],['location','Location'],['start','Start'],['end','End']],area:['details','Achievements & responsibilities']},
+ education:{label:'Education',fields:[['degree','Degree / qualification'],['school','Institution'],['location','Location'],['year','Year'],['grade','Grade / GPA']],area:['details','Details / coursework']},
+ skill:{label:'Skills',fields:[['name','Skill name'],['level','Proficiency']]},
+ project:{label:'Projects',fields:[['name','Project name'],['technologies','Technologies'],['url','URL']],area:['description','Description & impact']},
+ certification:{label:'Certifications & courses',fields:[['name','Certification'],['issuer','Issuer'],['year','Year'],['url','Credential URL']]},
+ achievement:{label:'Achievements & awards',fields:[['title','Award / achievement'],['year','Year']],area:['description','Description']},
+ language:{label:'Languages',fields:[['name','Language'],['level','Proficiency']]},
+ volunteer:{label:'Volunteer & leadership',fields:[['role','Role'],['organization','Organization'],['year','Year']],area:['details','Details']},
+ publication:{label:'Publications',fields:[['title','Title'],['publisher','Publisher'],['year','Year'],['url','URL']]}
+};
+const arrayKey={experience:'experience',education:'education',skill:'skills',project:'projects',certification:'certifications',achievement:'achievements',language:'languages',volunteer:'volunteer',publication:'publications'};
+const palettes=['#6b2d1f','#213447','#4b6d58','#265b70','#8b3c45','#3b3d42','#6952a3'];
+const fonts=['Arial','Georgia','Trebuchet MS','Courier New'];
 
-  const configs = {
-    experience: { fields: [['role', 'Role / Job title'], ['company', 'Company'], ['location', 'Location'], ['start', 'Start'], ['end', 'End']], area: ['details', 'Achievements & responsibilities'] },
-    education: { fields: [['degree', 'Degree / qualification'], ['school', 'Institution'], ['location', 'Location'], ['year', 'Year'], ['grade', 'Grade / GPA']], area: ['details', 'Details / coursework'] },
-    skill: { fields: [['name', 'Skill name'], ['level', 'Proficiency']] },
-    project: { fields: [['name', 'Project name'], ['technologies', 'Technologies'], ['url', 'URL']], area: ['description', 'Description & impact'] },
-    certification: { fields: [['name', 'Certification'], ['issuer', 'Issuer'], ['year', 'Year'], ['url', 'Credential URL']] },
-    achievement: { fields: [['title', 'Award / achievement'], ['year', 'Year']], area: ['description', 'Description'] },
-    language: { fields: [['name', 'Language'], ['level', 'Proficiency']] },
-    volunteer: { fields: [['role', 'Role'], ['organization', 'Organization'], ['year', 'Year']], area: ['details', 'Details'] },
-    publication: { fields: [['title', 'Title'], ['publisher', 'Publisher'], ['year', 'Year'], ['url', 'URL']] }
-  };
+const clone=x=>JSON.parse(JSON.stringify(x));
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const lines=x=>String(x??'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+const val=(obj,path)=>path.split('.').reduce((o,k)=>o?.[k],obj);
 
-  const arrayKey = {
-    experience: 'experience', education: 'education', skill: 'skills', project: 'projects',
-    certification: 'certifications', achievement: 'achievements', language: 'languages',
-    volunteer: 'volunteer', publication: 'publications'
-  };
+function normalize(input){
+ const source=input&&typeof input==='object'?input:{};
+ const next=clone(defaults);
+ Object.keys(next).forEach(k=>{if(source[k]!==undefined)next[k]=clone(source[k]);});
+ next.personal={...clone(defaults.personal),...(source.personal&&typeof source.personal==='object'?source.personal:{})};
+ Object.keys(arrayKey).forEach(t=>{const k=arrayKey[t];if(!Array.isArray(next[k]))next[k]=[];next[k]=next[k].filter(Boolean).map(x=>({...x}));});
+ return next;
+}
+function loadJSON(key,fallback){try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):clone(fallback)}catch{return clone(fallback)}}
+state=normalize(loadJSON(STORAGE_KEY,defaults));
+const savedDesign=loadJSON(DESIGN_KEY,designDefaults);
+let design={...designDefaults,...savedDesign};
+selected=Math.max(1,Math.min(MAX_TEMPLATES,Number(localStorage.getItem(TEMPLATE_KEY)||1)));
 
-  const clone = value => JSON.parse(JSON.stringify(value));
-  const esc = (value = '') => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const lines = value => String(value ?? '').split(/\n+/).map(v => v.trim()).filter(Boolean);
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));localStorage.setItem(TEMPLATE_KEY,String(selected));localStorage.setItem(DESIGN_KEY,JSON.stringify(design));const el=document.querySelector('.save-inline');if(el)el.textContent='Saved'}
+function dirty(){const el=document.querySelector('.save-inline');if(el)el.textContent='Saving…';renderAllVisible();clearTimeout(saveTimer);saveTimer=setTimeout(save,350)}
+function toast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(window.__rmToast);window.__rmToast=setTimeout(()=>t.classList.remove('show'),1800)}
+function templateFor(id){return window.TEMPLATES?.find(t=>Number(t.id)===Number(id))||window.TEMPLATES?.[0]}
+function templateCategory(t){const l=String(t.layout||'').toLowerCase();if(['sidebar','split','two-column','timeline'].includes(l))return 'Professional';if(['editorial','elegant','magazine'].includes(l))return 'Creative';if(['minimal','ats','mono'].includes(l))return 'Minimal';return t.id%2?'Modern':'Simple'}
+function isPremium(t){return Number(t.id)<=40}
 
-  function normalize(input) {
-    const source = input && typeof input === 'object' ? input : {};
-    const next = clone(defaults);
-    Object.keys(next).forEach(key => {
-      if (source[key] !== undefined) next[key] = clone(source[key]);
-    });
-    next.personal = { ...clone(defaults.personal), ...(source.personal && typeof source.personal === 'object' ? source.personal : {}) };
-    Object.keys(arrayKey).forEach(type => {
-      const key = arrayKey[type];
-      if (!Array.isArray(next[key])) next[key] = [];
-      next[key] = next[key].filter(item => item && typeof item === 'object').map(item => ({ ...item }));
-    });
-    return next;
-  }
+function paperHTML(templateId,targetClass='resume-paper'){
+ const t=templateFor(templateId);const p=state.personal;const contact=[p.phone,p.email,p.location,p.website].filter(Boolean).map(esc).join(' · ');const photo=p.photo?`<img class="photo" src="${esc(p.photo)}" alt="Profile photo">`:'';const hero=`<div class="hero">${photo}<h1>${esc(p.name||'Your Name')}</h1><div class="title">${esc(p.title||'Professional Title')}</div>${contact?`<div class="contact">${contact}</div>`:''}</div>`;const section=(title,body)=>body?`<section class="section"><div class="section-title">${esc(title)}</div>${body}</section>`:'';const bullets=v=>{const a=lines(v);return a.length?`<ul>${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''};
+ let main='';
+ if(state.summary)main+=section('Professional Summary',`<p>${esc(state.summary)}</p>`);
+ const ex=state.experience.filter(x=>x.role||x.company).map(x=>`<div class="exp"><div class="exp-head"><div><div class="job">${esc(x.role)}</div><div class="company">${esc(x.company)}${x.location?` · ${esc(x.location)}`:''}</div></div><div class="date">${esc(x.start)}${x.end?` — ${esc(x.end)}`:''}</div></div>${bullets(x.details)}</div>`).join('');main+=section('Experience',ex);
+ const edu=state.education.filter(x=>x.degree||x.school).map(x=>`<div class="exp"><div class="exp-head"><div><div class="job">${esc(x.degree)}</div><div class="company">${esc(x.school)}${x.location?` · ${esc(x.location)}`:''}</div></div><div class="date">${esc(x.year)}</div></div>${x.grade?`<p class="muted">Grade: ${esc(x.grade)}</p>`:''}${x.details?`<p>${esc(x.details)}</p>`:''}</div>`).join('');main+=section('Education',edu);
+ const skills=state.skills.filter(x=>x.name).map(x=>`<span class="skill">${esc(x.name)}${x.level?` · ${esc(x.level)}`:''}</span>`).join('');main+=section('Skills',`<div class="skills">${skills}</div>`);
+ const projects=state.projects.filter(x=>x.name||x.description).map(x=>`<div class="exp"><div class="job">${esc(x.name)}</div>${x.technologies?`<div class="company">${esc(x.technologies)}</div>`:''}${x.description?`<p>${esc(x.description)}</p>`:''}</div>`).join('');main+=section('Projects',projects);
+ const cert=state.certifications.filter(x=>x.name).map(x=>`<div class="exp"><div class="job">${esc(x.name)}</div><div class="company">${esc(x.issuer)}${x.year?` · ${esc(x.year)}`:''}</div></div>`).join('');main+=section('Certifications & Courses',cert);
+ const ach=state.achievements.filter(x=>x.title).map(x=>`<div class="exp"><div class="job">${esc(x.title)}</div>${x.description?`<p>${esc(x.description)}</p>`:''}</div>`).join('');main+=section('Achievements & Awards',ach);
+ const lang=state.languages.filter(x=>x.name).map(x=>`<span class="skill">${esc(x.name)}${x.level?` · ${esc(x.level)}`:''}</span>`).join('');main+=section('Languages',`<div class="skills">${lang}</div>`);
+ const vol=state.volunteer.filter(x=>x.role||x.organization).map(x=>`<div class="exp"><div class="job">${esc(x.role)}</div><div class="company">${esc(x.organization)}${x.year?` · ${esc(x.year)}`:''}</div>${x.details?`<p>${esc(x.details)}</p>`:''}</div>`).join('');main+=section('Volunteer & Leadership',vol);
+ const pubs=state.publications.filter(x=>x.title).map(x=>`<div class="exp"><div class="job">${esc(x.title)}</div><div class="company">${esc(x.publisher)}${x.year?` · ${esc(x.year)}`:''}</div></div>`).join('');main+=section('Publications',pubs);
+ main+=section('Interests',state.interests?`<p>${esc(state.interests)}</p>`:'');main+=section('References',state.references?`<p>${esc(state.references)}</p>`:'');
+ const special=['sidebar','split','portfolio','timeline','two-column'].includes(t.layout);if(special){const primary=main.replace(section('Skills',`<div class="skills">${skills}</div>`),'');main=`<div class="cols"><div>${primary}</div><aside class="side">${section('Key Skills',`<div class="skills">${skills}</div>`)}</aside></div>`}
+ return `<article class="${targetClass} layout-${esc(t.layout||'minimal')} style-${esc(design.sectionStyle)} page-${esc(design.pageStyle)} density-${esc(design.density)}" style="--accent:${esc(design.accent||t.color||'#6b2d1f')};--font:${esc(design.font||t.font||'Arial')};--wash:${esc(t.wash||'#f2e7d5')}">${hero}${main}</article>`;
+}
+function renderPaperInto(id,templateId=selected){const box=document.getElementById(id);if(!box)return;box.innerHTML=paperHTML(templateId)}
+function miniPaperHTML(id){const t=templateFor(id);return `<div class="mini-paper" style="--accent:${esc(t.color||'#6b2d1f')};--wash:${esc(t.wash||'#f2e7d5')};--font:${esc(t.font||'Arial')}"><div class="mini-top">${esc(state.personal.name||'Your Name')}</div><div class="mini-sub">${esc(state.personal.title||'Professional Title')}</div><div class="mini-rule"></div><div class="mini-columns"><div><i></i><i></i><i></i><i></i><i></i></div><div><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>`}
 
-  function load() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? normalize(JSON.parse(raw)) : clone(defaults);
-    } catch {
-      return clone(defaults);
-    }
-  }
+function show(screen){
+ currentScreen=screen;document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));const map={home:'homeScreen',templates:'templatesScreen',detail:'templateDetailScreen',editor:'editorScreen',resumes:'myResumesScreen',ai:'aiScreen',suggestions:'suggestionsScreen',premium:'premiumScreen',profile:'profileScreen'};document.getElementById(map[screen]||'homeScreen')?.classList.add('active');
+ document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',(screen==='detail'||screen==='editor'||screen==='resumes')?(b.dataset.nav==='templates'):b.dataset.nav===screen));
+ const back=document.getElementById('headerBack');const needsBack=['detail','editor','resumes','suggestions','premium'].includes(screen);back.classList.toggle('hidden',!needsBack);back.onclick=()=>screen==='editor'?show('templates'):screen==='detail'?show('templates'):screen==='suggestions'?show('ai'):screen==='premium'?show('profile'):show('home');renderAllVisible();window.scrollTo({top:0,behavior:'smooth'});
+}
+function homeHTML(){const name=esc(state.personal.name||'Your Name');return `<div class="eyebrow">YOUR RESUME WORKSPACE</div><div class="topline"><div><h1 class="screen-title">Create. Customize. Download.</h1><p class="screen-subtitle">Build a polished resume that looks ready for the next opportunity.</p></div><button class="text-link" data-action="resumes">My Resumes →</button></div><div class="hero-card"><div class="hero-title">Land your dream job with a professional resume.</div><div class="hero-copy">Choose a layout, edit your content, preview the final A4 page and export it as PDF.</div><button class="cta" data-action="premium">✦ Explore Premium</button><div class="hero-art"><div class="paper-stack"></div><div class="pen"></div><div class="seal">RM</div></div></div><div class="action-card"><button class="action-item" data-action="new"><span class="action-icon t1">▣+</span><span class="action-label">Create<br>Resume</span></button><button class="action-item" data-action="ai"><span class="action-icon t2">✦</span><span class="action-label">AI Resume<br>Suggestions</span></button><button class="action-item" data-action="import"><span class="action-icon t3">PDF</span><span class="action-label">Import<br>Resume</span></button><button class="action-item" data-action="share"><span class="action-icon t4">↗</span><span class="action-label">Share<br>App</span></button></div><div class="section-block"><div class="section-heading"><h2>My Resumes</h2><button class="text-link" data-action="resumes">View All ›</button></div><div class="card-row"><button class="resume-mini-card" data-action="editor"><span class="latest">LATEST</span><div class="resume-thumb"><div class="mini-name">${name}</div><div class="mini-lines">PROFESSIONAL SUMMARY<br>EXPERIENCE<br>EDUCATION<br>SKILLS<br>PROJECTS</div></div><div class="resume-title">${name}'s Resume</div><div class="resume-date">Saved locally</div></button><button class="resume-mini-card" data-action="templates"><div class="resume-thumb dark"><div class="mini-name">Resume Studio</div><div class="mini-lines">MODERN PRO<br>EXECUTIVE<br>MINIMAL<br>CREATIVE</div></div><div class="resume-title">Explore templates</div><div class="resume-date">100 layouts available</div></button></div></div><div class="tip-card"><div class="tip-icon">✦</div><div><div class="tip-title">AI Resume Suggestions</div><div class="tip-copy">Get practical suggestions for summary, bullets, skills and keywords.</div></div><button class="tip-cta" data-action="ai">Try Now</button></div>`}
+function templatesHTML(){const cats=['All','Modern','Professional','Minimal','Creative','Simple'];const q=String(document.getElementById('templateSearch')?.value||'').toLowerCase();const cat=document.querySelector('#templateScreenCats .chip.active')?.dataset.cat||'All';const list=(window.TEMPLATES||[]).filter(t=>{const match=cat==='All'||templateCategory(t)===cat;return match&&(String(t.name).toLowerCase().includes(q)||String(t.layout).toLowerCase().includes(q))});return `<div class="topline"><div><div class="eyebrow">DESIGN LIBRARY</div><h1 class="screen-title">Templates</h1><p class="screen-subtitle">100 editable layouts. Pick one, preview it and continue editing.</p></div><button class="premium-chip" data-action="premium">♛<span>PREMIUM</span></button></div><div id="templateScreenCats" class="chip-row">${cats.map(c=>`<button class="chip ${c===cat?'active':''}" data-cat="${c}">${c}</button>`).join('')}</div><input id="templateSearch" class="search" placeholder="Search templates, category or layout…" value="${esc(q)}"><div class="template-grid">${list.map(t=>`<div class="template-card ${Number(t.id)===selected?'active':''}"><button data-template-detail="${t.id}"><div class="template-preview">${miniPaperHTML(t.id)}</div><div class="template-meta"><b>${esc(t.name)}</b><span class="badge ${isPremium(t)?'premium':'free'}">${isPremium(t)?'PREMIUM':'FREE'}</span></div></button></div>`).join('')}</div>`}
+function detailHTML(){const t=templateFor(detailTemplate);return `<div class="topline"><div><div class="eyebrow">TEMPLATE PREVIEW</div><h1 class="screen-title">${esc(t.name)}</h1><p class="screen-subtitle">${esc(templateCategory(t))} · ${esc(t.layout||'layout')}</p></div><span class="badge ${isPremium(t)?'premium':'free'}">${isPremium(t)?'PREMIUM':'FREE'}</span></div><div class="detail-card"><div class="detail-preview"><div class="paper-holder">${paperHTML(t.id,'resume-paper')}</div></div><div class="detail-color-label">Color</div><div class="colors">${palettes.map(c=>`<button class="swatch ${design.accent===c?'active':''}" style="background:${c}" data-accent="${c}" aria-label="Accent ${c}"></button>`).join('')}</div><button class="detail-cta" data-action="use-template" data-id="${t.id}">Use This Template</button></div>`}
+function renderField(path,label,type='input',placeholder=''){const current=esc(String(val(state,path)??''));return `<label class="field ${type==='textarea'?'full':''}">${esc(label)}${type==='textarea'?`<textarea data-path="${path}" placeholder="${esc(placeholder||label)}">${current}</textarea>`:`<input data-path="${path}" value="${current}" placeholder="${esc(placeholder||label)}">`}</label>`}
+function repeatCard(type,index,item){const cfg=configs[type];const fields=cfg.fields.map(([k,l])=>`<label class="field">${esc(l)}<input data-repeat="${type}.${index}.${k}" value="${esc(item[k]??'')}" placeholder="${esc(l)}"></label>`).join('');const area=cfg.area?`<label class="field full">${esc(cfg.area[1])}<textarea data-repeat="${type}.${index}.${cfg.area[0]}" placeholder="${esc(cfg.area[1])}">${esc(item[cfg.area[0]]??'')}</textarea></label>`:'';return `<div class="editor-card"><div class="editor-card-head"><div><h3>${esc(cfg.label)} ${index+1}</h3><p>Keep it focused and measurable.</p></div><button class="remove-link" data-remove="${type}:${index}">Remove</button></div><div class="edit-grid">${fields}${area}</div></div>`}
+function editorContentHTML(){let out=`<div class="editor-card"><div class="editor-card-head"><div><h3>Profile</h3><p>Make your first impression specific and easy to scan.</p></div><button class="remove-link" data-action="focus-preview">Preview</button></div><div class="edit-grid">${renderField('personal.name','Full name','input','Rohan Sharma')}${renderField('personal.title','Professional title','input','Product Manager')}${renderField('personal.email','Email','input','name@email.com')}${renderField('personal.phone','Phone','input','+91 98765 43210')}${renderField('personal.location','Location','input','New Delhi, India')}${renderField('personal.website','Website / LinkedIn','input','linkedin.com/in/yourname')}${renderField('personal.photo','Photo URL','input','Optional image URL')}</div></div><div class="editor-card"><div class="editor-card-head"><div><h3>Professional Summary</h3><p>A concise positioning statement.</p></div></div>${renderField('summary','Summary','textarea','2–4 lines that describe your value')}</div>`;Object.keys(configs).forEach(type=>{const arr=state[arrayKey[type]]||[];out+=`<div class="editor-card"><div class="editor-card-head"><div><h3>${esc(configs[type].label)}</h3><p>${arr.length} item${arr.length===1?'':'s'} saved locally.</p></div><button class="remove-link" data-add="${type}">+ Add</button></div>${arr.map((it,i)=>repeatCard(type,i,it)).join('')}${!arr.length?`<button class="add-row" data-add="${type}">+ Add ${esc(configs[type].label.replace(/s$/,''))}</button>`:''}</div>`});out+=`<div class="editor-card"><div class="editor-card-head"><div><h3>Interests & References</h3><p>Optional supporting information.</p></div></div>${renderField('interests','Interests','textarea','Technology, travel, finance')}${renderField('references','References','textarea','Available on request.')}</div>`;return out}
+function editorDesignHTML(){return `<div class="editor-card"><div class="editor-card-head"><div><h3>Fonts</h3><p>Apply a readable type system to the live resume.</p></div></div><div class="design-grid">${fonts.map(f=>`<button class="option ${design.font===f?'active':''}" data-font="${esc(f)}"><span class="aa">Aa</span><b>${esc(f)}</b></button>`).join('')}</div></div><div class="editor-card"><div class="editor-card-head"><div><h3>Colors</h3><p>One accent color is shared across the document.</p></div></div><div class="colors">${palettes.map(c=>`<button class="swatch ${design.accent===c?'active':''}" style="background:${c}" data-accent="${c}"></button>`).join('')}</div></div><div class="editor-card"><div class="editor-card-head"><div><h3>Section Style</h3><p>Change the visual rhythm without changing your content.</p></div></div><div class="design-grid"><button class="option ${design.sectionStyle==='classic'?'active':''}" data-section-style="classic"><span class="aa">☰</span><b>Classic</b></button><button class="option ${design.sectionStyle==='modern'?'active':''}" data-section-style="modern"><span class="aa">≡</span><b>Modern</b></button><button class="option ${design.sectionStyle==='compact'?'active':''}" data-section-style="compact"><span class="aa">≡</span><b>Compact</b></button></div></div><div class="editor-card"><div class="editor-card-head"><div><h3>Page Style</h3><p>Keep the export professional and print-friendly.</p></div></div><div class="design-grid"><button class="option ${design.pageStyle==='light'?'active':''}" data-page-style="light"><span class="aa">☷</span><b>Light</b><span>recommended</span></button><button class="option ${design.pageStyle==='dark'?'active':''}" data-page-style="dark"><span class="aa">☷</span><b>Dark</b><span>preview only</span></button></div></div>`}
+function editorPreviewHTML(){return `<div class="preview-shell"><div class="preview-canvas"><div id="editorPaper" class="paper-wrap"></div></div><div class="preview-actions"><button class="btn-secondary" data-action="editor-content">Edit Content</button><button class="btn-primary" data-action="pdf">Download PDF</button></div></div>`}
+function editorHTML(){const tabs=['content','design','preview'];return `<div class="topline"><div><div class="eyebrow">EDIT RESUME</div><h1 class="screen-title">Edit Resume</h1><p class="screen-subtitle">Everything saves on this device automatically.</p></div><button class="text-link save-inline">Saved</button></div><div class="segment">${tabs.map(t=>`<button class="${editorTab===t?'active':''}" data-editor-tab="${t}">${t[0].toUpperCase()+t.slice(1)}</button>`).join('')}</div>${editorTab==='content'?editorContentHTML():editorTab==='design'?editorDesignHTML():editorPreviewHTML()}<div class="screen-footer-actions"><div class="action-card"><button class="action-item" data-action="add-section"><span class="action-icon t1">＋</span><span class="action-label">Add<br>Section</span></button><button class="action-item" data-action="editor-content"><span class="action-icon t3">☷</span><span class="action-label">Reorder<br>Sections</span></button><button class="action-item" data-action="design-font"><span class="action-icon t2">Aa</span><span class="action-label">Font<br>Style</span></button><button class="action-item" data-action="design-color"><span class="action-icon t4">●</span><span class="action-label">Color<br>Style</span></button></div></div>`}
+function resumesHTML(){return `<div class="topline"><div><div class="eyebrow">LOCAL STORAGE</div><h1 class="screen-title">My Resumes</h1><p class="screen-subtitle">Your resume data stays on this device.</p></div><button class="text-link" data-action="new">＋ New</button></div><input class="search" placeholder="Search resumes" value="${esc(state.personal.name||'')}" disabled><div class="list-card"><button class="list-row" data-action="editor"><div class="list-icon">▤</div><div class="list-main"><b>${esc((state.personal.name||'Your Name')+' Resume')}</b><span>Latest · Template ${String(selected).padStart(2,'0')} · Saved locally</span></div><span class="badge premium">LATEST</span><span class="chev">›</span></button></div><div class="empty-note">Create another local copy later by exporting JSON. This build keeps one active resume workspace to stay fast and simple.</div>`}
+function aiHTML(){return `<div class="topline"><div><div class="eyebrow">SMART WRITING</div><h1 class="screen-title">AI Assistant</h1><p class="screen-subtitle">Practical resume coaching based on the content you already entered.</p></div></div><div class="ai-hero"><div class="ai-icon">✦</div><div><h2>Resume Suggestions</h2><p>Generate quick improvements for your summary, experience bullets, skills and keywords.</p></div><button class="ai-cta" data-action="suggestions">Generate Suggestions</button></div><div class="section-block"><div class="section-heading"><h2>Popular Suggestions</h2></div><div class="list-card">${['Improve Summary','Enhance Bullets','Skills Optimization','Keyword Match'].map(x=>`<button class="list-row" data-action="suggestions"><div class="list-icon">✦</div><div class="list-main"><b>${x}</b><span>Review a focused improvement</span></div><span class="chev">›</span></button>`).join('')}</div></div>`}
+function suggestionsHTML(){const original=state.summary||'Add a professional summary to get a stronger suggestion.';const improved=original.replace(/6\+ years of experience/gi,'6+ years of experience building and improving products').replace(/product-focused professional/gi,'Results-driven professional').replace(/\.$/,' with a measurable, outcome-focused approach.');return `<div class="topline"><div><div class="eyebrow">AI REVIEW</div><h1 class="screen-title">Suggestions</h1><p class="screen-subtitle">Review every change before using it.</p></div></div><div class="chip-row"><button class="chip active">Summary</button><button class="chip">Experience</button><button class="chip">Skills</button><button class="chip">All</button></div><div class="suggestion-box"><div class="suggestion-label">Original</div><p>${esc(original)}</p></div><div class="suggestion-box suggestion-improved"><div class="suggestion-label">Improved</div><p>${esc(improved)}</p><div class="suggestion-actions"><button class="use" data-action="use-suggestion" data-value="${esc(improved)}">Use This</button><button data-action="copy" data-value="${esc(improved)}">Copy</button></div></div><div class="empty-note">AI suggestions may vary. Review before applying to an application.</div>`}
+function premiumHTML(){return `<div class="premium-screen"><div class="premium-hero"><div class="crown">♛</div><h1>ResuMate Premium</h1><p>Unlock premium templates, focused editing tools and a distraction-free resume workflow.</p></div><div class="editor-card benefits">${['Premium template library','AI resume suggestions','Remove premium limits','Ad-free workflow','Priority support'].map(x=>`<div class="benefit"><span>✓</span>${x}</div>`).join('')}</div><div class="price-card"><div class="price">₹299 <small>/ year</small></div><div class="price-note">or ₹29 / month · 3 day free trial</div><button class="detail-cta" data-action="premium-toast">Start Free Trial</button></div></div>`}
+function profileHTML(){const name=esc(state.personal.name||'Your Name');return `<div class="topline"><div><div class="eyebrow">ACCOUNT</div><h1 class="screen-title">Profile</h1><p class="screen-subtitle">Manage local data and app settings.</p></div></div><div class="profile-head"><div class="avatar">${esc((state.personal.name||'Y')[0].toUpperCase())}</div><div><b>${name}</b><span>Resume workspace</span></div></div><div class="section-block"><div class="list-card">${[['Account','Edit profile details'],['Subscription','Premium status and billing'],['My Downloads','Exported JSON and PDF files'],['Help & Support','How the builder works'],['Settings','Local preferences'],['Share ResuMate','Invite a friend']].map(([a,b])=>`<button class="list-row"><div class="list-icon">⌘</div><div class="list-main"><b>${a}</b><span>${b}</span></div><span class="chev">›</span></button>`).join('')}</div></div><button class="logout" data-action="reset">Reset Local Resume Data</button>`}
+function renderAllVisible(){const map={home:['homeScreen',homeHTML],templates:['templatesScreen',templatesHTML],detail:['templateDetailScreen',detailHTML],editor:['editorScreen',editorHTML],resumes:['myResumesScreen',resumesHTML],ai:['aiScreen',aiHTML],suggestions:['suggestionsScreen',suggestionsHTML],premium:['premiumScreen',premiumHTML],profile:['profileScreen',profileHTML]};const item=map[currentScreen];if(item)document.getElementById(item[0]).innerHTML=item[1]();if(currentScreen==='editor'&&editorTab==='preview')renderPaperInto('editorPaper',selected)}
+function setPath(path,value){const keys=path.split('.');const last=keys.pop();let target=state;keys.forEach(k=>{if(!target[k]||typeof target[k]!=='object')target[k]={};target=target[k]});target[last]=value}
+function addItem(type){const key=arrayKey[type];if(!key)return;const item={};configs[type].fields.forEach(([k])=>item[k]='');if(configs[type].area)item[configs[type].area[0]]='';state[key].push(item);dirty();show('editor')}
+function removeItem(type,i){const key=arrayKey[type];if(!Array.isArray(state[key]))return;state[key].splice(i,1);dirty()}
+function parseImported(input){if(!input||typeof input!=='object')throw new Error('Invalid resume data');return normalize({personal:input.personal||input.basics,summary:input.summary||input.basics?.summary,experience:input.experience||input.work,education:input.education,skills:input.skills,projects:input.projects,certifications:input.certifications||input.certificates,achievements:input.achievements,languages:input.languages,volunteer:input.volunteer||input.volunteering,publications:input.publications,interests:Array.isArray(input.interests)?input.interests.join(', '):input.interests,references:input.references})}
+async function handleImport(file){try{const text=await file.text();state=parseImported(JSON.parse(text));save();show('editor');toast('Resume imported')}catch(e){toast(e?.message||'Import failed')}}
+function printCV(){save();editorTab='preview';show('editor');setTimeout(()=>window.print(),120)}
+function copyText(value){navigator.clipboard?.writeText(value).then(()=>toast('Copied')).catch(()=>toast('Copy not available'))}
 
-  function save() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    localStorage.setItem(TEMPLATE_KEY, String(selected));
-    const label = document.querySelector('#saveState');
-    if (label) label.textContent = 'Saved';
-    updateProgress();
-  }
+document.addEventListener('input',e=>{const p=e.target.closest('[data-path]');if(p){setPath(p.dataset.path,p.value);dirty();return}const r=e.target.closest('[data-repeat]');if(r){const [type,index,key]=r.dataset.repeat.split('.');const arr=state[arrayKey[type]];if(arr?.[Number(index)]){arr[Number(index)][key]=r.value;dirty()}}if(e.target.id==='templateSearch')renderAllVisible()});
+document.addEventListener('click',e=>{
+ const nav=e.target.closest('[data-nav]');if(nav){show(nav.dataset.nav);return}
+ const action=e.target.closest('[data-action]');if(action){const a=action.dataset.action;if(a==='new'){state=clone(defaults);design=clone(designDefaults);selected=1;save();editorTab='content';show('editor');return}if(a==='editor'){show('editor');return}if(a==='templates'){show('templates');return}if(a==='ai'){show('ai');return}if(a==='resumes'){show('resumes');return}if(a==='premium'){show('premium');return}if(a==='pdf'){printCV();return}if(a==='import'){document.getElementById('importFile').click();return}if(a==='share'){copyText('ResuMate — create, customize and download your professional resume.');return}if(a==='suggestions'){show('suggestions');return}if(a==='use-suggestion'){state.summary=action.dataset.value.replace(/&quot;/g,'"');dirty();toast('Suggestion applied');return}if(a==='copy'){copyText(action.dataset.value);return}if(a==='reset'){if(confirm('Reset local resume data?')){localStorage.removeItem(STORAGE_KEY);localStorage.removeItem(TEMPLATE_KEY);localStorage.removeItem(DESIGN_KEY);state=clone(defaults);design=clone(designDefaults);selected=1;show('home');toast('Local data reset')}return}if(a==='use-template'){selected=Number(action.dataset.id)||1;save();editorTab='preview';show('editor');toast('Template applied');return}if(a==='editor-content'){editorTab='content';show('editor');return}if(a==='design-font'){editorTab='design';show('editor');return}if(a==='design-color'){editorTab='design';show('editor');return}if(a==='add-section'){editorTab='content';show('editor');setTimeout(()=>document.querySelector('#editorScreen [data-add="experience"]')?.scrollIntoView({behavior:'smooth'}),80);return}if(a==='focus-preview'){editorTab='preview';show('editor');return}if(a==='premium-toast'){toast('Premium flow is ready for billing integration');return}}
+ const tab=e.target.closest('[data-editor-tab]');if(tab){editorTab=tab.dataset.editorTab;show('editor');return}
+ const template=e.target.closest('[data-template-detail]');if(template){detailTemplate=Number(template.dataset.templateDetail);show('detail');return}
+ const cat=e.target.closest('[data-cat]');if(cat){document.querySelectorAll('#templateScreenCats .chip').forEach(x=>x.classList.remove('active'));cat.classList.add('active');renderAllVisible();return}
+ const font=e.target.closest('[data-font]');if(font){design.font=font.dataset.font;dirty();return}
+ const accent=e.target.closest('[data-accent]');if(accent){design.accent=accent.dataset.accent;dirty();return}
+ const ss=e.target.closest('[data-section-style]');if(ss){design.sectionStyle=ss.dataset.sectionStyle;dirty();return}
+ const ps=e.target.closest('[data-page-style]');if(ps){design.pageStyle=ps.dataset.pageStyle;dirty();return}
+ const add=e.target.closest('[data-add]');if(add){e.preventDefault();addItem(add.dataset.add);return}
+ const rem=e.target.closest('[data-remove]');if(rem){const [type,i]=rem.dataset.remove.split(':');removeItem(type,Number(i));return}
+});
 
-  function markDirty() {
-    const label = document.querySelector('#saveState');
-    if (label) label.textContent = 'Saving…';
-    renderPreview();
-    updateProgress();
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(save, SAVE_DELAY);
-  }
-
-  function updateProgress() {
-    const checks = [
-      state.personal.name, state.personal.title, state.personal.email, state.summary,
-      state.experience.length, state.education.length, state.skills.length, state.projects.length,
-      state.certifications.length, state.achievements.length, state.languages.length,
-      state.volunteer.length, state.publications.length, state.interests
-    ];
-    const complete = checks.filter(Boolean).length;
-    const bar = document.querySelector('#progressBar');
-    if (bar) bar.style.width = `${Math.max(8, Math.round((complete / checks.length) * 100))}%`;
-  }
-
-  function getArray(type) {
-    const key = arrayKey[type];
-    return state[key];
-  }
-
-  function emptyItem(type) {
-    const config = configs[type];
-    const item = {};
-    config.fields.forEach(([key]) => { item[key] = ''; });
-    if (config.area) item[config.area[0]] = '';
-    return item;
-  }
-
-  function renderRepeater(type) {
-    const boxId = type === 'skill' ? 'skillFields' : `${type}Fields`;
-    const box = document.getElementById(boxId);
-    if (!box) return;
-    const items = getArray(type);
-    const config = configs[type];
-    box.innerHTML = items.map((item, index) => {
-      const fields = config.fields.map(([key, label]) => `<label>${esc(label)}<input data-repeat="${type}.${index}.${key}" value="${esc(item[key] ?? '')}" placeholder="${esc(label)}"></label>`).join('');
-      const area = config.area ? `<label>${esc(config.area[1])}<textarea rows="4" data-repeat="${type}.${index}.${config.area[0]}">${esc(item[config.area[0]] ?? '')}</textarea></label>` : '';
-      return `<div class="repeat-card"><button class="remove" type="button" data-remove="${type}:${index}" aria-label="Remove ${esc(type)} ${index + 1}">Remove</button><div class="grid">${fields}</div>${area}</div>`;
-    }).join('');
-  }
-
-  function renderAllRepeaters() {
-    Object.keys(configs).forEach(renderRepeater);
-  }
-
-  function section(title, body) {
-    return `<section class="section"><div class="section-title">${esc(title)}</div>${body}</section>`;
-  }
-
-  function bullets(value) {
-    const items = lines(value);
-    return items.length ? `<ul>${items.map(item => `<li>${esc(item)}</li>`).join('')}</ul>` : '';
-  }
-
-  function renderMain(includeSkills = true) {
-    let out = state.summary ? section('Profile', `<p>${esc(state.summary)}</p>`) : '';
-    const ex = state.experience.filter(x => x.role || x.company).map(x => `<div class="exp"><div class="exp-head"><div><div class="job">${esc(x.role)}</div><div class="company">${esc(x.company)}${x.location ? ` · ${esc(x.location)}` : ''}</div></div><div class="date">${esc(x.start)}${x.end ? ` — ${esc(x.end)}` : ''}</div></div>${bullets(x.details)}</div>`).join('');
-    if (ex) out += section('Experience', ex);
-    const edu = state.education.filter(x => x.degree || x.school).map(x => `<div class="exp"><div class="exp-head"><div><div class="job">${esc(x.degree)}</div><div class="company">${esc(x.school)}${x.location ? ` · ${esc(x.location)}` : ''}</div></div><div class="date">${esc(x.year)}</div></div>${x.grade ? `<p class="muted">Grade: ${esc(x.grade)}</p>` : ''}${x.details ? `<p>${esc(x.details)}</p>` : ''}</div>`).join('');
-    if (edu) out += section('Education', edu);
-    if (includeSkills) {
-      const skills = state.skills.filter(x => x.name).map(x => `<span class="skill">${esc(x.name)}${x.level ? ` · ${esc(x.level)}` : ''}</span>`).join('');
-      if (skills) out += section('Skills', `<div class="skills">${skills}</div>`);
-    }
-    const projects = state.projects.filter(x => x.name || x.description).map(x => `<div class="exp"><div class="job">${esc(x.name)}</div>${x.technologies ? `<div class="company">${esc(x.technologies)}</div>` : ''}${x.description ? `<p>${esc(x.description)}</p>` : ''}${x.url ? `<div class="muted">${esc(x.url)}</div>` : ''}</div>`).join('');
-    if (projects) out += section('Projects', projects);
-    const cert = state.certifications.filter(x => x.name).map(x => `<div class="exp"><div class="job">${esc(x.name)}</div><div class="company">${esc(x.issuer)}${x.year ? ` · ${esc(x.year)}` : ''}</div>${x.url ? `<div class="muted">${esc(x.url)}</div>` : ''}</div>`).join('');
-    if (cert) out += section('Certifications & Courses', cert);
-    const ach = state.achievements.filter(x => x.title).map(x => `<div class="exp"><div class="job">${esc(x.title)}</div>${x.description ? `<p>${esc(x.description)}</p>` : ''}${x.year ? `<div class="date">${esc(x.year)}</div>` : ''}</div>`).join('');
-    if (ach) out += section('Achievements & Awards', ach);
-    const lang = state.languages.filter(x => x.name).map(x => `<span class="skill">${esc(x.name)}${x.level ? ` · ${esc(x.level)}` : ''}</span>`).join('');
-    if (lang) out += section('Languages', `<div class="skills">${lang}</div>`);
-    const vol = state.volunteer.filter(x => x.role || x.organization).map(x => `<div class="exp"><div class="job">${esc(x.role)}</div><div class="company">${esc(x.organization)}${x.year ? ` · ${esc(x.year)}` : ''}</div>${x.details ? `<p>${esc(x.details)}</p>` : ''}</div>`).join('');
-    if (vol) out += section('Volunteer & Leadership', vol);
-    const pub = state.publications.filter(x => x.title).map(x => `<div class="exp"><div class="job">${esc(x.title)}</div><div class="company">${esc(x.publisher)}${x.year ? ` · ${esc(x.year)}` : ''}</div>${x.url ? `<div class="muted">${esc(x.url)}</div>` : ''}</div>`).join('');
-    if (pub) out += section('Publications', pub);
-    if (state.interests) out += section('Interests', `<p>${esc(state.interests)}</p>`);
-    if (state.references) out += section('References', `<p>${esc(state.references)}</p>`);
-    return out;
-  }
-
-  function renderPreview() {
-    const paper = document.querySelector('#resumePaper');
-    if (!paper || !Array.isArray(window.TEMPLATES) || !window.TEMPLATES.length) return;
-    const template = window.TEMPLATES.find(item => item.id === selected) || window.TEMPLATES[0];
-    selected = Number(template.id);
-    const p = state.personal;
-    const templateName = document.querySelector('#templateName');
-    if (templateName) templateName.textContent = template.name;
-    const photo = p.photo ? `<img class="photo" src="${esc(p.photo)}" alt="Profile photo" loading="lazy" referrerpolicy="no-referrer">` : '';
-    const contact = [p.email, p.phone, p.location, p.website].filter(Boolean).map(esc).join(' · ');
-    const hero = `<div class="hero">${photo}<h1>${esc(p.name || 'Your Name')}</h1><div class="title">${esc(p.title || 'Professional Title')}</div>${contact ? `<div class="contact muted">${contact}</div>` : ''}</div>`;
-    const keySkills = state.skills.filter(x => x.name).map(x => `<span class="skill">${esc(x.name)}</span>`).join('');
-    const isColumns = ['sidebar', 'split', 'portfolio', 'timeline', 'two-column'].includes(template.layout);
-    let body = hero + renderMain(true);
-    if (isColumns) body = hero + `<div class="cols"><div>${renderMain(false)}</div><aside class="side">${section('Key Skills', `<div class="skills">${keySkills}</div>`)}</aside></div>`;
-    if (template.layout === 'banner') body = hero + `<div class="bar"></div>` + renderMain(true);
-    if (template.layout === 'boxed') body = hero + `<div class="tag">CURRICULUM VITAE</div>` + renderMain(true);
-    paper.className = `resume-paper layout-${template.layout}`;
-    paper.style.cssText = `--font:${template.font};--accent:${template.color};--wash:${template.wash};--pad:${34 + ((template.id * 7) % 28)}px;--gap:${10 + ((template.id * 5) % 10)}px;--title:${27 + ((template.id * 3) % 15)}px;--subtitle:${11 + (template.id % 5)}px;--photosize:${70 + ((template.id % 4) * 8)}px;--radius:${[0, 6, 12, 22][template.id % 4]}px;--float:${template.accentSide};--cols:${template.id % 2 ? '30% 1fr' : '1fr 32%'};--colgap:${18 + ((template.id % 6) * 3)}px;--rule:${template.id % 4 === 0 ? 2 : 0}px;--sectionrule:${template.id % 3 === 0 ? 1 : 0}px;`;
-    paper.innerHTML = body;
-    applyZoom();
-  }
-
-  function renderTemplateGrid() {
-    const grid = document.querySelector('#templateGrid');
-    if (!grid || !Array.isArray(window.TEMPLATES)) return;
-    const query = (document.querySelector('#templateSearch')?.value || '').trim().toLowerCase();
-    const list = window.TEMPLATES.filter(t => !query || `${t.name} ${t.family} ${t.layout} ${t.font}`.toLowerCase().includes(query));
-    const count = document.querySelector('#templateCount');
-    if (count) count.textContent = `${list.length} templates`;
-    grid.innerHTML = list.map(t => `<button type="button" class="template-card ${t.id === selected ? 'active' : ''}" data-template="${t.id}" aria-label="Use ${esc(t.name)}"><div class="thumb"><span class="thumb-badge">LIVE PREVIEW</span><div class="mini resume-paper layout-${esc(t.layout)}" style="--font:${esc(t.font)};--accent:${esc(t.color)};--wash:${esc(t.wash)};--pad:34px;--title:30px;--subtitle:12px;--photosize:70px;--radius:8px;--float:left;--cols:1fr 32%;--colgap:20px;--rule:1px;--sectionrule:0px"><div class="hero"><h1>Alex Morgan</h1><div class="title">${esc(t.family)}</div><div class="contact muted">alex@email.com · New Delhi</div></div><div class="section"><div class="section-title">Experience</div><div class="exp"><div class="job">Senior Product Manager</div><div class="company">Example Technologies</div><p>Achievements and professional experience</p></div></div><div class="section"><div class="section-title">Skills</div><p>Strategy · Leadership · Analytics</p></div></div></div><div class="template-meta"><b>${esc(t.name)}</b><span class="use-template">Use this →</span></div><span class="template-type">${esc(t.family)} · ${esc(t.layout)}</span></button>`).join('');
-  }
-
-  function openTemplates() {
-    renderTemplateGrid();
-    document.querySelector('#templateSheet')?.classList.remove('hidden');
-  }
-
-  function closeTemplates() {
-    document.querySelector('#templateSheet')?.classList.add('hidden');
-  }
-
-  function applyZoom() {
-    const stage = document.querySelector('#paperStage');
-    if (stage) stage.style.transform = `scale(${zoom})`;
-    const label = document.querySelector('#zoomLabel');
-    if (label) label.textContent = `${Math.round(zoom * 100)}%`;
-  }
-
-  function setPreview(show) {
-    document.querySelector('.workspace')?.classList.toggle('show-preview', show);
-  }
-
-  function add(type) {
-    if (!arrayKey[type]) return;
-    getArray(type).push(emptyItem(type));
-    renderRepeater(type);
-    markDirty();
-    const last = document.querySelector(`#${type === 'skill' ? 'skillFields' : type + 'Fields'} .repeat-card:last-child input`);
-    last?.focus();
-  }
-
-  function remove(type, index) {
-    const items = getArray(type);
-    if (!items || !Number.isInteger(index) || index < 0 || index >= items.length) return;
-    items.splice(index, 1);
-    renderRepeater(type);
-    markDirty();
-  }
-
-  function parseResumeObject(input) {
-    if (!input || typeof input !== 'object') throw new Error('Invalid resume data');
-    return normalize({
-      personal: input.personal || input.basics,
-      summary: input.summary || input.basics?.summary,
-      experience: input.experience || input.work,
-      education: input.education,
-      skills: Array.isArray(input.skills) ? input.skills : undefined,
-      projects: input.projects,
-      certifications: input.certifications || input.certificates,
-      achievements: input.achievements,
-      languages: input.languages,
-      volunteer: input.volunteer || input.volunteering,
-      publications: input.publications,
-      interests: Array.isArray(input.interests) ? input.interests.join(', ') : input.interests,
-      references: input.references
-    });
-  }
-
-  function importText(text, sourceName) {
-    const trimmed = String(text || '').trim();
-    if (!trimmed) throw new Error('The selected file is empty.');
-    if (/\.json$/i.test(sourceName)) {
-      state = parseResumeObject(JSON.parse(trimmed));
-    } else if (/\.html?$/i.test(sourceName)) {
-      const doc = new DOMParser().parseFromString(trimmed, 'text/html');
-      const heading = doc.querySelector('h1')?.textContent?.trim() || '';
-      const title = doc.querySelector('.title')?.textContent?.trim() || '';
-      const textContent = doc.body?.innerText?.replace(/\n{3,}/g, '\n\n').trim() || '';
-      state = normalize({ personal: { ...state.personal, name: heading || state.personal.name, title: title || state.personal.title }, summary: textContent.slice(0, 900) || state.summary });
-    } else {
-      const textValue = trimmed.replace(/\r/g, '');
-      const first = lines(textValue)[0] || state.personal.name;
-      state = normalize({ personal: { ...state.personal, name: first }, summary: lines(textValue).slice(1, 5).join(' ') || state.summary });
-    }
-    renderAllRepeaters();
-    bindSimpleFields();
-    markDirty();
-  }
-
-  async function handleImport(file) {
-    const name = file?.name || '';
-    if (/\.pdf$/i.test(name) || /\.docx$/i.test(name)) {
-      showToast('PDF/DOCX import needs a parser bundle; export/import JSON is fully supported.');
-      return;
-    }
-    const text = await file.text();
-    try {
-      importText(text, name);
-      showToast('Resume imported');
-    } catch (error) {
-      showToast(error?.message || 'Could not import this file');
-    }
-  }
-
-  function exportJSON() {
-    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url; link.download = 'resume.json'; link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 0);
-  }
-
-  function printCV() {
-    save();
-    window.print();
-  }
-
-  function showToast(message) {
-    let toast = document.querySelector('#appToast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'appToast';
-      toast.className = 'toast';
-      document.body.appendChild(toast);
-    }
-    toast.textContent = message;
-    toast.classList.add('show');
-    clearTimeout(window.__resumeToastTimer);
-    window.__resumeToastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
-  }
-
-  function bindSimpleFields() {
-    document.querySelectorAll('[data-path]').forEach(field => {
-      const path = field.dataset.path.split('.');
-      const value = path.reduce((obj, key) => obj?.[key], state);
-      if (value !== undefined && field.value !== value) field.value = value;
-      field.oninput = () => {
-        const keys = field.dataset.path.split('.');
-        const last = keys.pop();
-        let target = state;
-        keys.forEach(key => { if (!target[key] || typeof target[key] !== 'object') target[key] = {}; target = target[key]; });
-        target[last] = field.value;
-        markDirty();
-      };
-    });
-  }
-
-  function bindEvents() {
-    document.querySelector('#resumeForm')?.addEventListener('submit', e => e.preventDefault());
-    document.addEventListener('input', e => {
-      const target = e.target.closest('[data-repeat]');
-      if (!target) return;
-      const [type, index, key] = target.dataset.repeat.split('.');
-      const items = getArray(type);
-      if (items?.[Number(index)]) { items[Number(index)][key] = target.value; markDirty(); }
-    });
-    document.addEventListener('click', e => {
-      const addButton = e.target.closest('[data-add]');
-      if (addButton) { e.preventDefault(); add(addButton.dataset.add); return; }
-      const removeButton = e.target.closest('[data-remove]');
-      if (removeButton) { e.preventDefault(); const [type, index] = removeButton.dataset.remove.split(':'); remove(type, Number(index)); return; }
-      const templateButton = e.target.closest('[data-template]');
-      if (templateButton) {
-        selected = Math.max(1, Math.min(MAX_TEMPLATES, Number(templateButton.dataset.template) || 1));
-        save(); renderPreview(); renderTemplateGrid(); closeTemplates(); showToast('Template applied'); return;
-      }
-    });
-
-    document.querySelector('#templatesBtn')?.addEventListener('click', openTemplates);
-    document.querySelector('#liveTemplateBtn')?.addEventListener('click', openTemplates);
-    document.querySelector('#closeTemplates')?.addEventListener('click', closeTemplates);
-    document.querySelector('#templateSheet')?.addEventListener('click', e => { if (e.target.id === 'templateSheet') closeTemplates(); });
-    document.querySelector('#templateSearch')?.addEventListener('input', renderTemplateGrid);
-    document.querySelector('#importBtn')?.addEventListener('click', () => document.querySelector('#importFile')?.click());
-    document.querySelector('#importFile')?.addEventListener('change', async e => { const file = e.target.files?.[0]; if (file) await handleImport(file); e.target.value = ''; });
-    document.querySelector('#previewBtn')?.addEventListener('click', () => setPreview(true));
-    document.querySelector('#closePreview')?.addEventListener('click', () => setPreview(false));
-    document.querySelector('#mobileEdit')?.addEventListener('click', () => setPreview(false));
-    document.querySelector('#mobileTemplates')?.addEventListener('click', openTemplates);
-    document.querySelector('#mobilePreview')?.addEventListener('click', () => setPreview(true));
-    document.querySelector('#pdfBtn')?.addEventListener('click', printCV);
-    document.querySelector('#mobilePdf')?.addEventListener('click', printCV);
-    document.querySelector('#zoomOut')?.addEventListener('click', () => { zoom = Math.max(0.5, Number((zoom - 0.05).toFixed(2))); applyZoom(); });
-    document.querySelector('#zoomIn')?.addEventListener('click', () => { zoom = Math.min(1.25, Number((zoom + 0.05).toFixed(2))); applyZoom(); });
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeTemplates();
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); save(); showToast('Resume saved locally'); }
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') { e.preventDefault(); printCV(); }
-    });
-
-    window.addEventListener('beforeprint', () => save());
-  }
-
-  state = load();
-  selected = Math.max(1, Math.min(MAX_TEMPLATES, Number(localStorage.getItem(TEMPLATE_KEY) || 1)));
-  window.__RESUME_EXPORT_JSON__ = exportJSON;
-  window.__RESUME_STATE__ = () => clone(state);
-
-  bindSimpleFields();
-  renderAllRepeaters();
-  bindEvents();
-  renderPreview();
-  updateProgress();
+document.getElementById('premiumBtn')?.addEventListener('click',()=>show('premium'));
+document.getElementById('importFile')?.addEventListener('change',e=>{const f=e.target.files?.[0];if(f)handleImport(f);e.target.value=''});
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();save();toast('Resume saved locally')}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='p'){e.preventDefault();printCV()}});
+window.addEventListener('beforeprint',save);
+window.__RESUME_STATE__=()=>clone(state);
+window.__RESUME_EXPORT_JSON__=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='resume.json';a.click()};
+show('home');
+window.__RESUMATE_OTA_READY__?.();
 })();
