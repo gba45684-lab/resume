@@ -1,7 +1,4 @@
-/* ResuMate1-style GitHub-branch OTA bootstrap.
- * The OTA publisher creates a self-contained HTML bundle.
- * Activation uses a persistent attempt marker so a failed OTA rolls back on the next launch.
- */
+/* ResuMate1-style GitHub-branch OTA bootstrap. */
 (() => {
   const CURRENT = Number(window.__RESUMATE_BUILD__ || 0);
   const IS_OTA_PAYLOAD = window.__RESUMATE_OTA_PAYLOAD__ === true;
@@ -14,8 +11,6 @@
   const MANIFEST_URL = 'https://raw.githubusercontent.com/gba45684-lab/resume/ota/version.json';
   const BUILD_URL = 'https://raw.githubusercontent.com/gba45684-lab/resume/ota/index.html';
 
-  // When executing inside the already-downloaded self-contained OTA document,
-  // do not run the native bootstrap a second time. The app will report health below.
   if (IS_OTA_PAYLOAD) {
     window.__RESUMATE_OTA_READY__ = () => {
       try {
@@ -75,7 +70,6 @@
       const manifest = await response.json();
       const remoteBuild = Number(manifest.build || 0);
       if (!remoteBuild || remoteBuild <= CURRENT) return;
-
       const htmlResponse = await fetch(`${BUILD_URL}?t=${Date.now()}`, { cache: 'no-store' });
       if (!htmlResponse.ok) return;
       const html = await htmlResponse.text();
@@ -85,7 +79,6 @@
         const actual = await digest(html);
         if (actual && actual !== manifest.sha256) return;
       }
-
       const oldHtml = localStorage.getItem(KEY_HTML);
       if (!oldHtml) localStorage.setItem(KEY_PREVIOUS, document.documentElement.outerHTML);
       localStorage.setItem(KEY_HTML, html);
@@ -105,9 +98,14 @@
     } catch {}
   };
 
-  // A pending build that has already been attempted without a health signal is bad.
-  // Restore the previous bundle before trying any newer update.
   if (rollbackPending()) return;
-  if (activateCached()) return;
+
+  // If an older OTA bundle is cached, activate it immediately but still check
+  // GitHub for a newer bundle. The previous implementation returned here,
+  // which permanently stopped OTA updates after the first cached update.
+  if (activateCached()) {
+    setTimeout(() => { void checkForUpdate(); }, 1200);
+    return;
+  }
   void checkForUpdate();
 })();
