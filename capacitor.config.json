@@ -1,13 +1,5 @@
 {
   "appId": "com.krapal.resumeforge",
   "appName": "Resume",
-  "webDir": "www",
-  "plugins": {
-    "CapacitorUpdater": {
-      "autoUpdate": "atBackground",
-      "defaultChannel": "production",
-      "version": "1.0.0",
-      "appReadyTimeout": 10000
-    }
-  }
+  "webDir": "www"
 }
