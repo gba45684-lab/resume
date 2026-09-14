@@ -1,15 +1,14 @@
 name: Publish OTA update
 
-# ResuMate1-style OTA: publish only www/index.html + version.json to the
-# ota branch. The installed app downloads this branch directly from GitHub.
+# ResuMate1-style OTA: publish only www/index.html + version.json to the ota branch.
 on:
   push:
     branches: [main]
     paths:
       - 'www/index.html'
-      - 'www/js/ota-bootstrap.js'
-      - 'scripts/publish-ota.mjs'
-      - '.github/workflows/publish-ota.yml'
+      - 'www/js/**'
+      - 'www/css/**'
+      - 'scripts/**'
   workflow_dispatch: {}
 
 concurrency:
@@ -48,15 +47,15 @@ jobs:
           echo "next=$NEXT" >> "$GITHUB_OUTPUT"
           echo "Previous published build: $PREV -> publishing build: $NEXT"
 
-      - name: Validate project before publishing
-        run: node scripts/check-project.mjs
+      - name: Full project audit
+        run: node scripts/audit-project.mjs
 
       - name: Prepare OTA payload
         run: node scripts/publish-ota.mjs "${{ steps.build.outputs.next }}" ota-out
 
       - name: Publish to ota branch
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -e
           cd ota-out
@@ -65,7 +64,7 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add index.html version.json
           git commit -q -m "OTA build ${{ steps.build.outputs.next }} (from ${{ github.sha }})"
-          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git push --force origin HEAD:ota
 
       - name: Summary
