@@ -1,7 +1,6 @@
-/* ResuMate1-compatible GitHub-branch OTA bootstrap.
- * Main publishes www/index.html to the `ota` branch with version.json.
- * The app downloads that HTML, verifies sha256, stores it locally, and
- * activates it on the next launch. No Capgo service or updater plugin is used.
+/* ResuMate1-style GitHub-branch OTA bootstrap.
+ * The OTA publisher creates a self-contained HTML bundle, so the active update
+ * does not depend on remote relative CSS/JS files.
  */
 (() => {
   const CURRENT = Number(window.__RESUMATE_BUILD__ || 0);
@@ -9,15 +8,20 @@
   const KEY_BUILD = 'resumate_ota_build_v1';
   const KEY_PREVIOUS = 'resumate_ota_previous_html_v1';
   const KEY_PENDING = 'resumate_ota_pending_v1';
+  const BOOT_OK = 'resumate_ota_boot_ok';
   const MANIFEST_URL = 'https://raw.githubusercontent.com/gba45684-lab/resume/ota/version.json';
   const BUILD_URL = 'https://raw.githubusercontent.com/gba45684-lab/resume/ota/index.html';
 
   const digest = async text => {
     if (!globalThis.crypto?.subtle) return null;
     const bytes = new TextEncoder().encode(text);
-    const hash = await crypto.subtle.digest('SHA-256', bytes);
+    const hash = await globalThis.crypto.subtle.digest('SHA-256', bytes);
     return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, '0')).join('');
   };
+
+  // Every document load must prove health again. The app sets BOOT_OK only
+  // after its own JavaScript has initialized successfully.
+  try { sessionStorage.removeItem(BOOT_OK); } catch {}
 
   const activateCached = () => {
     try {
@@ -37,7 +41,7 @@
     try {
       const pending = Number(localStorage.getItem(KEY_PENDING) || 0);
       const previous = localStorage.getItem(KEY_PREVIOUS);
-      if (pending && CURRENT === pending && !sessionStorage.getItem('resumate_ota_boot_ok') && previous) {
+      if (pending && CURRENT === pending && !sessionStorage.getItem(BOOT_OK) && previous) {
         localStorage.setItem(KEY_HTML, previous);
         localStorage.setItem(KEY_BUILD, String(Math.max(0, CURRENT - 1)));
         localStorage.removeItem(KEY_PENDING);
@@ -60,6 +64,7 @@
       if (!htmlResponse.ok) return;
       const html = await htmlResponse.text();
       if (!html.includes(`window.__RESUMATE_BUILD__ = ${remoteBuild};`)) return;
+      if (!/window\.TEMPLATES\s*=|const\s+TEMPLATES\s*=/.test(html)) return;
       if (manifest.sha256) {
         const actual = await digest(html);
         if (actual && actual !== manifest.sha256) return;
@@ -76,7 +81,7 @@
 
   window.__RESUMATE_OTA_READY__ = () => {
     try {
-      sessionStorage.setItem('resumate_ota_boot_ok', '1');
+      sessionStorage.setItem(BOOT_OK, '1');
       localStorage.removeItem(KEY_PENDING);
     } catch {}
   };
