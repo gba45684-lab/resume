@@ -8,6 +8,7 @@
 <title>ResuMate — Resume Builder</title>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/ui-fixes.css">
 <script>window.__RESUMATE_BUILD__ = 0;</script>
 <script src="js/ota-bootstrap.js"></script>
 </head>
@@ -21,7 +22,6 @@
     </div>
     <button id="premiumBtn" class="premium-chip" aria-label="Premium">♛ <span>PREMIUM</span></button>
   </header>
-
   <main id="screenRoot" class="screen-root">
     <section id="homeScreen" class="screen active"></section>
     <section id="templatesScreen" class="screen"></section>
@@ -33,7 +33,6 @@
     <section id="premiumScreen" class="screen"></section>
     <section id="profileScreen" class="screen"></section>
   </main>
-
   <nav class="bottom-nav" aria-label="Primary">
     <button data-nav="home" class="nav-item active"><span>⌂</span><b>Home</b></button>
     <button data-nav="templates" class="nav-item"><span>▦</span><b>Templates</b></button>
@@ -41,10 +40,8 @@
     <button data-nav="profile" class="nav-item"><span>♙</span><b>Profile</b></button>
   </nav>
 </div>
-
 <div id="toast" class="toast"></div>
 <input id="importFile" type="file" accept=".json,.txt,.html,.htm" hidden>
-
 <script src="js/templates.js"></script>
 <script src="js/app.js"></script>
 </body>
