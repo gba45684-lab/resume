@@ -5,7 +5,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -14,10 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintDocumentInfo;
-import android.os.ParcelFileDescriptor;
 
 import androidx.core.app.NotificationCompat;
 
@@ -27,10 +25,14 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
+import java.io.OutputStream;
+
 @CapacitorPlugin(name = "PdfExport")
 public class PdfExportPlugin extends Plugin {
     private static final String CHANNEL_ID = "resumate_downloads";
     private static final int NOTIFICATION_ID = 240914;
+    private static final int PAGE_WIDTH = 794;
+    private static final int PAGE_HEIGHT = 1123;
 
     @PluginMethod
     public void savePdf(PluginCall call) {
@@ -53,45 +55,55 @@ public class PdfExportPlugin extends Plugin {
     }
 
     private void writePdf(PluginCall call, WebView view, String fileName) {
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Downloads.DISPLAY_NAME, fileName.toLowerCase().endsWith(".pdf") ? fileName : fileName + ".pdf");
-        values.put(MediaStore.Downloads.MIME_TYPE, "application/pdf");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/ResuMate");
-            values.put(MediaStore.Downloads.IS_PENDING, 1);
-        }
-        final Uri uri = getContext().getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
-        if (uri == null) { cleanup(view); call.reject("Unable to create PDF in Downloads"); return; }
-        PrintDocumentAdapter adapter = view.createPrintDocumentAdapter("ResuMate");
-        PrintAttributes attrs = new PrintAttributes.Builder()
-            .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
-            .setResolution(new PrintAttributes.Resolution("resumate", "ResuMate", 300, 300))
-            .setMinMargins(PrintAttributes.Margins.NO_MARGINS).build();
-        adapter.onLayout(null, attrs, null, new PrintDocumentAdapter.LayoutResultCallback() {
-            @Override public void onLayoutFinished(PrintDocumentInfo info, boolean changed) {
-                try {
-                    ParcelFileDescriptor fd = getContext().getContentResolver().openFileDescriptor(uri, "w");
-                    if (fd == null) throw new IllegalStateException("Unable to open PDF destination");
-                    adapter.onWrite(new android.print.PageRange[]{android.print.PageRange.ALL_PAGES}, fd, null, new PrintDocumentAdapter.WriteResultCallback() {
-                        @Override public void onWriteFinished(android.print.PageRange[] pages) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                                ContentValues done = new ContentValues();
-                                done.put(MediaStore.Downloads.IS_PENDING, 0);
-                                getContext().getContentResolver().update(uri, done, null, null);
-                            }
-                            showDownloadNotification(uri, fileName);
-                            JSObject result = new JSObject();
-                            result.put("uri", uri.toString());
-                            result.put("fileName", fileName);
-                            call.resolve(result);
-                            cleanup(view);
-                        }
-                        @Override public void onWriteFailed(CharSequence error) { cleanup(view); call.reject(error == null ? "PDF write failed" : error.toString()); }
-                    });
-                } catch (Exception e) { cleanup(view); call.reject(e.getMessage() == null ? "PDF export failed" : e.getMessage()); }
+        try {
+            view.measure(View.MeasureSpec.makeMeasureSpec(PAGE_WIDTH, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            int contentHeight = Math.max(PAGE_HEIGHT, view.getMeasuredHeight());
+            view.layout(0, 0, PAGE_WIDTH, contentHeight);
+            int pageCount = Math.max(1, (int) Math.ceil(contentHeight / (double) PAGE_HEIGHT));
+
+            ContentValues values = new ContentValues();
+            String safeName = fileName.toLowerCase().endsWith(".pdf") ? fileName : fileName + ".pdf";
+            values.put(MediaStore.Downloads.DISPLAY_NAME, safeName);
+            values.put(MediaStore.Downloads.MIME_TYPE, "application/pdf");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/ResuMate");
+                values.put(MediaStore.Downloads.IS_PENDING, 1);
             }
-            @Override public void onLayoutFailed(CharSequence error) { cleanup(view); call.reject(error == null ? "PDF layout failed" : error.toString()); }
-        }, null);
+            final Uri uri = getContext().getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+            if (uri == null) throw new IllegalStateException("Unable to create PDF in Downloads");
+
+            PdfDocument document = new PdfDocument();
+            for (int page = 0; page < pageCount; page++) {
+                PdfDocument.PageInfo info = new PdfDocument.PageInfo.Builder(PAGE_WIDTH, PAGE_HEIGHT, page + 1).create();
+                PdfDocument.Page pdfPage = document.startPage(info);
+                Canvas canvas = pdfPage.getCanvas();
+                canvas.drawColor(Color.WHITE);
+                canvas.save();
+                canvas.translate(0, -page * PAGE_HEIGHT);
+                view.draw(canvas);
+                canvas.restore();
+                document.finishPage(pdfPage);
+            }
+            OutputStream out = getContext().getContentResolver().openOutputStream(uri);
+            if (out == null) throw new IllegalStateException("Unable to open PDF destination");
+            document.writeTo(out);
+            out.close();
+            document.close();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ContentValues done = new ContentValues();
+                done.put(MediaStore.Downloads.IS_PENDING, 0);
+                getContext().getContentResolver().update(uri, done, null, null);
+            }
+            showDownloadNotification(uri, safeName);
+            JSObject result = new JSObject();
+            result.put("uri", uri.toString());
+            result.put("fileName", safeName);
+            call.resolve(result);
+        } catch (Exception e) {
+            call.reject(e.getMessage() == null ? "PDF export failed" : e.getMessage());
+        } finally {
+            cleanup(view);
+        }
     }
 
     private void showDownloadNotification(Uri uri, String fileName) {
