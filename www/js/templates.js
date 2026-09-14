@@ -26,10 +26,10 @@ const names = [
   'Line','Mosaic','Nexus','Oak','Pulse','Quill','Relay','Sage','Tempo','Union',
   'Vale','Willow','Xeno','Yonder','Zephyr','Arbor','Bloom','Civic','Dune','Echo',
   'Folio','Grove','Helix','Iris','Junction','Kindred','Lunar','Muse','Nexa','Opal',
-  'Prism','Quest','Radian','Sierra','Thrive','Urban','Verve','Woven'
+  'Prism','Quest','Radian','Sierra','Thrive','Urban','Verve','Woven','Aspire','Crown'
 ];
 
-const TEMPLATES = names.slice(0, 100).map((name, i) => ({
+const TEMPLATES = names.map((name, i) => ({
   id: i + 1,
   name: `${String(i + 1).padStart(2, '0')} ${name}`,
   family: families[Math.floor(i / 10)],
