@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -44,23 +45,40 @@ public class PdfExportPlugin extends Plugin {
 
     private void render(PluginCall call, String html, String fileName) {
         final WebView view = new WebView(getContext());
-        view.getSettings().setJavaScriptEnabled(false);
+        WebSettings settings = view.getSettings();
+        settings.setJavaScriptEnabled(false);
+        settings.setDomStorageEnabled(false);
+        settings.setLoadWithOverviewMode(false);
+        settings.setUseWideViewPort(false);
         view.setBackgroundColor(Color.WHITE);
-        view.setVisibility(View.INVISIBLE);
-        getActivity().addContentView(view, new ViewGroup.LayoutParams(1, 1));
+        /* Keep the WebView VISIBLE because View.draw() can skip INVISIBLE views.
+           Alpha 0 makes it invisible to the user while preserving a drawable view. */
+        view.setVisibility(View.VISIBLE);
+        view.setAlpha(0f);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(PAGE_WIDTH, 1);
+        getActivity().addContentView(view, params);
         view.setWebViewClient(new WebViewClient() {
-            @Override public void onPageFinished(WebView v, String url) { writePdf(call, view, fileName); }
+            @Override public void onPageFinished(WebView v, String url) {
+                v.postDelayed(() -> writePdf(call, view, fileName), 300);
+            }
         });
         view.loadDataWithBaseURL("https://localhost/", html, "text/html", "UTF-8", null);
     }
 
     private void writePdf(PluginCall call, WebView view, String fileName) {
         try {
-            view.measure(View.MeasureSpec.makeMeasureSpec(PAGE_WIDTH, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-            int contentHeight = Math.max(PAGE_HEIGHT, view.getMeasuredHeight());
+            view.setAlpha(0f);
+            view.measure(
+                View.MeasureSpec.makeMeasureSpec(PAGE_WIDTH, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            );
+            int measuredHeight = view.getMeasuredHeight();
+            if (measuredHeight <= 0) measuredHeight = PAGE_HEIGHT;
+            int contentHeight = Math.max(PAGE_HEIGHT, measuredHeight);
             view.layout(0, 0, PAGE_WIDTH, contentHeight);
-            int pageCount = Math.max(1, (int) Math.ceil(contentHeight / (double) PAGE_HEIGHT));
+            view.invalidate();
 
+            int pageCount = Math.max(1, (int) Math.ceil(contentHeight / (double) PAGE_HEIGHT));
             ContentValues values = new ContentValues();
             String safeName = fileName.toLowerCase().endsWith(".pdf") ? fileName : fileName + ".pdf";
             values.put(MediaStore.Downloads.DISPLAY_NAME, safeName);
@@ -79,16 +97,20 @@ public class PdfExportPlugin extends Plugin {
                 Canvas canvas = pdfPage.getCanvas();
                 canvas.drawColor(Color.WHITE);
                 canvas.save();
+                canvas.clipRect(0, 0, PAGE_WIDTH, PAGE_HEIGHT);
                 canvas.translate(0, -page * PAGE_HEIGHT);
                 view.draw(canvas);
                 canvas.restore();
                 document.finishPage(pdfPage);
             }
+
             OutputStream out = getContext().getContentResolver().openOutputStream(uri);
             if (out == null) throw new IllegalStateException("Unable to open PDF destination");
             document.writeTo(out);
+            out.flush();
             out.close();
             document.close();
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 ContentValues done = new ContentValues();
                 done.put(MediaStore.Downloads.IS_PENDING, 0);
