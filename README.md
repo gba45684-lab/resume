@@ -1,42 +1,53 @@
 # Resume Studio — 100-template mobile resume builder
 
-A clean, offline-first resume builder for Android and web with a premium editor experience inspired by modern Figma/Canva-style workflows.
+Resume Studio is an offline-first Android/web resume builder with a polished editor and a live A4 canvas.
 
 ## Features
 - **100 resume templates** across professional, modern, minimal, executive, creative, editorial, ATS, portfolio, academic and premium families
 - A4 live preview above every template name
-- Template selection uses the same HTML/CSS rendering primitives as the live resume canvas
-- Each template is design-locked: users edit **content/text only**
-- Photo and no-photo variants
-- Premium editor UI with live canvas preview, zoom controls and responsive mobile navigation
+- Template thumbnails and the live canvas share the same rendering primitives
+- Template design is locked: users edit content/data while typography and layout rules remain template-controlled
+- Photo and no-photo support
 - Search/filter template library
-- Personal details, summary, experience, education, skills, projects and certifications
+- Personal details, summary, experience, education, skills, projects, certifications, achievements, languages, volunteering, publications, interests and references
 - Live updates while typing
-- Add/remove multiple experience and education entries
+- Add/remove repeated entries for all supported sections
 - Automatic localStorage saving with visible save state
-- Works offline without an account
-- Browser/device **Export PDF** using the native print-to-PDF flow
-- Capacitor Android project with GitHub Actions debug APK build and Capgo OTA workflow
+- Offline-first startup with no CDN/font dependency
+- Native browser/device **Export PDF** through print-to-PDF
+- Capacitor Android project with GitHub Actions debug APK build
+- Custom **ResuMate1-style GitHub-branch OTA** system; no Capgo dependency
+- Automated static audit for duplicate IDs, missing local assets, template uniqueness, JavaScript syntax and stale Capgo references
 
-## Open-source template sources
+## Template and licensing policy
 
-The template system was expanded using permissively licensed open-source resume/CV projects as references. Current registry metadata records Apache-2.0 and MIT sources such as `mnjul/html-resume`, `Tombarr/html-resume-template`, `gligor99/resume-template`, `imvpn22/resume`, `ArthurViniNunes/open-CV-template`, `bjafl-sps/cv-html-template`, `jgibson02/awesome-cv-html`, `happysnaker/Resume`, and `LiuMengxuan04/vibe-resume`.
+The 100 current layouts are native HTML/CSS compositions owned by this project. The repository does not redistribute third-party PSD/FIG binaries, screenshots, or proprietary marketplace files.
 
-These references are implemented through the app's own HTML/CSS rendering system. Third-party PSD/FIG binaries, screenshots and proprietary artwork are not redistributed.
+Open-source resume projects may be used as design/code references only where their licenses permit it. See `docs/OPEN_SOURCE_TEMPLATE_SOURCES.md` for the reference registry and policy.
 
-See `docs/OPEN_SOURCE_TEMPLATE_SOURCES.md` for the audit registry and licensing policy.
+## Architecture
 
-## Magnific licensing
+- `www/index.html` — single UI shell and component wiring
+- `www/js/app.js` — single application state/event layer, editing, persistence, preview and import/print handling
+- `www/js/templates.js` — 100 deterministic template definitions
+- `www/css/style.css` — base UI and A4 resume styles
+- `www/css/components.css` — component polish/accessibility layer
+- `www/css/template-variants.css` — additional layout variants
+- `www/js/ota-bootstrap.js` — update detection, verification, activation and rollback
+- `scripts/publish-ota.mjs` — creates a self-contained OTA HTML bundle and manifest
+- `scripts/audit-project.mjs` — static integrity audit used in CI
 
-Magnific's current documentation states that Free-license resources may be used commercially with visible attribution, but its terms also prohibit sublicensing or redistributing the original files. Resume Studio therefore does **not** bulk-import Magnific stock/template files into the app. Any future Magnific asset must be individually reviewed, licensed and attributed before use.
+## OTA flow
 
-## Template system
+A main-branch change affecting web assets triggers `.github/workflows/publish-ota.yml`. The workflow increments the OTA build number, validates the repository, creates a **self-contained** `index.html` containing the required CSS/JS, calculates SHA-256, and force-updates the dedicated `ota` branch with `index.html` + `version.json`.
 
-`www/js/templates.js` contains 100 deterministic template definitions. `www/css/template-variants.css` adds the expanded compositions. The template preview and live A4 canvas use the same design primitives, preventing thumbnail/final-resume mismatches.
+The installed app checks the manifest on launch, downloads the newer bundle, verifies its build marker and SHA-256, stores it locally, then activates it on the next launch. The bootstrap records the previous bundle and rolls back a pending update when the updated app fails to report healthy initialization.
 
 ## Local build
+
 ```bash
 npm install
+node scripts/audit-project.mjs
 npx cap sync android
 cd android
 ./gradlew assembleDebug
@@ -47,4 +58,6 @@ APK output:
 
 ## GitHub Actions
 
-The repository currently contains `build-signed-aab.yml` and `capgo-ota.yml` workflows. See `.github/workflows/` for the Android build and OTA automation.
+`.github/workflows/build-signed-aab.yml` builds and uploads the debug APK.
+
+`.github/workflows/publish-ota.yml` publishes the self-contained GitHub-branch OTA bundle.
