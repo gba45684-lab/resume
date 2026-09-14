@@ -1,28 +1,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 import { execFileSync } from 'node:child_process';
 
 const root = process.cwd();
 const fail = [];
 const warn = [];
 
-function read(file) {
-  return fs.readFileSync(path.join(root, file), 'utf8');
-}
-function exists(file) {
-  return fs.existsSync(path.join(root, file));
-}
-function assert(condition, message) {
-  if (!condition) fail.push(message);
-}
+function read(file) { return fs.readFileSync(path.join(root, file), 'utf8'); }
+function exists(file) { return fs.existsSync(path.join(root, file)); }
+function assert(condition, message) { if (!condition) fail.push(message); }
 
-assert(exists('www/index.html'), 'Missing www/index.html');
-assert(exists('www/css/style.css'), 'Missing www/css/style.css');
-assert(exists('www/css/components.css'), 'Missing www/css/components.css');
-assert(exists('www/css/template-variants.css'), 'Missing www/css/template-variants.css');
-assert(exists('www/js/templates.js'), 'Missing www/js/templates.js');
-assert(exists('www/js/app.js'), 'Missing www/js/app.js');
-assert(exists('www/js/ota-bootstrap.js'), 'Missing www/js/ota-bootstrap.js');
+for (const file of [
+  'www/index.html','www/css/style.css','www/css/components.css','www/css/template-variants.css',
+  'www/js/templates.js','www/js/app.js','www/js/ota-bootstrap.js'
+]) assert(exists(file), `Missing required file: ${file}`);
 
 const html = read('www/index.html');
 const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(m => m[1]);
@@ -30,28 +22,24 @@ const idCounts = new Map();
 ids.forEach(id => idCounts.set(id, (idCounts.get(id) || 0) + 1));
 for (const [id, count] of idCounts) if (count > 1) fail.push(`Duplicate DOM id: ${id} (${count} occurrences)`);
 
-const localRefs = [
-  ...[...html.matchAll(/(?:src|href)=["']([^"']+)["']/g)].map(m => m[1]),
-  ...[...html.matchAll(/<link[^>]+href=["']([^"']+)["']/g)].map(m => m[1])
-].filter(ref => !/^(https?:|data:|#|javascript:)/i.test(ref));
+const localRefs = [...html.matchAll(/(?:src|href)=["']([^"']+)["']/g)]
+  .map(m => m[1])
+  .filter(ref => !/^(https?:|data:|#|javascript:)/i.test(ref));
 for (const ref of new Set(localRefs)) assert(exists(path.join('www', ref)), `Missing local web asset: ${ref}`);
 
 assert((html.match(/<script[^>]+src=["']js\/templates\.js["']/g) || []).length === 1, 'templates.js must be loaded exactly once');
 assert((html.match(/<script[^>]+src=["']js\/app\.js["']/g) || []).length === 1, 'app.js must be loaded exactly once');
 assert((html.match(/<script[^>]+src=["']js\/ota-bootstrap\.js["']/g) || []).length === 1, 'ota-bootstrap.js must be loaded exactly once');
-assert(!html.includes('js/ui.js'), 'Obsolete duplicate ui.js wiring is still referenced');
+assert(!html.includes('js/ui.js'), 'Obsolete ui.js wiring is still referenced');
 
 const app = read('www/js/app.js');
-const templates = read('www/js/templates.js');
+const templatesSource = read('www/js/templates.js');
 const ota = read('www/js/ota-bootstrap.js');
 const pkg = JSON.parse(read('package.json'));
 
-try {
-  execFileSync(process.execPath, ['--check', path.join(root, 'www/js/app.js')], { stdio: 'ignore' });
-  execFileSync(process.execPath, ['--check', path.join(root, 'www/js/templates.js')], { stdio: 'ignore' });
-  execFileSync(process.execPath, ['--check', path.join(root, 'www/js/ota-bootstrap.js')], { stdio: 'ignore' });
-} catch {
-  fail.push('JavaScript syntax check failed');
+for (const file of ['www/js/app.js','www/js/templates.js','www/js/ota-bootstrap.js']) {
+  try { execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'ignore' }); }
+  catch { fail.push(`JavaScript syntax check failed: ${file}`); }
 }
 
 assert(!JSON.stringify(pkg).toLowerCase().includes('capgo'), 'Capgo reference remains in package metadata');
@@ -60,19 +48,42 @@ assert(ota.includes('raw.githubusercontent.com/gba45684-lab/resume/ota/version.j
 assert(html.includes('window.__RESUMATE_BUILD__ = 0;'), 'OTA build marker missing from main index.html');
 assert(html.includes('data-ota="github-branch"'), 'GitHub-branch OTA marker missing from index.html');
 
-const templateIds = [...templates.matchAll(/id:\s*(\d+)/g)].map(m => Number(m[1]));
-const templateNames = [...templates.matchAll(/name:\s*`([^`]+)`/g)].map(m => m[1]);
-assert(templateIds.length === 100, `Expected 100 template records, found ${templateIds.length}`);
-assert(new Set(templateIds).size === templateIds.length, 'Template IDs are duplicated');
-assert(new Set(templateNames).size === templateNames.length, 'Template names are duplicated');
-assert(templates.includes('window.TEMPLATES = TEMPLATES;'), 'Template registry is not exposed to the app');
+// Evaluate the pure template registry in an isolated context so this audit validates
+// the real runtime array rather than assuming literal `id: 1` source syntax.
+try {
+  const context = { window: {} };
+  vm.runInNewContext(templatesSource, context, { timeout: 1000 });
+  const templates = context.window.TEMPLATES;
+  assert(Array.isArray(templates), 'Template registry did not export window.TEMPLATES');
+  if (Array.isArray(templates)) {
+    const ids = templates.map(t => Number(t.id));
+    const names = templates.map(t => String(t.name));
+    assert(templates.length === 100, `Expected 100 templates, found ${templates.length}`);
+    assert(ids.every(Number.isInteger), 'Template IDs contain non-integers');
+    assert(new Set(ids).size === ids.length, 'Template IDs are duplicated');
+    assert(new Set(names).size === names.length, 'Template names are duplicated');
+    assert(ids.every((id, index) => id === index + 1), 'Template IDs are not sequential 1–100');
+    assert(templates.every(t => t.source === 'Project-owned original' && t.license === 'Project-owned'), 'Template licensing metadata is inconsistent');
+    assert(templates.every(t => t.layout && t.font && t.color && t.wash), 'Template contains incomplete design metadata');
+  }
+} catch (error) {
+  fail.push(`Template registry execution failed: ${error?.message || error}`);
+}
 
 const addTypes = [...html.matchAll(/data-add=["']([^"']+)["']/g)].map(m => m[1]);
-const removeTypes = [...app.matchAll(/arrayKey\s*=\s*\{([\s\S]*?)\};/)].map(m => m[1]).join('');
-for (const type of addTypes) assert(new RegExp(`\\b${type}\\s*:`).test(removeTypes), `No array wiring for data-add type: ${type}`);
+const arrayKeyMatch = app.match(/arrayKey\s*=\s*\{([\s\S]*?)\};/);
+const arrayKeyText = arrayKeyMatch?.[1] || '';
+for (const type of addTypes) assert(new RegExp(`\\b${type}\\s*:`).test(arrayKeyText), `No state-array wiring for data-add type: ${type}`);
 
-if (html.includes('accept=".json,.txt,.html,.htm,.pdf,.docx"')) warn.push('PDF/DOCX import controls are advertised without bundled parser support.');
+// Verify each form target exists exactly once for the repeater sections.
+for (const type of addTypes) {
+  const id = type === 'skill' ? 'skillFields' : `${type}Fields`;
+  const count = (html.match(new RegExp(`id=["']${id}["']`, 'g')) || []).length;
+  assert(count === 1, `Repeater target ${id} must exist exactly once`);
+}
+
 if (!exists('package-lock.json')) warn.push('package-lock.json is absent; CI uses npm install, so dependency resolution is not pinned.');
+if (html.includes('.pdf,.docx')) warn.push('PDF/DOCX import controls are not supported by the bundled parser.');
 
 console.log(`Audit: ${fail.length ? 'FAILED' : 'PASSED'}`);
 if (warn.length) console.log(`Warnings (${warn.length}):\n- ${warn.join('\n- ')}`);
