@@ -1,104 +1,127 @@
-/* Template filters + mobile search keyboard fix. Keeps the existing Templates UI unchanged. */
+/* Stable Templates filtering/search interaction layer. Keeps the approved UI unchanged. */
 (() => {
   'use strict';
 
   const CATEGORIES = ['Modern', 'Professional', 'Minimal', 'Creative', 'Simple'];
   let activeCategory = 'All';
   let searchTerm = '';
-  let refreshTimer = 0;
+  let applyTimer = 0;
 
   const normalize = value => String(value || '').trim().toLowerCase();
-  const categoryFor = template => {
-    const explicit = normalize(template?.family);
-    if (explicit === 'professional' || explicit === 'modern' || explicit === 'minimal' || explicit === 'creative') return template.family;
+
+  // Match the app's own templateCategory() logic exactly.
+  function categoryFor(template) {
     const layout = normalize(template?.layout);
-    if (['sidebar', 'split', 'two-column', 'timeline', 'executive'].includes(layout)) return 'Professional';
-    if (['editorial', 'elegant', 'magazine', 'portfolio', 'geometric', 'asymmetric'].includes(layout)) return 'Creative';
-    if (['minimal', 'ats', 'mono', 'classic'].includes(layout)) return 'Minimal';
+    if (['sidebar', 'split', 'two-column', 'timeline'].includes(layout)) return 'Professional';
+    if (['editorial', 'elegant', 'magazine'].includes(layout)) return 'Creative';
+    if (['minimal', 'ats', 'mono'].includes(layout)) return 'Minimal';
     return Number(template?.id) % 2 ? 'Modern' : 'Simple';
-  };
-
-  const cardTemplateId = card => {
-    const node = card.querySelector('[data-template-detail]') || card.closest('[data-template-detail]');
-    return Number(node?.dataset.templateDetail || card.dataset.templateId || 0);
-  };
-
-  function templateCards() {
-    const root = document.getElementById('templatesScreen');
-    if (!root) return [];
-    return [...root.querySelectorAll('[data-template-detail]')].map(el => el.closest('.template-card') || el);
   }
 
-  function apply() {
+  function root() {
+    return document.getElementById('templatesScreen');
+  }
+
+  function input() {
+    return document.getElementById('templateSearch');
+  }
+
+  function cards() {
+    const r = root();
+    return r ? [...r.querySelectorAll('.template-card')] : [];
+  }
+
+  function applyFilters() {
     const templates = window.TEMPLATES || [];
-    templateCards().forEach(card => {
-      const id = cardTemplateId(card);
-      const t = templates.find(x => Number(x.id) === id);
-      const haystack = normalize([t?.name, t?.family, t?.layout, categoryFor(t)].join(' '));
-      const categoryMatch = activeCategory === 'All' || normalize(categoryFor(t)) === normalize(activeCategory);
-      const searchMatch = !searchTerm || haystack.includes(normalize(searchTerm));
-      card.hidden = !(categoryMatch && searchMatch);
-      card.style.display = card.hidden ? 'none' : '';
-    });
-  }
+    const q = normalize(searchTerm);
 
-  function findSearchInput() {
-    const root = document.getElementById('templatesScreen');
-    if (!root) return null;
-    return root.querySelector('input[type="search"], input[placeholder*="search" i], input[aria-label*="search" i]');
-  }
+    cards().forEach(card => {
+      const trigger = card.querySelector('[data-template-detail]');
+      const id = Number(trigger?.dataset.templateDetail || 0);
+      const template = templates.find(t => Number(t.id) === id);
+      if (!template) {
+        card.hidden = true;
+        card.style.display = 'none';
+        return;
+      }
 
-  function wire() {
-    const root = document.getElementById('templatesScreen');
-    if (!root) return;
+      const category = categoryFor(template);
+      const haystack = normalize([template.name, template.layout, category].join(' '));
+      const categoryMatch = activeCategory === 'All' || category === activeCategory;
+      const searchMatch = !q || haystack.includes(q);
+      const visible = categoryMatch && searchMatch;
 
-    const buttons = [...root.querySelectorAll('button,a,[role="button"],input[type="button"]')];
-    buttons.forEach(button => {
-      const text = String(button.textContent || '').replace(/\s+/g, ' ').trim();
-      if (!CATEGORIES.includes(text)) return;
-      if (button.dataset.templateFilterFix === '1') return;
-      button.dataset.templateFilterFix = '1';
-      button.addEventListener('click', event => {
-        event.preventDefault();
-        activeCategory = text;
-        buttons.forEach(other => {
-          if (CATEGORIES.includes(String(other.textContent || '').replace(/\s+/g, ' ').trim())) {
-            other.classList.toggle('active', other === button);
-            other.setAttribute('aria-pressed', other === button ? 'true' : 'false');
-          }
-        });
-        apply();
-      });
+      card.hidden = !visible;
+      card.style.display = visible ? '' : 'none';
     });
 
-    const input = findSearchInput();
-    if (input && input.dataset.templateSearchFix !== '1') {
-      input.dataset.templateSearchFix = '1';
-      input.setAttribute('enterkeyhint', 'search');
-      input.addEventListener('input', () => {
-        searchTerm = input.value;
-        apply();
+    const r = root();
+    if (r) {
+      r.querySelectorAll('#templateScreenCats .chip').forEach(chip => {
+        const selected = (chip.dataset.cat || 'All') === activeCategory;
+        chip.classList.toggle('active', selected);
+        chip.setAttribute('aria-pressed', selected ? 'true' : 'false');
       });
-      input.addEventListener('keydown', event => {
-        if (event.key !== 'Enter' || event.isComposing) return;
-        // Search immediately without allowing the browser/form to navigate or blur the field.
-        event.preventDefault();
-        event.stopPropagation();
-        searchTerm = input.value;
-        apply();
-      }, true);
     }
-
-    apply();
   }
 
-  function scheduleWire() {
-    clearTimeout(refreshTimer);
-    refreshTimer = setTimeout(wire, 0);
+  function syncFromRenderedScreen() {
+    const r = root();
+    const i = input();
+    if (!r || !i) return;
+
+    // The app may recreate this input when navigating back to Templates.
+    i.setAttribute('enterkeyhint', 'search');
+    i.setAttribute('autocomplete', 'off');
+    if (i.value !== searchTerm) i.value = searchTerm;
+    applyFilters();
   }
 
-  document.addEventListener('click', scheduleWire, true);
-  document.addEventListener('input', scheduleWire, true);
-  window.addEventListener('DOMContentLoaded', scheduleWire, { once: true });
-  new MutationObserver(scheduleWire).observe(document.documentElement, { childList: true, subtree: true });
+  function scheduleApply() {
+    clearTimeout(applyTimer);
+    applyTimer = setTimeout(syncFromRenderedScreen, 0);
+  }
+
+  // Capture BEFORE app.js's bubbling input listener. app.js currently rerenders the
+  // whole Templates screen on every input, which destroys focus and the mobile IME.
+  document.addEventListener('input', event => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement) || target.id !== 'templateSearch') return;
+
+    searchTerm = target.value;
+    event.stopPropagation();
+    applyFilters();
+  }, true);
+
+  // Keep the search field focused when Android/iOS sends Enter from the keyboard.
+  // We intentionally do not blur or replace the input node.
+  document.addEventListener('keydown', event => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement) || target.id !== 'templateSearch') return;
+    if (event.key !== 'Enter') return;
+
+    if (event.isComposing || event.keyCode === 229) return;
+
+    searchTerm = target.value;
+    event.preventDefault();
+    event.stopPropagation();
+    applyFilters();
+  }, true);
+
+  // Category clicks are also intercepted before app.js so the app does not
+  // recreate the entire screen and break a smooth mobile interaction.
+  document.addEventListener('click', event => {
+    const target = event.target instanceof Element ? event.target : null;
+    const chip = target?.closest('#templateScreenCats [data-cat]');
+    if (!chip) return;
+
+    activeCategory = chip.dataset.cat || 'All';
+    event.preventDefault();
+    event.stopPropagation();
+    applyFilters();
+  }, true);
+
+  window.addEventListener('DOMContentLoaded', scheduleApply, { once: true });
+  new MutationObserver(scheduleApply).observe(document.documentElement, { childList: true, subtree: true });
+  scheduleApply();
 })();
