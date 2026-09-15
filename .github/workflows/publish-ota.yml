@@ -9,6 +9,7 @@ on:
       - 'www/js/**'
       - 'www/css/**'
       - 'scripts/**'
+      - '.github/workflows/publish-ota.yml'
   workflow_dispatch: {}
 
 concurrency:
@@ -18,25 +19,28 @@ concurrency:
 permissions:
   contents: write
 
+env:
+  OTA_OUT: ${{ github.workspace }}/ota-out
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 1
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Determine next build number
         id: build
         run: |
-          set -e
+          set -euo pipefail
           PREV=0
           if git ls-remote --exit-code --heads origin ota >/dev/null 2>&1; then
             git fetch origin ota --depth 1
@@ -51,14 +55,24 @@ jobs:
         run: node scripts/audit-project.mjs
 
       - name: Prepare OTA payload
-        run: node scripts/publish-ota.mjs "${{ steps.build.outputs.next }}" ota-out
+        run: |
+          set -euo pipefail
+          rm -rf "$OTA_OUT"
+          node scripts/publish-ota.mjs "${{ steps.build.outputs.next }}" "$OTA_OUT"
+          test -s "$OTA_OUT/index.html"
+          test -s "$OTA_OUT/version.json"
+          echo "OTA payload verified at $OTA_OUT"
+          ls -la "$OTA_OUT"
 
       - name: Publish to ota branch
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -e
-          cd ota-out
+          set -euo pipefail
+          test -d "$OTA_OUT"
+          test -s "$OTA_OUT/index.html"
+          test -s "$OTA_OUT/version.json"
+          cd "$OTA_OUT"
           git init -q
           git config user.name "resumate-ota-bot"
           git config user.email "actions@users.noreply.github.com"
