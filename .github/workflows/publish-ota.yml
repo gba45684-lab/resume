@@ -74,10 +74,15 @@ jobs:
           git config user.name "resumate-ota-bot"
           git config user.email "actions@users.noreply.github.com"
           git add -f index.html version.json
+
           echo "Staged OTA files:"
           git status --short
-          STAGED_FILES=$(git diff --cached --name-only)
-          test "$STAGED_FILES" = $'index.html\nversion.json'
+          test -f index.html
+          test -f version.json
+          test "$(git diff --cached --name-only | wc -l)" -eq 2
+          git diff --cached --name-only | grep -Fxq 'index.html'
+          git diff --cached --name-only | grep -Fxq 'version.json'
+
           git commit -m "OTA build ${{ steps.build.outputs.next }} (from ${{ github.sha }})"
           git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git push --force origin HEAD:ota
