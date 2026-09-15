@@ -21,6 +21,7 @@ permissions:
 
 env:
   OTA_OUT: ${{ github.workspace }}/ota-out
+  OTA_GIT: ${{ github.workspace }}/ota-publish
 
 jobs:
   publish:
@@ -54,38 +55,48 @@ jobs:
       - name: Full project audit
         run: node scripts/audit-project.mjs
 
-      - name: Build and publish OTA atomically
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Build and publish OTA
         run: |
           set -euo pipefail
-          rm -rf "$OTA_OUT"
+
+          rm -rf "$OTA_OUT" "$OTA_GIT"
           mkdir -p "$OTA_OUT"
 
+          echo "[OTA] Generating build ${{ steps.build.outputs.next }}"
           node scripts/publish-ota.mjs "${{ steps.build.outputs.next }}" "$OTA_OUT"
 
           test -s "$OTA_OUT/index.html"
           test -s "$OTA_OUT/version.json"
-          echo "OTA payload verified at $OTA_OUT"
-          ls -la "$OTA_OUT"
+          echo "[OTA] Generated payload:"
+          ls -lh "$OTA_OUT/index.html" "$OTA_OUT/version.json"
 
-          cd "$OTA_OUT"
-          git init -q
+          echo "[OTA] Cloning existing ota branch"
+          AUTH_HEADER=$(git -C "$GITHUB_WORKSPACE" config --local --get http.https://github.com/.extraheader)
+          test -n "$AUTH_HEADER"
+          git -c http.https://github.com/.extraheader="$AUTH_HEADER" clone --depth 1 --branch ota "https://github.com/${{ github.repository }}.git" "$OTA_GIT"
+
+          cp "$OTA_OUT/index.html" "$OTA_GIT/index.html"
+          cp "$OTA_OUT/version.json" "$OTA_GIT/version.json"
+
+          cd "$OTA_GIT"
           git config user.name "resumate-ota-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -f index.html version.json
+          git config commit.gpgSign false
 
-          echo "Staged OTA files:"
+          git add -- index.html version.json
+
+          echo "[OTA] Staged files:"
           git status --short
-          test -f index.html
-          test -f version.json
+
           test "$(git diff --cached --name-only | wc -l)" -eq 2
           git diff --cached --name-only | grep -Fxq 'index.html'
           git diff --cached --name-only | grep -Fxq 'version.json'
 
-          git commit -m "OTA build ${{ steps.build.outputs.next }} (from ${{ github.sha }})"
-          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
-          git push --force origin HEAD:ota
+          echo "[OTA] Committing build ${{ steps.build.outputs.next }}"
+          git commit --no-gpg-sign -m "OTA build ${{ steps.build.outputs.next }} (from ${{ github.sha }})"
+
+          echo "[OTA] Pushing ota branch"
+          git -c http.https://github.com/.extraheader="$AUTH_HEADER" push origin HEAD:ota
 
       - name: Verify published OTA
         run: |
