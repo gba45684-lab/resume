@@ -1,12 +1,16 @@
 /* ResuMate Premium Visual System
    Visual-only layer: no layout flow, navigation, data, event handlers, or feature behavior changes.
-   Inspired by modern open-source component systems and Figma UI-kit patterns.
+   Patterns adapted to the existing vanilla HTML/CSS system from open-source component systems
+   and Figma-style design-system conventions (shadcn/ui, Radix-style primitives, Spectrum UI,
+   Motion/Magic-style micro-interactions). No library/runtime dependency is added.
 */
 :root{
   --premium-ease:cubic-bezier(.22,1,.36,1);
+  --premium-ease-soft:cubic-bezier(.16,1,.3,1);
   --premium-shadow:0 12px 34px rgba(63,38,24,.11),0 2px 8px rgba(63,38,24,.06);
   --premium-shadow-hover:0 18px 42px rgba(63,38,24,.15),0 4px 12px rgba(63,38,24,.07);
   --premium-ring:rgba(141,59,40,.14);
+  --premium-highlight:rgba(255,255,255,.72);
 }
 
 /* Header / brand: refined, not repositioned. */
@@ -33,9 +37,7 @@
   box-shadow:var(--premium-shadow);
   transition:box-shadow .24s var(--premium-ease),transform .24s var(--premium-ease),border-color .24s ease;
 }
-.hero-card:hover,.editor-card:hover,.resume-mini-card:hover,.template-card:hover{
-  box-shadow:var(--premium-shadow-hover);
-}
+.hero-card:hover,.editor-card:hover,.resume-mini-card:hover,.template-card:hover{box-shadow:var(--premium-shadow-hover)}
 .hero-card{isolation:isolate}
 .hero-card::before{
   content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
@@ -52,6 +54,9 @@ button.cta,.tip-cta,.primary,.add-btn,.use-template{
 }
 button.cta:hover,.tip-cta:hover,.primary:hover,.add-btn:hover,.use-template:hover{transform:translateY(-1px);box-shadow:0 11px 24px rgba(95,32,22,.18),inset 0 1px 0 rgba(255,255,255,.18)}
 button.cta:active,.tip-cta:active,.primary:active,.add-btn:active,.use-template:active{transform:translateY(1px) scale(.995)}
+button:focus-visible,.nav-item:focus-visible,.premium-chip:focus-visible,.icon-btn:focus-visible{
+  outline:none!important;box-shadow:0 0 0 3px rgba(165,106,84,.18),0 5px 16px rgba(63,38,24,.09)!important;
+}
 
 /* Icon/action tiles: quiet depth and micro-motion. */
 .action-card{background:linear-gradient(180deg,rgba(255,253,248,.96),rgba(255,249,239,.88))}
@@ -59,6 +64,20 @@ button.cta:active,.tip-cta:active,.primary:active,.add-btn:active,.use-template:
 .action-item:hover{background:rgba(255,255,255,.55);transform:translateY(-1px)}
 .action-icon{box-shadow:0 4px 10px rgba(68,44,28,.07),inset 0 1px 0 rgba(255,255,255,.6);transition:transform .22s var(--premium-ease),box-shadow .22s ease}
 .action-item:hover .action-icon{transform:translateY(-2px) scale(1.035);box-shadow:0 7px 15px rgba(68,44,28,.10),inset 0 1px 0 rgba(255,255,255,.7)}
+
+/* Figma-style segmented controls and filter chips. Existing geometry remains intact. */
+.segment-control,.segments,.filter-bar,.template-filters{isolation:isolate}
+.segment-control,.segments{
+  box-shadow:inset 0 1px 2px rgba(63,38,24,.055),0 2px 9px rgba(63,38,24,.045);
+  background:rgba(255,250,242,.82)!important;
+}
+.segment-control button,.segments button,.filter-chip,.category-chip{
+  transition:background .2s var(--premium-ease),box-shadow .2s var(--premium-ease),transform .18s var(--premium-ease),color .2s ease;
+}
+.segment-control button:hover,.segments button:hover,.filter-chip:hover,.category-chip:hover{transform:translateY(-1px)}
+.segment-control button.active,.segments button.active,.filter-chip.active,.category-chip.active{
+  box-shadow:0 3px 10px rgba(63,38,24,.09),inset 0 1px 0 rgba(255,255,255,.72)!important;
+}
 
 /* Template gallery: premium card depth and selected state. */
 .template-card{border-radius:15px!important;background:linear-gradient(180deg,#fffdf9,#fff9f1)!important;border-color:#e4d5c3!important}
@@ -70,15 +89,31 @@ button.cta:active,.tip-cta:active,.primary:active,.add-btn:active,.use-template:
 .template-card .badge{box-shadow:0 2px 7px rgba(63,38,24,.05)}
 
 /* Inputs: polished focus states while preserving existing sizes. */
-.field input,.field textarea,input,textarea{
+.field input,.field textarea,input,textarea,select{
   transition:border-color .18s ease,box-shadow .22s ease,background .22s ease;
 }
-.field input:hover,.field textarea:hover,input:hover,textarea:hover{box-shadow:0 3px 10px rgba(63,38,24,.045)}
-.field input:focus,.field textarea:focus,input:focus,textarea:focus{
+.field input:hover,.field textarea:hover,input:hover,textarea:hover,select:hover{box-shadow:0 3px 10px rgba(63,38,24,.045)}
+.field input:focus,.field textarea:focus,input:focus,textarea:focus,select:focus{
   border-color:#a56a54!important;
   box-shadow:0 0 0 4px rgba(165,106,84,.10),0 6px 16px rgba(63,38,24,.06)!important;
   background:#fffdf8!important;
 }
+
+/* Editor/design controls: layered cards, subtle dividers, premium affordance. */
+.editor-card,.design-card,.settings-card,.section-card{
+  border-color:rgba(229,213,191,.92);
+  background:linear-gradient(180deg,rgba(255,253,249,.98),rgba(250,243,233,.92));
+}
+.editor-card h3,.design-card h3,.settings-card h3{letter-spacing:-.2px}
+.add-row,.tool-btn,.ghost,.icon-btn{
+  box-shadow:0 3px 10px rgba(63,38,24,.055),inset 0 1px 0 rgba(255,255,255,.72);
+}
+.add-row:hover,.tool-btn:hover,.ghost:hover,.icon-btn:hover{box-shadow:0 6px 15px rgba(63,38,24,.09),inset 0 1px 0 rgba(255,255,255,.8)}
+
+/* Preview / resume paper: restrained depth suitable for a professional resume product. */
+.preview-canvas{background:linear-gradient(145deg,rgba(244,234,219,.76),rgba(255,250,242,.94))!important}
+.resume-paper{box-shadow:0 20px 48px rgba(43,28,20,.16),0 3px 10px rgba(43,28,20,.07)!important;transition:box-shadow .25s var(--premium-ease),transform .25s var(--premium-ease)}
+.resume-paper:hover{box-shadow:0 24px 58px rgba(43,28,20,.19),0 4px 12px rgba(43,28,20,.08)!important}
 
 /* Navigation: premium glass depth, same fixed position and tap targets. */
 .bottom-nav{
@@ -92,11 +127,23 @@ button.cta:active,.tip-cta:active,.primary:active,.add-btn:active,.use-template:
 .nav-item.active{background:rgba(141,59,40,.065);border-radius:13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
 .nav-item:active{transform:scale(.97)}
 
+/* Sheets / dialogs: Figma-style layered surface treatment, behavior unchanged. */
+.sheet-card,.modal-card,.dialog-card{
+  box-shadow:0 24px 70px rgba(35,24,18,.20),0 4px 16px rgba(35,24,18,.08),inset 0 1px 0 rgba(255,255,255,.72)!important;
+}
+.sheet-card::before,.modal-card::before,.dialog-card::before{
+  content:"";display:block;width:34px;height:4px;margin:0 auto 7px;border-radius:999px;background:rgba(107,45,31,.14);
+}
+
 /* Toast / dialogs: polished surface, same behavior. */
 .toast{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 14px 34px rgba(25,20,16,.20),inset 0 1px 0 rgba(255,255,255,.08)!important}
 
+/* Premium micro-interaction for existing badges/status markers only. */
+.badge,.status-badge,.chip,.tag{transition:transform .18s var(--premium-ease),box-shadow .2s ease,background .2s ease}
+.badge:hover,.status-badge:hover,.chip:hover,.tag:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(63,38,24,.07)}
+
 /* Accessibility + reduced motion. */
 @media(prefers-reduced-motion:reduce){
-  .premium-chip,.hero-card,.action-item,.action-icon,.template-card,.template-card .template-preview,.field input,.field textarea,.nav-item,button.cta,.tip-cta,.primary,.add-btn,.use-template{transition:none!important}
+  .premium-chip,.hero-card,.action-item,.action-icon,.template-card,.template-card .template-preview,.field input,.field textarea,.nav-item,button.cta,.tip-cta,.primary,.add-btn,.use-template,.segment-control button,.segments button,.filter-chip,.category-chip,.resume-paper,.badge,.status-badge,.chip,.tag{transition:none!important}
   .premium-chip::after{display:none!important}
 }
