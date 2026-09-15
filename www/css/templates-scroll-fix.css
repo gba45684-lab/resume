@@ -1,0 +1,33 @@
+/* Templates scroll fix: isolated viewport scroller for native WebView + browser. */
+#templatesScreen.active{
+  box-sizing:border-box!important;
+  height:calc(100dvh - 78px)!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-y:contain!important;
+  touch-action:pan-y!important;
+  scroll-behavior:smooth!important;
+  padding-bottom:calc(120px + env(safe-area-inset-bottom))!important;
+}
+#templatesScreen.active .template-tools{
+  position:sticky!important;
+  top:0!important;
+  z-index:20!important;
+}
+#templatesScreen.active .template-grid{
+  display:grid!important;
+  height:auto!important;
+  min-height:max-content!important;
+  overflow:visible!important;
+  touch-action:pan-y!important;
+}
+#templatesScreen.active .template-card{touch-action:pan-y!important}
+@media(max-width:520px){
+  #templatesScreen.active{
+    height:calc(100dvh - 78px)!important;
+    max-height:calc(100dvh - 78px)!important;
+  }
+}
