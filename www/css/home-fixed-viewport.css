@@ -1,0 +1,22 @@
+/* Home fixed viewport: keep the approved Home composition in one place without page scrolling. */
+#homeScreen.active{
+  position:relative;
+  overflow:hidden!important;
+  overscroll-behavior:none;
+  touch-action:none;
+  height:100%;
+  min-height:0;
+  contain:layout paint;
+}
+#homeScreen.active > *{box-sizing:border-box;}
+#homeScreen.active .screen-root-inner,
+#homeScreen.active .home-content,
+#homeScreen.active .home-inner{transform-origin:top left;}
+
+/* Keep the page itself fixed while retaining browser pinch-zoom accessibility. */
+html:has(#homeScreen.active),
+body:has(#homeScreen.active){overflow:hidden;}
+
+@media(max-width:520px){
+  #homeScreen.active{width:100%;max-width:100%;}
+}
