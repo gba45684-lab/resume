@@ -1,0 +1,9 @@
+{
+  "version": "1.0.60",
+  "build": 60,
+  "schemaVersion": 3,
+  "updated": "2026-09-15T18:22:39.319Z",
+  "sha256": "443af311cf7bed0cbd77e25c12be70a4dd3da11655d13cafc3ed4635e992af27",
+  "rollbackEnabled": true,
+  "bundle": "index.html"
+}
