@@ -1,6 +1,6 @@
 name: Publish OTA update
 
-# ResuMate1-style OTA: publish only www/index.html + version.json to the ota branch.
+# ResuMate-style OTA: publish only www/index.html + version.json to the ota branch.
 on:
   push:
     branches: [main]
@@ -54,36 +54,43 @@ jobs:
       - name: Full project audit
         run: node scripts/audit-project.mjs
 
-      - name: Prepare OTA payload
+      - name: Build and publish OTA atomically
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           rm -rf "$OTA_OUT"
+          mkdir -p "$OTA_OUT"
+
           node scripts/publish-ota.mjs "${{ steps.build.outputs.next }}" "$OTA_OUT"
+
           test -s "$OTA_OUT/index.html"
           test -s "$OTA_OUT/version.json"
           echo "OTA payload verified at $OTA_OUT"
           ls -la "$OTA_OUT"
 
-      - name: Publish to ota branch
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          test -d "$OTA_OUT"
-          test -s "$OTA_OUT/index.html"
-          test -s "$OTA_OUT/version.json"
           cd "$OTA_OUT"
           git init -q
           git config user.name "resumate-ota-bot"
           git config user.email "actions@users.noreply.github.com"
           git add index.html version.json
+          git diff --cached --quiet && { echo "ERROR: OTA payload is empty"; exit 1; }
           git commit -q -m "OTA build ${{ steps.build.outputs.next }} (from ${{ github.sha }})"
           git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git push --force origin HEAD:ota
 
+      - name: Verify published OTA
+        run: |
+          set -euo pipefail
+          git fetch origin ota --depth 1
+          PUBLISHED_BUILD=$(git show origin/ota:version.json | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{const v=JSON.parse(d); console.log(v.build)})")
+          EXPECTED_BUILD="${{ steps.build.outputs.next }}"
+          test "$PUBLISHED_BUILD" = "$EXPECTED_BUILD"
+          echo "OTA publication verified: build $PUBLISHED_BUILD"
+
       - name: Summary
         run: |
-          echo "### OTA build ${{ steps.build.outputs.next }} published" >> "$GITHUB_STEP_SUMMARY"
+          echo "### OTA build ${{ steps.build.outputs.next }} published and verified" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "- Manifest: https://raw.githubusercontent.com/${{ github.repository }}/ota/version.json" >> "$GITHUB_STEP_SUMMARY"
           echo "- Bundle: https://raw.githubusercontent.com/${{ github.repository }}/ota/index.html" >> "$GITHUB_STEP_SUMMARY"
