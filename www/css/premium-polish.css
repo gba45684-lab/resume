@@ -1,0 +1,102 @@
+/* ResuMate Premium Visual System
+   Visual-only layer: no layout flow, navigation, data, event handlers, or feature behavior changes.
+   Inspired by modern open-source component systems and Figma UI-kit patterns.
+*/
+:root{
+  --premium-ease:cubic-bezier(.22,1,.36,1);
+  --premium-shadow:0 12px 34px rgba(63,38,24,.11),0 2px 8px rgba(63,38,24,.06);
+  --premium-shadow-hover:0 18px 42px rgba(63,38,24,.15),0 4px 12px rgba(63,38,24,.07);
+  --premium-ring:rgba(141,59,40,.14);
+}
+
+/* Header / brand: refined, not repositioned. */
+.app-header{
+  box-shadow:0 1px 0 rgba(92,59,39,.05),0 8px 24px rgba(72,45,28,.045);
+  background:linear-gradient(180deg,rgba(255,250,242,.98),rgba(248,241,230,.94));
+}
+.brand-title{letter-spacing:-.7px;text-shadow:0 1px 0 rgba(255,255,255,.75)}
+.premium-chip{
+  position:relative;overflow:hidden;
+  box-shadow:0 4px 12px rgba(107,45,31,.08),inset 0 1px 0 rgba(255,255,255,.75);
+  transition:transform .22s var(--premium-ease),box-shadow .22s var(--premium-ease),border-color .22s ease;
+}
+.premium-chip::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 25%,rgba(255,255,255,.55) 50%,transparent 75%);
+  transform:translateX(-130%);transition:transform .65s var(--premium-ease);
+}
+.premium-chip:hover{transform:translateY(-1px);box-shadow:0 7px 17px rgba(107,45,31,.12),inset 0 1px 0 rgba(255,255,255,.8);border-color:#d8b58c}
+.premium-chip:hover::after{transform:translateX(130%)}
+
+/* Universal premium surfaces: preserve existing geometry. */
+.hero-card,.action-card,.editor-card,.tip-card,.resume-mini-card,.preview-canvas,.template-card,.sheet-card{
+  box-shadow:var(--premium-shadow);
+  transition:box-shadow .24s var(--premium-ease),transform .24s var(--premium-ease),border-color .24s ease;
+}
+.hero-card:hover,.editor-card:hover,.resume-mini-card:hover,.template-card:hover{
+  box-shadow:var(--premium-shadow-hover);
+}
+.hero-card{isolation:isolate}
+.hero-card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(115deg,rgba(255,255,255,.42),transparent 34%,transparent 72%,rgba(180,138,74,.055));
+  opacity:.8;
+}
+
+/* Buttons: premium tactile treatment without changing labels or actions. */
+button.cta,.tip-cta,.add-row,.primary,.add-btn,.tool-btn,.ghost,.icon-btn,.use-template,.text-link{
+  transition:transform .18s var(--premium-ease),box-shadow .22s var(--premium-ease),border-color .22s ease,background .22s ease;
+}
+button.cta,.tip-cta,.primary,.add-btn,.use-template{
+  box-shadow:0 7px 18px rgba(95,32,22,.14),inset 0 1px 0 rgba(255,255,255,.16);
+}
+button.cta:hover,.tip-cta:hover,.primary:hover,.add-btn:hover,.use-template:hover{transform:translateY(-1px);box-shadow:0 11px 24px rgba(95,32,22,.18),inset 0 1px 0 rgba(255,255,255,.18)}
+button.cta:active,.tip-cta:active,.primary:active,.add-btn:active,.use-template:active{transform:translateY(1px) scale(.995)}
+
+/* Icon/action tiles: quiet depth and micro-motion. */
+.action-card{background:linear-gradient(180deg,rgba(255,253,248,.96),rgba(255,249,239,.88))}
+.action-item{transition:background .2s ease,transform .2s var(--premium-ease)}
+.action-item:hover{background:rgba(255,255,255,.55);transform:translateY(-1px)}
+.action-icon{box-shadow:0 4px 10px rgba(68,44,28,.07),inset 0 1px 0 rgba(255,255,255,.6);transition:transform .22s var(--premium-ease),box-shadow .22s ease}
+.action-item:hover .action-icon{transform:translateY(-2px) scale(1.035);box-shadow:0 7px 15px rgba(68,44,28,.10),inset 0 1px 0 rgba(255,255,255,.7)}
+
+/* Template gallery: premium card depth and selected state. */
+.template-card{border-radius:15px!important;background:linear-gradient(180deg,#fffdf9,#fff9f1)!important;border-color:#e4d5c3!important}
+.template-card:hover{transform:translateY(-3px);border-color:#d5b892!important}
+.template-card:active{transform:translateY(0) scale(.995)!important}
+.template-card .template-preview{box-shadow:inset 0 0 0 1px rgba(91,61,40,.045),0 7px 15px rgba(63,38,24,.07);transition:box-shadow .24s ease,transform .24s var(--premium-ease)}
+.template-card:hover .template-preview{box-shadow:inset 0 0 0 1px rgba(141,59,40,.09),0 10px 20px rgba(63,38,24,.10);transform:translateY(-1px)}
+.template-card.active{border-color:#a56a54!important;box-shadow:0 0 0 3px var(--premium-ring),var(--premium-shadow-hover)!important}
+.template-card .badge{box-shadow:0 2px 7px rgba(63,38,24,.05)}
+
+/* Inputs: polished focus states while preserving existing sizes. */
+.field input,.field textarea,input,textarea{
+  transition:border-color .18s ease,box-shadow .22s ease,background .22s ease;
+}
+.field input:hover,.field textarea:hover,input:hover,textarea:hover{box-shadow:0 3px 10px rgba(63,38,24,.045)}
+.field input:focus,.field textarea:focus,input:focus,textarea:focus{
+  border-color:#a56a54!important;
+  box-shadow:0 0 0 4px rgba(165,106,84,.10),0 6px 16px rgba(63,38,24,.06)!important;
+  background:#fffdf8!important;
+}
+
+/* Navigation: premium glass depth, same fixed position and tap targets. */
+.bottom-nav{
+  background:rgba(255,250,242,.94)!important;
+  backdrop-filter:blur(18px) saturate(1.08);
+  -webkit-backdrop-filter:blur(18px) saturate(1.08);
+  border-top:1px solid rgba(229,213,191,.88)!important;
+  box-shadow:0 -10px 30px rgba(72,45,28,.08)!important;
+}
+.nav-item{transition:transform .18s var(--premium-ease),color .2s ease,background .2s ease}
+.nav-item.active{background:rgba(141,59,40,.065);border-radius:13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+.nav-item:active{transform:scale(.97)}
+
+/* Toast / dialogs: polished surface, same behavior. */
+.toast{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 14px 34px rgba(25,20,16,.20),inset 0 1px 0 rgba(255,255,255,.08)!important}
+
+/* Accessibility + reduced motion. */
+@media(prefers-reduced-motion:reduce){
+  .premium-chip,.hero-card,.action-item,.action-icon,.template-card,.template-card .template-preview,.field input,.field textarea,.nav-item,button.cta,.tip-cta,.primary,.add-btn,.use-template{transition:none!important}
+  .premium-chip::after{display:none!important}
+}
