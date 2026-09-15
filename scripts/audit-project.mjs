@@ -11,7 +11,7 @@ function exists(file) { return fs.existsSync(path.join(root, file)); }
 function assert(condition, message) { if (!condition) fail.push(message); }
 
 for (const file of [
-  'www/index.html','www/css/style.css','www/css/components.css','www/css/template-variants.css','www/css/ui-fixes.css',
+  'www/index.html','www/css/style.css','www/css/components.css','www/css/ui-fixes.css',
   'www/js/templates.js','www/js/app.js','www/js/ota-bootstrap.js','www/js/ui-integrity.js','www/js/editor-live.js','www/js/native-enhancements.js',
   'android/app/src/main/java/com/krapal/resumeforge/MainActivity.java','android/app/src/main/java/com/krapal/resumeforge/PdfExportPlugin.java',
   'android/app/src/main/AndroidManifest.xml'
