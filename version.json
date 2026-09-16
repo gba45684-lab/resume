@@ -1,9 +1,9 @@
 {
-  "version": "1.0.86",
-  "build": 86,
+  "version": "1.0.87",
+  "build": 87,
   "schemaVersion": 3,
-  "updated": "2026-09-16T11:50:16.303Z",
-  "sha256": "d41fca1d338fe6c7f01823188c1461f82334efaa1da81d253ee68eebb3dad35f",
+  "updated": "2026-09-16T11:50:44.141Z",
+  "sha256": "a8734aca2c7e69da2e1b4272ba88801532d9c7cf6f6574b75e1c3a6f09b6ceea",
   "rollbackEnabled": true,
   "bundle": "index.html"
 }
