@@ -1,82 +1,33 @@
-/* Premium animated template gallery. Scoped to #templatesScreen only. */
+/* ResuMate Premium Templates — exact five-card standalone gallery integrated into Templates screen only. */
 (() => {
   'use strict';
-  const reduceMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-
-  function modal() {
-    let el = document.getElementById('resumateGalleryModal');
-    if (el) return el;
-    el = document.createElement('div');
-    el.id = 'resumateGalleryModal';
-    el.innerHTML = '<div class="gallery-modal-box" role="dialog" aria-modal="true" aria-label="Template quick preview"><div class="gallery-modal-head"><span class="gallery-modal-title">Template preview</span><button class="gallery-modal-close" type="button" aria-label="Close preview">×</button></div><div class="gallery-modal-preview"></div><div class="gallery-modal-copy">Quick preview. Use the existing template card action to open the full ResuMate editor/preview flow.</div></div>';
-    document.body.appendChild(el);
-    const close = () => el.classList.remove('is-open');
-    el.querySelector('.gallery-modal-close').addEventListener('click', close);
-    el.addEventListener('click', e => { if (e.target === el) close(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-    return el;
-  }
-
-  function enhance() {
-    const screen = document.getElementById('templatesScreen');
-    if (!screen || !screen.classList.contains('active')) return;
-    const cards = screen.querySelectorAll('.template-card');
-    cards.forEach((card, index) => {
-      if (card.dataset.galleryEnhanced === 'true') return;
-      card.dataset.galleryEnhanced = 'true';
-      if (index < 5) card.dataset.premiumFeatured = 'true';
-
-      const host = card.querySelector('button');
-      const preview = card.querySelector('.template-preview');
-      if (!host || !preview) return;
-
-      const shine = document.createElement('span');
-      shine.className = 'gallery-shine';
-      host.appendChild(shine);
-
-      const detail = document.createElement('span');
-      detail.className = 'gallery-detail';
-      detail.textContent = 'Quick preview';
-      host.appendChild(detail);
-
-      if (!reduceMotion()) {
-        card.addEventListener('pointermove', e => {
-          if (e.pointerType === 'touch') return;
-          const r = card.getBoundingClientRect();
-          const x = (e.clientX - r.left) / r.width;
-          const y = (e.clientY - r.top) / r.height;
-          const rx = (0.5 - y) * 6;
-          const ry = (x - 0.5) * 8;
-          card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
-          preview.style.setProperty('--gallery-x', `${x * 100}%`);
-          preview.style.setProperty('--gallery-y', `${y * 100}%`);
-        });
-        card.addEventListener('pointerleave', () => { card.style.transform = ''; });
-      }
-
-      // Desktop quick-preview: Alt/Option + click. Normal click keeps the app's existing template flow.
-      host.addEventListener('click', e => {
-        if (!e.altKey) return;
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        const m = modal();
-        m.querySelector('.gallery-modal-title').textContent = card.querySelector('.template-meta b')?.textContent || 'Template preview';
-        const target = m.querySelector('.gallery-modal-preview');
-        target.innerHTML = '';
-        const clone = preview.cloneNode(true);
-        clone.querySelectorAll('[data-template-detail]').forEach(x => x.removeAttribute('data-template-detail'));
-        target.appendChild(clone);
-        m.classList.add('is-open');
-      }, true);
-    });
-  }
-
-  const observer = new MutationObserver(() => requestAnimationFrame(enhance));
-  const start = () => {
-    const root = document.getElementById('screenRoot') || document.body;
-    observer.observe(root, { childList: true, subtree: true });
-    enhance();
-  };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
-  else start();
+  const css = `
+#templatesScreen.premium-gallery-host{background:radial-gradient(circle at 15% 0%,#24204d 0,transparent 34%),radial-gradient(circle at 85% 15%,#073f58 0,transparent 30%),#070914!important;color:#f7f8ff;overflow:auto}
+#templatesScreen.premium-gallery-host .premium-gallery-page{max-width:1320px;margin:auto;padding:28px 24px 70px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+#templatesScreen.premium-gallery-host .premium-hero{text-align:center;margin:10px auto 28px;max-width:760px}.premium-gallery-page .premium-eyebrow{display:inline-flex;padding:8px 13px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.06);color:#c9c4ff;font-size:12px;letter-spacing:.12em;text-transform:uppercase}.premium-gallery-page .premium-hero h1{font-size:clamp(38px,6vw,72px);line-height:.98;margin:18px 0 14px;letter-spacing:-.055em;color:#f7f8ff}.premium-gallery-page .premium-hero p{color:#aeb6d2;font-size:16px;line-height:1.7;margin:0}
+.premium-gallery-toolbar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:26px 0 34px}.premium-gallery-filter{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#dce2fa;border-radius:999px;padding:10px 16px;cursor:pointer;transition:.25s}.premium-gallery-filter:hover,.premium-gallery-filter.active{background:#fff;color:#111;transform:translateY(-2px)}
+.premium-gallery-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}.premium-gallery-card{position:relative;min-width:0;transform-style:preserve-3d;transition:transform .18s ease,box-shadow .3s ease;isolation:isolate}.premium-gallery-card::before{content:"";position:absolute;inset:-1px;border-radius:24px;background:conic-gradient(from var(--angle),transparent,#8b7cff,#38d9ff,transparent 42%);z-index:-2;opacity:0;transition:opacity .3s}.premium-gallery-card:hover::before,.premium-gallery-card:focus-within::before{opacity:1}.premium-gallery-card::after{content:"";position:absolute;inset:1px;border-radius:23px;background:rgba(18,22,42,.72);z-index:-1;backdrop-filter:blur(20px)}.premium-gallery-card-inner{padding:12px;border:1px solid rgba(255,255,255,.12);border-radius:24px;overflow:hidden}.premium-preview-wrap{position:relative;aspect-ratio:210/297;overflow:hidden;border-radius:16px;background:#e9ecf5;cursor:zoom-in;transform:translateZ(25px)}.premium-preview{width:100%;height:100%;transition:transform .55s cubic-bezier(.2,.8,.2,1)}.premium-gallery-card:hover .premium-preview{transform:scale(1.035)}.premium-spotlight{position:absolute;inset:0;pointer-events:none;background:radial-gradient(180px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.2),transparent 60%);mix-blend-mode:screen}.premium-badge{position:absolute;top:12px;left:12px;background:rgba(8,10,20,.72);backdrop-filter:blur(12px);padding:7px 9px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.premium-info{padding:16px 5px 5px}.premium-info h2{font-size:17px;margin:0 0 6px;color:#f7f8ff}.premium-info p{margin:0;color:#aeb6d2;font-size:12px;line-height:1.5}.premium-actions{display:flex;gap:8px;margin-top:14px}.premium-btn{flex:1;border-radius:12px;padding:10px 8px;font-weight:700;font-size:12px;cursor:pointer;transition:.25s}.premium-primary{background:#fff;color:#10121c;border:0}.premium-secondary{background:rgba(255,255,255,.07);color:#e9edff;border:1px solid rgba(255,255,255,.12)}.premium-btn:hover{transform:translateY(-2px)}.premium-details{max-height:0;overflow:hidden;opacity:0;transition:.35s ease;color:#aeb6d2;font-size:11px;line-height:1.6}.premium-gallery-card.open .premium-details{max-height:140px;opacity:1;margin-top:10px}.premium-details strong{color:#fff}
+@property --angle{syntax:"<angle>";initial-value:0deg;inherits:false}@keyframes premiumGallerySpin{to{--angle:360deg}}.premium-gallery-card:hover{animation:premiumGallerySpin 3s linear infinite}
+#premiumGalleryModal{position:fixed;inset:0;background:rgba(3,5,12,.82);backdrop-filter:blur(18px);display:grid;place-items:center;padding:22px;opacity:0;pointer-events:none;transition:.25s;z-index:99999}.premium-modal-show{opacity:1!important;pointer-events:auto!important}.premium-modal-box{width:min(520px,100%);max-height:90vh;overflow:auto;background:#f4f6fb;color:#151827;border-radius:24px;padding:16px;box-shadow:0 30px 100px rgba(0,0,0,.5)}.premium-modal-head{display:flex;justify-content:space-between;align-items:center;padding:4px 4px 12px}.premium-modal-close{border:0;background:#e3e6ef;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px}.premium-modal-preview{width:100%;background:#fff;border-radius:14px;overflow:hidden}.premium-modal-preview>div{width:100%;height:100%}.premium-modal-hint{text-align:center;color:#7c849a;font-size:11px;margin:10px 0 0}
+@media(max-width:1100px){.premium-gallery-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){#templatesScreen.premium-gallery-host .premium-gallery-page{padding:22px 14px 50px}.premium-gallery-grid{grid-template-columns:repeat(2,1fr);gap:12px}.premium-gallery-card-inner{padding:9px}.premium-info h2{font-size:15px}.premium-gallery-page .premium-hero h1{font-size:42px}}@media(max-width:460px){.premium-gallery-grid{grid-template-columns:1fr}.premium-preview-wrap{aspect-ratio:210/297}}@media(prefers-reduced-motion:reduce){.premium-gallery-card,.premium-preview,.premium-btn,#premiumGalleryModal,.premium-modal-box{transition:none!important}.premium-gallery-card:hover{animation:none!important}.premium-gallery-card:hover .premium-preview{transform:none!important}}
+`;
+  const templates = [
+    {name:'Aurora',type:'Creative',tag:'Popular',desc:'Bold editorial layout with a modern visual hierarchy.',html:`<div style="height:100%;padding:22px;background:#fff;color:#171526;font:7px Arial"><div style="height:16%;background:linear-gradient(135deg,#765cff,#b18cff);border-radius:6px;padding:12px;color:white"><b style="font-size:15px">ALEX MORGAN</b><br>Product Designer</div><div style="display:grid;grid-template-columns:35% 1fr;gap:12px;margin-top:14px"><aside><b>CONTACT</b><hr><p>alex@email.com<br>New York, NY<br>linkedin.com/in/alex</p><b>SKILLS</b><hr><p>Figma<br>Research<br>Strategy<br>Prototyping</p></aside><article><b>EXPERIENCE</b><hr><b>Senior Product Designer</b><p>Led product discovery and shipped experiences used by millions.</p><b>Product Designer</b><p>Built scalable design systems and improved conversion.</p><b>EDUCATION</b><hr><b>BFA Interaction Design</b><p>Design Institute</p></article></div></div>`},
+    {name:'Atlas',type:'Executive',tag:'Executive',desc:'Confident two-column structure designed for senior roles.',html:`<div style="height:100%;padding:22px;background:#fbfbfc;color:#172033;font:7px Georgia"><div style="border-bottom:5px solid #1d5eff;padding-bottom:10px"><b style="font:22px Georgia">JORDAN REED</b><br><span style="letter-spacing:2px">CHIEF OPERATING OFFICER</span></div><div style="display:grid;grid-template-columns:1fr 1.7fr;gap:18px;margin-top:15px"><aside><b>PROFILE</b><hr><p>Strategic operator with 12+ years building high-performance teams.</p><b>CORE SKILLS</b><hr><p>Operations<br>Leadership<br>Growth<br>Finance</p><b>EDUCATION</b><hr><p>MBA • Wharton</p></aside><article><b>PROFESSIONAL EXPERIENCE</b><hr><b>VP Operations — Northstar</b><p>Scaled global operations across 18 markets and optimized margin.</p><b>Director — Meridian</b><p>Built cross-functional teams and delivered major transformation.</p><b>SELECTED IMPACT</b><hr><p>+42% efficiency &nbsp; • &nbsp; $18M savings</p></article></div></div>`},
+    {name:'Mono',type:'ATS',tag:'ATS Ready',desc:'Clean single-column structure optimized for scanning.',html:`<div style="height:100%;padding:24px;background:white;color:#20232b;font:7px Arial"><div style="text-align:center;border-bottom:1px solid #222;padding-bottom:12px"><b style="font-size:18px;letter-spacing:1px">SAM TAYLOR</b><br>SOFTWARE ENGINEER • sam.taylor@email.com • Austin, TX</div><section style="margin-top:15px"><b>SUMMARY</b><hr><p>Software engineer specializing in distributed systems, APIs and cloud infrastructure.</p><b>EXPERIENCE</b><hr><b>Senior Software Engineer — Vertex</b><p>Designed reliable services, reduced latency 38%, and mentored 6 engineers.</p><b>Software Engineer — Nova</b><p>Built APIs and automated deployment workflows.</p><b>EDUCATION</b><hr><p>B.S. Computer Science — UT Austin</p><b>TECHNOLOGIES</b><hr><p>TypeScript • Python • AWS • PostgreSQL • Docker • Kubernetes</p></section></div>`},
+    {name:'Lumen',type:'Creative',tag:'New',desc:'Soft editorial aesthetic with elegant visual rhythm.',html:`<div style="height:100%;padding:22px;background:#fff8f2;color:#342824;font:7px Georgia"><div style="display:flex;justify-content:space-between;align-items:end"><div><span style="color:#e16b54;font-size:9px">CREATIVE PROFESSIONAL</span><br><b style="font-size:21px">MAYA CHEN</b></div><div style="font-size:6px;text-align:right">maya@email.com<br>Los Angeles, CA</div></div><div style="height:3px;background:#e16b54;margin:12px 0 15px"></div><p style="font-size:8px">Brand strategist creating memorable identities, campaigns and digital experiences.</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px"><div><b>EXPERIENCE</b><hr><b>Brand Strategist</b><p>Built brand systems for global consumer launches.</p><b>Creative Lead</b><p>Directed campaigns across web and social.</p></div><div><b>EXPERTISE</b><hr><p>Brand Strategy<br>Art Direction<br>Campaigns<br>Storytelling</p><b>EDUCATION</b><hr><p>BA Communications</p></div></div></div>`},
+    {name:'Vertex',type:'ATS',tag:'Minimal',desc:'Precise modern layout for technical and analytical careers.',html:`<div style="height:100%;padding:22px;background:#f9fffe;color:#182827;font:7px Arial"><div style="display:flex;gap:12px"><div style="width:42px;height:42px;border-radius:50%;background:#13a89e"></div><div><b style="font-size:17px">PRIYA SHAH</b><br>Data & Analytics Lead<br><span style="color:#13a89e">priya.shah@email.com • Bengaluru, India</span></div></div><hr style="margin:15px 0;border:0;border-top:1px solid #c7dedb"><b>PROFESSIONAL SUMMARY</b><p>Analytics leader translating complex data into measurable business outcomes.</p><b>EXPERIENCE</b><hr><b>Analytics Manager — Axis Labs</b><p>Built Power BI reporting and automated decision dashboards.</p><b>Data Analyst — Insight Co.</b><p>Improved reporting accuracy and reduced manual analysis.</p><b>SKILLS</b><hr><p>SQL • Power BI • Python • Excel • Data Modeling • Forecasting</p></div>`}
+  ];
+  let styleInjected=false, built=false, observer;
+  const reduced=()=>window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  function injectStyle(){if(styleInjected)return;const s=document.createElement('style');s.id='premium-template-gallery-runtime';s.textContent=css;document.head.appendChild(s);styleInjected=true}
+  function modal(){let m=document.getElementById('premiumGalleryModal');if(m)return m;m=document.createElement('div');m.id='premiumGalleryModal';m.innerHTML='<div class="premium-modal-box" role="dialog" aria-modal="true" aria-label="Resume preview"><div class="premium-modal-head"><strong class="premium-modal-title">Preview</strong><button class="premium-modal-close" aria-label="Close preview">×</button></div><div class="premium-modal-preview"></div><p class="premium-modal-hint">Press Escape or tap outside to close.</p></div>';document.body.appendChild(m);const close=()=>m.classList.remove('premium-modal-show');m.querySelector('.premium-modal-close').onclick=close;m.onclick=e=>{if(e.target===m)close()};document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});return m}
+  function chooseExisting(index){const cards=document.querySelectorAll('#templatesScreen .template-card');const old=cards[index];if(old){old.querySelector('button')?.click();return}const id=index+1;try{localStorage.setItem('resumate_template_v3',String(id));}catch{} }
+  function card(t,index){const el=document.createElement('article');el.className='premium-gallery-card';el.tabIndex=0;el.innerHTML=`<div class="premium-gallery-card-inner"><div class="premium-preview-wrap" role="button" tabindex="0" aria-label="Preview ${t.name}"><div class="premium-preview">${t.html}</div><span class="premium-badge">${t.tag}</span><span class="premium-spotlight"></span></div><div class="premium-info"><h2>${t.name}</h2><p>${t.desc}</p><div class="premium-details"><strong>Style:</strong> ${t.type} · <strong>Best for:</strong> ${t.type==='Executive'?'leadership & management':t.type==='ATS'?'technical & corporate roles':'design, marketing & creative roles'}</div><div class="premium-actions"><button class="premium-btn premium-secondary details-btn">Details</button><button class="premium-btn premium-primary use-btn">Use Template</button></div></div></div>`;
+    const preview=el.querySelector('.premium-preview-wrap');
+    if(!reduced())el.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;el.style.transform=`perspective(900px) rotateX(${-y*7}deg) rotateY(${x*9}deg) translateY(-5px)`;preview.style.setProperty('--mx',`${(x+.5)*100}%`);preview.style.setProperty('--my',`${(y+.5)*100}%`)});
+    el.addEventListener('pointerleave',()=>el.style.transform='');el.querySelector('.details-btn').onclick=()=>el.classList.toggle('open');el.querySelector('.use-btn').onclick=()=>chooseExisting(index);const open=()=>{const m=modal();m.querySelector('.premium-modal-title').textContent=`${t.name} — ${t.type}`;m.querySelector('.premium-modal-preview').innerHTML=t.html;m.classList.add('premium-modal-show')};preview.onclick=open;preview.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}};return el}
+  function build(){const screen=document.getElementById('templatesScreen');if(!screen||!screen.classList.contains('active')||built)return;injectStyle();screen.classList.add('premium-gallery-host');screen.innerHTML='<div class="premium-gallery-page"><section class="premium-hero"><span class="premium-eyebrow">ResuMate • Premium Collection</span><h1>Make your resume impossible to ignore.</h1><p>Five polished resume directions with immersive previews, subtle depth, and fast template selection.</p></section><div class="premium-gallery-toolbar" aria-label="Template filters"><button class="premium-gallery-filter active" data-filter="all">All</button><button class="premium-gallery-filter" data-filter="ats">ATS</button><button class="premium-gallery-filter" data-filter="creative">Creative</button><button class="premium-gallery-filter" data-filter="executive">Executive</button></div><section class="premium-gallery-grid" aria-label="Resume templates"></section></div>';const grid=screen.querySelector('.premium-gallery-grid');templates.forEach((t,i)=>{const c=card(t,i);c.dataset.filter=t.type.toLowerCase();grid.appendChild(c)});screen.querySelectorAll('.premium-gallery-filter').forEach(b=>b.onclick=()=>{screen.querySelectorAll('.premium-gallery-filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');const f=b.dataset.filter;screen.querySelectorAll('.premium-gallery-card').forEach(c=>c.hidden=f!=='all'&&c.dataset.filter!==f)});built=true}
+  function watch(){const screen=document.getElementById('templatesScreen');if(!screen)return;observer=new MutationObserver(()=>{if(screen.classList.contains('active')){if(!screen.classList.contains('premium-gallery-host')){built=false;build()}}else built=false});observer.observe(screen,{childList:true,subtree:false});if(screen.classList.contains('active'))build()}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch,{once:true});else watch();
 })();
