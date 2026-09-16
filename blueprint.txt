@@ -1,0 +1,14 @@
+Act as a Principal Mobile Architect building a TapUniverse-grade Capacitor app. Rewrite index.html completely into a unified, single-file application. Do NOT use fragmented fix scripts.
+
+STRICT ARCHITECTURAL CONSTRAINTS:
+1. LAYOUT & SAFE AREAS: Use `min-height: 100dvh`. Apply `padding-top: env(safe-area-inset-top)` and `padding-bottom: env(safe-area-inset-bottom)` to the body to prevent the UI from hiding under Android system bars. No horizontal scrolling ever.
+2. DESIGN SYSTEM: Implement Apple VisionOS Spatial Glassmorphism. Dark background (`#04070d`), frosted glass panels (`backdrop-filter: blur(20px)`), and 1px iridescent borders.
+3. PERFORMANCE (EVENT DELEGATION): Generate an array of 100 template objects. Render a 3D Coverflow carousel. You MUST use Event Delegation—attach exactly ONE click event listener to the parent carousel track, not 100 listeners to individual cards, to prevent memory leaks.
+4. STRUCTURAL TEMPLATE ENGINE: The editor preview must physically restructure the DOM using CSS Grid based on the active template. 
+   - 'Executive' templates MUST use `grid-cols-[1fr_2.5fr]` (sidebar for skills/contact, main for experience).
+   - 'Minimal' templates MUST use `flex-col` single-column layout. 
+   Do not just swap colors; swap CSS Grid layouts.
+5. A4 SCALING: The resume preview container must use `aspect-ratio: 210 / 297` and `width: 100%` so it perfectly auto-scales on any phone screen while maintaining exact physical print proportions.
+6. CAPACITOR EXPORT: The export button must trigger `Capacitor.Plugins.PdfExportPlugin.savePdf({ html: ... })` with a fallback to `window.print()`.
+
+Output ONLY the raw, complete HTML file (with embedded CSS and JS). No markdown fences, no explanations.

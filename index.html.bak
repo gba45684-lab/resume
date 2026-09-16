@@ -30,23 +30,23 @@
             }
           },
           animation: {
-            'float-slow': 'float 8s ease-in-out infinite',
-            'float-reverse': 'floatReverse 10s ease-in-out infinite',
-            'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
-            'shimmer': 'shimmer 3s linear infinite',
+            'float-slow': 'float 12s ease-in-out infinite',
+            'float-reverse': 'floatReverse 14s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 6s ease-in-out infinite',
+            'shimmer': 'shimmer 4s linear infinite',
           },
           keyframes: {
             float: {
-              '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
-              '50%': { transform: 'translate(20px, -25px) scale(1.08)' },
+              '0%, 100%': { transform: 'translate(0px, 0px) scale(1) rotate(0deg)' },
+              '50%': { transform: 'translate(25px, -35px) scale(1.1) rotate(5deg)' },
             },
             floatReverse: {
-              '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
-              '50%': { transform: 'translate(-25px, 20px) scale(1.12)' },
+              '0%, 100%': { transform: 'translate(0px, 0px) scale(1) rotate(0deg)' },
+              '50%': { transform: 'translate(-35px, 25px) scale(1.15) rotate(-5deg)' },
             },
             pulseGlow: {
-              '0%, 100%': { opacity: '0.4' },
-              '50%': { opacity: '0.8' },
+              '0%, 100%': { opacity: '0.35', filter: 'blur(100px)' },
+              '50%': { opacity: '0.7', filter: 'blur(130px)' },
             },
             shimmer: {
               '0%': { transform: 'translateX(-100%)' },
@@ -68,15 +68,16 @@
     * { 
       -webkit-tap-highlight-color: transparent; 
       box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     
     body {
       padding-top: var(--safe-top);
-      padding-bottom: calc(var(--safe-bottom) + 90px);
+      padding-bottom: calc(var(--safe-bottom) + 100px);
       user-select: none;
       touch-action: manipulation;
-      -webkit-font-smoothing: antialiased;
-      background-color: #050811;
+      background-color: #03050a;
       overflow-x: hidden;
     }
 
@@ -89,44 +90,61 @@
 
     /* VisionOS Spatial Glassmorphism Elements */
     .spatial-glass {
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(28px) saturate(190%);
-      -webkit-backdrop-filter: blur(28px) saturate(190%);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-top: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(30px) saturate(210%);
+      -webkit-backdrop-filter: blur(30px) saturate(210%);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-top: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 
+        0 4px 30px rgba(0, 0, 0, 0.03),
+        0 16px 40px -10px rgba(0, 0, 0, 0.05),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.6);
     }
 
     .dark .spatial-glass {
-      background: rgba(15, 23, 42, 0.55);
-      backdrop-filter: blur(28px) saturate(190%);
-      -webkit-backdrop-filter: blur(28px) saturate(190%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-top: 1px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+      background: rgba(18, 24, 38, 0.45);
+      backdrop-filter: blur(30px) saturate(210%);
+      -webkit-backdrop-filter: blur(30px) saturate(210%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 
+        0 4px 30px rgba(0, 0, 0, 0.2),
+        0 20px 50px -15px rgba(0, 0, 0, 0.5), 
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     .spatial-card {
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
     }
     .spatial-card:hover {
-      transform: translateY(-2px) scale(1.005);
+      transform: translateY(-4px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 
+        0 20px 40px -10px rgba(0, 0, 0, 0.4),
+        0 0 20px 2px rgba(255, 255, 255, 0.05);
+    }
+    .spatial-card:active {
+      transform: translateY(-1px) scale(0.99);
     }
 
     /* Iridescent Selection Dock & Sheen */
     .iridescent-dock {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
-      backdrop-filter: blur(32px) saturate(210%);
-      -webkit-backdrop-filter: blur(32px) saturate(210%);
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.06), 0 0 20px rgba(99, 102, 241, 0.12);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.35));
+      backdrop-filter: blur(32px) saturate(220%);
+      -webkit-backdrop-filter: blur(32px) saturate(220%);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 
+        0 24px 48px rgba(0,0,0,0.06), 
+        0 0 30px rgba(99, 102, 241, 0.08);
     }
     .dark .iridescent-dock {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.6));
-      backdrop-filter: blur(32px) saturate(210%);
-      -webkit-backdrop-filter: blur(32px) saturate(210%);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 25px rgba(16, 185, 129, 0.15);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.45), rgba(15, 23, 42, 0.4));
+      backdrop-filter: blur(32px) saturate(220%);
+      -webkit-backdrop-filter: blur(32px) saturate(220%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 
+        0 30px 60px rgba(0,0,0,0.45), 
+        0 0 30px rgba(16, 185, 129, 0.12);
     }
 
     /* 3D Coverflow Container */
@@ -134,23 +152,28 @@
       perspective: 1200px;
       perspective-origin: 50% 50%;
       touch-action: pan-y;
+      cursor: grab;
+    }
+    .coverflow-viewport:active {
+      cursor: grabbing;
     }
     .coverflow-track {
       transform-style: preserve-3d;
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .coverflow-item {
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, filter 0.35s ease;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, filter 0.45s ease;
       transform-style: preserve-3d;
       will-change: transform, opacity;
+      backface-visibility: hidden;
     }
 
     .a4-container {
       width: 794px;
       min-height: 1123px;
       background: #ffffff;
-      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3), 0 0 1px 1px rgba(0, 0, 0, 0.08);
-      transition: all 0.25s ease;
+      box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.35), 0 0 1px 1px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       color: #0f172a;
     }
 
@@ -173,11 +196,11 @@
     }
 
     .tap-active {
-      transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.14s ease, filter 0.14s ease;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.18s ease;
     }
     .tap-active:active {
-      transform: scale(0.94);
-      opacity: 0.88;
+      transform: scale(0.95);
+      opacity: 0.85;
     }
 
     .tpl-font-sans { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -185,14 +208,14 @@
     .tpl-font-mono { font-family: 'JetBrains Mono', monospace; }
 
     .toast-animate {
-      animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     @keyframes toastIn {
-      from { opacity: 0; transform: translate(-50%, 1.5rem) scale(0.9); }
+      from { opacity: 0; transform: translate(-50%, 20px) scale(0.9); }
       to { opacity: 1; transform: translate(-50%, 0) scale(1); }
     }
 
-    /* Specular Reflection Glow */
+    /* Specular Reflection Glow & Hover Light */
     .specular-sheen {
       position: relative;
       overflow: hidden;
@@ -204,50 +227,50 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: linear-gradient(60deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+      background: linear-gradient(60deg, transparent 35%, rgba(255,255,255,0.18) 50%, transparent 65%);
       transform: rotate(25deg);
       pointer-events: none;
-      animation: shimmer 6s infinite;
+      animation: shimmer 8s ease-in-out infinite;
     }
   </style>
 </head>
 
-<body class="bg-slate-50 dark:bg-[#040711] text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300 relative selection:bg-emerald-500/30">
+<body class="bg-slate-50 dark:bg-[#03050a] text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300 relative selection:bg-emerald-500/30">
 
   <!-- FLOATING SPATIAL AMBIENT MESH GLOWS -->
   <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-gradient-to-br from-indigo-600/30 via-purple-500/20 to-pink-500/0 blur-[100px] animate-float-slow"></div>
-    <div class="absolute top-1/3 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-to-tl from-emerald-500/25 via-teal-500/15 to-cyan-500/0 blur-[110px] animate-float-reverse"></div>
-    <div class="absolute -bottom-32 left-1/4 w-96 h-96 rounded-full bg-gradient-to-tr from-blue-600/20 via-violet-600/20 to-emerald-400/0 blur-[100px] animate-float-slow"></div>
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-gradient-to-br from-indigo-600/25 via-purple-500/15 to-pink-500/0 blur-[100px] animate-float-slow animate-pulse-glow"></div>
+    <div class="absolute top-1/3 -right-32 w-[32rem] h-[32rem] rounded-full bg-gradient-to-tl from-emerald-500/20 via-teal-500/15 to-cyan-500/0 blur-[120px] animate-float-reverse"></div>
+    <div class="absolute -bottom-32 left-1/4 w-[28rem] h-[28rem] rounded-full bg-gradient-to-tr from-blue-600/15 via-violet-600/15 to-emerald-400/0 blur-[100px] animate-float-slow"></div>
   </div>
 
   <!-- TOP SPATIAL HEADER BAR -->
   <header class="no-print sticky top-0 z-40 px-4 py-3 my-2 max-w-xl mx-auto w-full">
-    <div class="spatial-glass rounded-3xl px-4 py-2.5 flex items-center justify-between shadow-xl">
+    <div class="spatial-glass rounded-[28px] px-4 py-2.5 flex items-center justify-between shadow-2xl">
       <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-emerald-500/25 ring-1 ring-white/40">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 via-emerald-400 to-teal-500 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20 ring-1 ring-white/30">
+          <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         </div>
         <div>
-          <h1 class="font-black text-xs tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+          <h1 class="font-extrabold text-xs tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
             TapUniverse
-            <span class="text-[8.5px] font-extrabold bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-2 py-0.5 rounded-full tracking-wider shadow-xs uppercase">Vision CV</span>
+            <span class="text-[8px] font-black bg-gradient-to-r from-indigo-500 via-emerald-500 to-teal-500 text-white px-2 py-0.5 rounded-full tracking-widest shadow-xs uppercase">Vision CV</span>
           </h1>
-          <p class="text-[9.5px] font-medium text-slate-500 dark:text-slate-400">Spatial ATS Resume Studio</p>
+          <p class="text-[9px] font-semibold text-slate-500 dark:text-slate-400">Spatial ATS Resume Studio</p>
         </div>
       </div>
 
       <div class="flex items-center space-x-2">
-        <button onclick="loadSampleData()" title="Reset Sample Data" class="px-3 py-1.5 rounded-2xl bg-white/40 dark:bg-slate-800/50 hover:bg-white/70 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-300 text-[11px] font-bold tap-active flex items-center gap-1 border border-white/30 dark:border-white/10 backdrop-blur-md">
+        <button onclick="loadSampleData()" title="Reset Sample Data" class="px-2.5 py-1.5 rounded-xl bg-white/30 dark:bg-slate-800/40 hover:bg-white/50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300 text-[10px] font-black tracking-wide tap-active flex items-center gap-1 border border-white/20 backdrop-blur-md">
           <span>⚡ Demo</span>
         </button>
 
-        <button onclick="toggleTheme()" aria-label="Toggle Theme" class="p-2 rounded-2xl bg-white/40 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 hover:bg-white/70 dark:hover:bg-slate-700/60 transition tap-active border border-white/30 dark:border-white/10 backdrop-blur-md">
+        <button onclick="toggleTheme()" aria-label="Toggle Theme" class="p-2 rounded-xl bg-white/30 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50 transition tap-active border border-white/20 backdrop-blur-md">
           <svg id="theme-icon-sun" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"/></svg>
           <svg id="theme-icon-moon" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
         </button>
 
-        <button onclick="handleExportPdf()" class="px-3 py-1.5 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-indigo-600 hover:opacity-90 text-white font-extrabold text-xs shadow-lg shadow-emerald-500/20 flex items-center space-x-1.5 tap-active border border-white/20">
+        <button onclick="handleExportPdf()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-indigo-600 hover:opacity-95 text-white font-black text-xs shadow-lg shadow-emerald-500/20 flex items-center space-x-1.5 tap-active border border-white/20">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
           <span>Export</span>
         </button>
@@ -262,33 +285,33 @@
     <div id="screen-dashboard" class="space-y-4">
       
       <!-- Profile Readiness Spatial Glass Card -->
-      <div class="relative overflow-hidden rounded-3xl spatial-glass p-6 shadow-2xl specular-sheen border border-white/20">
-        <div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-emerald-500/20 blur-3xl pointer-events-none"></div>
+      <div class="relative overflow-hidden rounded-[32px] spatial-glass p-6 shadow-2xl specular-sheen border border-white/20">
+        <div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
         <div class="flex items-center justify-between relative z-10">
-          <div class="space-y-1.5 pr-2">
-            <span class="inline-flex items-center gap-1.5 text-[9.5px] font-extrabold uppercase tracking-wider text-emerald-400 bg-emerald-950/60 dark:bg-emerald-950/80 px-2.5 py-1 rounded-full border border-emerald-500/30 backdrop-blur-md">
+          <div class="space-y-2 pr-2">
+            <span class="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-950/60 dark:bg-emerald-950/80 px-2.5 py-1 rounded-full border border-emerald-500/30 backdrop-blur-md">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ATS Readiness Engine
             </span>
-            <h2 id="dash-name" class="text-2xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">Alex Rivera</h2>
+            <h2 id="dash-name" class="text-2xl font-black tracking-tight text-slate-900 dark:text-white leading-none">Alex Rivera</h2>
             <p id="dash-role" class="text-xs font-semibold text-slate-600 dark:text-slate-300">Senior Mobile Systems Architect</p>
           </div>
 
           <!-- Circular ATS Score Ring -->
-          <div class="relative w-22 h-22 flex-shrink-0 flex items-center justify-center p-1">
-            <svg class="w-20 h-20 transform -rotate-90" viewBox="0 0 36 36">
-              <path class="text-slate-200 dark:text-slate-800/80" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              <path id="progress-circle" class="text-emerald-500 transition-all duration-1000 ease-out" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          <div class="relative w-24 h-24 flex-shrink-0 flex items-center justify-center">
+            <svg class="w-22 h-22 transform -rotate-90" viewBox="0 0 36 36">
+              <path class="text-slate-200 dark:text-slate-800/80" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path id="progress-circle" class="text-emerald-500 transition-all duration-1000 ease-out" stroke-dasharray="0, 100" stroke-width="3" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
             </svg>
             <div class="absolute flex flex-col items-center justify-center text-center">
-              <span id="dash-score" class="text-lg font-black text-slate-900 dark:text-white leading-none">0%</span>
-              <span class="text-[8px] uppercase tracking-wider font-extrabold text-emerald-500 dark:text-emerald-400 mt-0.5">Score</span>
+              <span id="dash-score" class="text-xl font-black text-slate-900 dark:text-white leading-none">0%</span>
+              <span class="text-[8px] uppercase tracking-widest font-black text-emerald-500 dark:text-emerald-400 mt-0.5">ATS</span>
             </div>
           </div>
         </div>
 
         <div class="mt-5 pt-4 border-t border-slate-200/50 dark:border-white/10 flex items-center justify-between text-xs">
-          <span class="text-slate-600 dark:text-slate-400 font-medium">ATS Grade: <strong id="dash-grade-text" class="text-emerald-500 dark:text-emerald-400 font-bold">Calculating...</strong></span>
-          <button onclick="switchScreen('editor')" class="text-xs font-black text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 flex items-center gap-1 tap-active px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm">
+          <span class="text-slate-600 dark:text-slate-400 font-semibold">Grade: <strong id="dash-grade-text" class="text-emerald-500 dark:text-emerald-400 font-bold">Calculating...</strong></span>
+          <button onclick="switchScreen('editor')" class="text-xs font-black text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 flex items-center gap-1.5 tap-active px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm">
             <span>Optimise CV</span>
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </button>
@@ -296,35 +319,35 @@
       </div>
 
       <!-- Quick Action Grid -->
-      <div class="grid grid-cols-2 gap-3">
-        <button onclick="switchScreen('editor')" class="spatial-glass spatial-card p-4 rounded-3xl text-left flex items-center space-x-3.5 tap-active border border-white/20">
+      <div class="grid grid-cols-2 gap-3.5">
+        <button onclick="switchScreen('editor')" class="spatial-glass spatial-card p-4.5 rounded-3xl text-left flex items-center space-x-3.5 tap-active border border-white/20">
           <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 shadow-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           </div>
           <div>
-            <h3 class="font-black text-xs text-slate-900 dark:text-white">Edit Content</h3>
-            <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">Work, education & skills</p>
+            <h3 class="font-extrabold text-xs text-slate-900 dark:text-white">Edit Content</h3>
+            <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">Details & History</p>
           </div>
         </button>
 
-        <button onclick="switchScreen('preview')" class="spatial-glass spatial-card p-4 rounded-3xl text-left flex items-center space-x-3.5 tap-active border border-white/20">
+        <button onclick="switchScreen('preview')" class="spatial-glass spatial-card p-4.5 rounded-3xl text-left flex items-center space-x-3.5 tap-active border border-white/20">
           <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 shadow-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
           </div>
           <div>
-            <h3 class="font-black text-xs text-slate-900 dark:text-white">Live A4 Preview</h3>
-            <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">Printable sheet view</p>
+            <h3 class="font-extrabold text-xs text-slate-900 dark:text-white">A4 Preview</h3>
+            <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">Export & Print</p>
           </div>
         </button>
       </div>
 
       <!-- Iridescent Color Dock -->
-      <div class="iridescent-dock p-4.5 rounded-3xl space-y-3 relative overflow-hidden">
+      <div class="iridescent-dock p-5 rounded-[28px] space-y-3.5 relative overflow-hidden">
         <div class="flex items-center justify-between">
-          <h3 class="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+          <h3 class="text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
             <span>🎨</span> Accent Spatial Theme
           </h3>
-          <span id="current-color-label" class="text-[10.5px] font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">Emerald Green</span>
+          <span id="current-color-label" class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">Emerald Green</span>
         </div>
         <div class="flex items-center justify-between gap-2 pt-1">
           <button onclick="setAccent('#059669', 'Emerald Green')" class="w-9 h-9 rounded-2xl bg-[#059669] shadow-md shadow-emerald-600/30 ring-2 ring-white/50 hover:scale-110 transition tap-active relative flex items-center justify-center" aria-label="Emerald Green"></button>
@@ -339,11 +362,11 @@
       <!-- Smooth 3D Coverflow Template Selector -->
       <div class="space-y-3 pt-2">
         <div class="flex justify-between items-center px-1">
-          <h3 class="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">3D Spatial Templates</h3>
-          <span class="text-[10px] font-extrabold text-indigo-500 dark:text-indigo-400">Swipe or Tap Card</span>
+          <h3 class="text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">3D Spatial Templates</h3>
+          <span class="text-[10px] font-black text-indigo-500 dark:text-indigo-400">Swipe / Drag Active</span>
         </div>
 
-        <div id="coverflow-container" class="coverflow-viewport w-full h-56 relative flex items-center justify-center overflow-hidden rounded-3xl py-4">
+        <div id="coverflow-container" class="coverflow-viewport w-full h-58 relative flex items-center justify-center overflow-hidden rounded-[28px] py-4">
           <div id="coverflow-track" class="coverflow-track relative w-full h-full flex items-center justify-center">
             
             <!-- Coverflow Item 1: Modern -->
@@ -358,7 +381,7 @@
               <div>
                 <span class="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Executive</span>
                 <p class="font-extrabold text-xs text-slate-900 dark:text-white">Modern Executive</p>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400">Split header & modern balance</p>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Balanced & modern layout</p>
               </div>
             </div>
 
@@ -374,7 +397,7 @@
               <div>
                 <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Classic</span>
                 <p class="font-extrabold text-xs text-slate-900 dark:text-white">Clean Minimalist</p>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400">Centered clean hierarchy</p>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Centered elegant hierarchy</p>
               </div>
             </div>
 
@@ -390,7 +413,7 @@
               <div>
                 <span class="text-[9px] font-black text-indigo-500 uppercase tracking-widest">Developer</span>
                 <p class="font-extrabold text-xs text-slate-900 dark:text-white">Developer Mono</p>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400">JetBrains font & code tags</p>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">JetBrains font & tag labels</p>
               </div>
             </div>
 
@@ -405,7 +428,7 @@
               <div>
                 <span class="text-[9px] font-black text-amber-500 uppercase tracking-widest">Editorial</span>
                 <p class="font-extrabold text-xs text-slate-900 dark:text-white">Elegant Serif</p>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400">Playfair typography style</p>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Classic editorial style</p>
               </div>
             </div>
 
@@ -414,26 +437,26 @@
       </div>
 
       <!-- Dynamic ATS Checklist Spatial Widget -->
-      <div class="spatial-glass p-5 rounded-3xl shadow-xl space-y-3 border border-white/20">
-        <h3 class="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center justify-between">
+      <div class="spatial-glass p-5 rounded-[28px] shadow-xl space-y-3.5 border border-white/20">
+        <h3 class="text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-300 flex items-center justify-between">
           <span>ATS Optimization Checklist</span>
-          <span id="chk-count" class="text-emerald-500 dark:text-emerald-400 font-extrabold text-[10px] bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">0/4 Completed</span>
+          <span id="chk-count" class="text-emerald-500 dark:text-emerald-400 font-black text-[10px] bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">0/4 Completed</span>
         </h3>
         <div class="space-y-2 text-xs">
-          <div id="chk-item-contact" class="flex items-center justify-between text-slate-700 dark:text-slate-300 p-2 rounded-2xl bg-white/30 dark:bg-slate-800/30">
-            <span class="flex items-center gap-2 font-medium"><span>👤</span> Personal & Contact Details</span>
+          <div id="chk-item-contact" class="flex items-center justify-between text-slate-700 dark:text-slate-300 p-2 px-3 rounded-xl bg-white/30 dark:bg-slate-850/40">
+            <span class="flex items-center gap-2.5 font-semibold"><span>👤</span> Personal & Contact Details</span>
             <span id="chk-icon-contact" class="text-slate-400 font-bold">○</span>
           </div>
-          <div id="chk-item-summary" class="flex items-center justify-between text-slate-700 dark:text-slate-300 p-2 rounded-2xl bg-white/30 dark:bg-slate-800/30">
-            <span class="flex items-center gap-2 font-medium"><span>📝</span> Impact Professional Summary</span>
+          <div id="chk-item-summary" class="flex items-center justify-between text-slate-700 dark:text-slate-300 p-2 px-3 rounded-xl bg-white/30 dark:bg-slate-850/40">
+            <span class="flex items-center gap-2.5 font-semibold"><span>📝</span> Professional Summary</span>
             <span id="chk-icon-summary" class="text-slate-400 font-bold">○</span>
           </div>
-          <div id="chk-item-exp" class="flex items-center justify-between text-slate-700 dark:text-slate-300 p-2 rounded-2xl bg-white/30 dark:bg-slate-800/30">
-            <span class="flex items-center gap-2 font-medium"><span>💼</span> Employment History Entries</span>
+          <div id="chk-item-exp" class="flex items-center justify-between text-slate-700 dark:text-slate-300 p-2 px-3 rounded-xl bg-white/30 dark:bg-slate-850/40">
+            <span class="flex items-center gap-2.5 font-semibold"><span>💼</span> Work History Entries</span>
             <span id="chk-icon-exp" class="text-slate-400 font-bold">○</span>
           </div>
-          <div id="chk-item-skills" class="flex items-center justify-between text-slate-700 dark:text-slate-300 p-2 rounded-2xl bg-white/30 dark:bg-slate-800/30">
-            <span class="flex items-center gap-2 font-medium"><span>⚡</span> Technical Skills & Keywords</span>
+          <div id="chk-item-skills" class="flex items-center justify-between text-slate-700 dark:text-slate-300 p-2 px-3 rounded-xl bg-white/30 dark:bg-slate-850/40">
+            <span class="flex items-center gap-2.5 font-semibold"><span>⚡</span> Skills & ATS Keywords</span>
             <span id="chk-icon-skills" class="text-slate-400 font-bold">○</span>
           </div>
         </div>
@@ -456,82 +479,82 @@
       </div>
 
       <!-- Personal Info Section -->
-      <div class="spatial-glass rounded-3xl p-5 shadow-xl border border-white/20 space-y-3.5">
-        <h3 class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+      <div class="spatial-glass rounded-[28px] p-5 shadow-xl border border-white/20 space-y-3.5">
+        <h3 class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
           <span>👤</span> Personal Details
         </h3>
         <div>
-          <label for="in-name" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Full Name</label>
-          <input id="in-name" type="text" placeholder="e.g. Alex Rivera" class="w-full mt-1 bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
+          <label for="in-name" class="text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wide">Full Name</label>
+          <input id="in-name" type="text" placeholder="e.g. Alex Rivera" class="w-full mt-1 bg-white/50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
         </div>
         <div>
-          <label for="in-role" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Professional Title</label>
-          <input id="in-role" type="text" placeholder="e.g. Senior Mobile Systems Architect" class="w-full mt-1 bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
+          <label for="in-role" class="text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wide">Professional Title</label>
+          <input id="in-role" type="text" placeholder="e.g. Senior Mobile Systems Architect" class="w-full mt-1 bg-white/50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label for="in-email" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Email</label>
-            <input id="in-email" type="email" placeholder="alex@domain.com" class="w-full mt-1 bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
+            <label for="in-email" class="text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wide">Email</label>
+            <input id="in-email" type="email" placeholder="alex@domain.com" class="w-full mt-1 bg-white/50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
           </div>
           <div>
-            <label for="in-phone" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Phone</label>
-            <input id="in-phone" type="text" placeholder="+1 (555) 019-2831" class="w-full mt-1 bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
+            <label for="in-phone" class="text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wide">Phone</label>
+            <input id="in-phone" type="text" placeholder="+1 (555) 019-2831" class="w-full mt-1 bg-white/50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
           </div>
         </div>
         <div>
-          <label for="in-location" class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Location & Links</label>
-          <input id="in-location" type="text" placeholder="San Francisco, CA • linkedin.com/in/alex" class="w-full mt-1 bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
+          <label for="in-location" class="text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wide">Location & Links</label>
+          <input id="in-location" type="text" placeholder="San Francisco, CA • linkedin.com/in/alex" class="w-full mt-1 bg-white/50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
         </div>
       </div>
 
       <!-- Profile Summary Section -->
-      <div class="spatial-glass rounded-3xl p-5 shadow-xl border border-white/20 space-y-3.5">
+      <div class="spatial-glass rounded-[28px] p-5 shadow-xl border border-white/20 space-y-3.5">
         <div class="flex items-center justify-between">
-          <h3 class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+          <h3 class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
             <span>📝</span> Profile Summary
           </h3>
-          <button onclick="aiPolishSummary()" class="text-[10px] font-extrabold bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1 rounded-full shadow-md shadow-emerald-500/20 tap-active transition flex items-center gap-1">
-            <span>✨ AI Enhance</span>
+          <button id="ai-polish-btn" onclick="aiPolishSummary()" class="text-[10px] font-black bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1 rounded-full shadow-md shadow-emerald-500/20 tap-active transition flex items-center gap-1">
+            <span id="ai-btn-text">✨ AI Enhance</span>
           </button>
         </div>
-        <textarea id="in-summary" rows="3" placeholder="Write a concise overview of your key accomplishments and skills..." class="w-full bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-white/10 rounded-2xl p-3.5 text-xs leading-relaxed focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md"></textarea>
+        <textarea id="in-summary" rows="3" placeholder="Write a concise overview of your key accomplishments and skills..." class="w-full bg-white/50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-2xl p-3.5 text-xs leading-relaxed focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md"></textarea>
       </div>
 
       <!-- Experience Section -->
-      <div class="spatial-glass rounded-3xl p-5 shadow-xl border border-white/20 space-y-3.5">
+      <div class="spatial-glass rounded-[28px] p-5 shadow-xl border border-white/20 space-y-3.5">
         <div class="flex items-center justify-between">
-          <h3 class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+          <h3 class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
             <span>💼</span> Work Experience
           </h3>
-          <button onclick="addExperience()" class="text-[10px] font-black bg-white/40 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 border border-white/30 dark:border-white/10 px-3 py-1 rounded-full tap-active flex items-center gap-1">
+          <button onclick="addExperience()" class="text-[10px] font-black bg-white/30 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 border border-white/20 px-3 py-1 rounded-full tap-active flex items-center gap-1">
             <span>+ Add Position</span>
           </button>
         </div>
 
-        <div id="experience-editor-list" class="space-y-3"></div>
+        <div id="experience-editor-list" class="space-y-3.5"></div>
       </div>
 
       <!-- Education Section -->
-      <div class="spatial-glass rounded-3xl p-5 shadow-xl border border-white/20 space-y-3.5">
+      <div class="spatial-glass rounded-[28px] p-5 shadow-xl border border-white/20 space-y-3.5">
         <div class="flex items-center justify-between">
-          <h3 class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+          <h3 class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
             <span>🎓</span> Education
           </h3>
-          <button onclick="addEducation()" class="text-[10px] font-black bg-white/40 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 border border-white/30 dark:border-white/10 px-3 py-1 rounded-full tap-active flex items-center gap-1">
+          <button onclick="addEducation()" class="text-[10px] font-black bg-white/30 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300 border border-white/20 px-3 py-1 rounded-full tap-active flex items-center gap-1">
             <span>+ Add School</span>
           </button>
         </div>
 
-        <div id="education-editor-list" class="space-y-3"></div>
+        <div id="education-editor-list" class="space-y-3.5"></div>
       </div>
 
       <!-- Technical Skills Section -->
-      <div class="spatial-glass rounded-3xl p-5 shadow-xl border border-white/20 space-y-3">
-        <h3 class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+      <div class="spatial-glass rounded-[28px] p-5 shadow-xl border border-white/20 space-y-3">
+        <h3 class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
           <span>🛠️</span> Technical Skills & Keywords
         </h3>
-        <input id="in-skills" type="text" placeholder="Android, TypeScript, Kotlin, React Native, GraphQL" class="w-full bg-white/50 dark:bg-slate-950/50 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs font-medium focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
-        <p class="text-[9.5px] text-slate-500 dark:text-slate-400">Separate skills with commas to render as high-impact ATS keyword tags.</p>
+        <input id="in-skills" type="text" placeholder="Android, TypeScript, Kotlin, React Native, GraphQL" class="w-full bg-white/50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/10 rounded-2xl px-3.5 py-2.5 text-xs font-medium focus:ring-2 focus:ring-emerald-500/50 outline-none transition backdrop-blur-md" />
+        <p class="text-[9.5px] text-slate-500 dark:text-slate-400 leading-normal">Separate skills with commas to render as high-impact ATS keyword tags.</p>
       </div>
 
     </div>
@@ -540,15 +563,15 @@
     <div id="screen-preview" class="space-y-4 hidden">
       
       <!-- Preview Controls Dock -->
-      <div class="spatial-glass p-3 rounded-3xl border border-white/20 shadow-xl flex items-center justify-between gap-2">
+      <div class="spatial-glass p-3 rounded-[24px] border border-white/20 shadow-xl flex items-center justify-between gap-2">
         <div class="flex items-center space-x-1.5">
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 pl-1">Zoom:</span>
-          <button onclick="setZoom(0.85)" class="px-2.5 py-1 rounded-xl bg-white/40 dark:bg-slate-800/50 text-xs font-bold tap-active">85%</button>
+          <span class="text-[9px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 pl-1">Zoom:</span>
+          <button onclick="setZoom(0.85)" class="px-2.5 py-1 rounded-xl bg-white/30 dark:bg-slate-800/40 text-xs font-bold tap-active">85%</button>
           <button onclick="setZoom(1.0)" class="px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold tap-active border border-emerald-500/30">100%</button>
-          <button onclick="autoFitScale()" class="px-2.5 py-1 rounded-xl bg-white/40 dark:bg-slate-800/50 text-xs font-bold tap-active">Fit Mobile</button>
+          <button onclick="autoFitScale()" class="px-2.5 py-1 rounded-xl bg-white/30 dark:bg-slate-800/40 text-xs font-bold tap-active">Fit Mobile</button>
         </div>
 
-        <button onclick="handleExportPdf()" class="px-3.5 py-1.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-extrabold text-xs shadow-lg shadow-emerald-500/20 tap-active flex items-center gap-1 border border-white/20">
+        <button onclick="handleExportPdf()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black text-xs shadow-lg shadow-emerald-500/20 tap-active flex items-center gap-1 border border-white/20">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
           <span>Print / PDF</span>
         </button>
@@ -557,7 +580,7 @@
       <!-- Printable A4 View Container embedded in spatial viewport -->
       <div class="overflow-x-auto pb-6 no-scrollbar flex justify-center items-start pt-2">
         <div id="preview-zoom-wrapper" class="origin-top transition-transform duration-300">
-          <div id="printable-resume" class="a4-container rounded-3xl p-8 text-slate-900 font-sans flex flex-col justify-between relative shadow-2xl">
+          <div id="printable-resume" class="a4-container rounded-[32px] p-10 text-slate-900 font-sans flex flex-col justify-between relative shadow-2xl">
             <!-- Dynamic CV Content Injected via JS -->
           </div>
         </div>
@@ -577,18 +600,18 @@
   <nav class="no-print fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-md spatial-glass rounded-full px-6 py-2.5 flex items-center justify-around shadow-2xl border border-white/30 dark:border-white/15">
     
     <button onclick="switchScreen('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-emerald-500 dark:text-emerald-400 font-extrabold transition tap-active">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-      <span class="text-[9.5px]">Home</span>
+      <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span class="text-[9px] tracking-wide font-black uppercase">Home</span>
     </button>
 
-    <button onclick="switchScreen('editor')" id="nav-editor" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium transition tap-active">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-      <span class="text-[9.5px]">Editor</span>
+    <button onclick="switchScreen('editor')" id="nav-editor" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-semibold transition tap-active">
+      <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+      <span class="text-[9px] tracking-wide font-black uppercase">Editor</span>
     </button>
 
-    <button onclick="switchScreen('preview')" id="nav-preview" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium transition tap-active">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-      <span class="text-[9.5px]">Preview</span>
+    <button onclick="switchScreen('preview')" id="nav-preview" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-semibold transition tap-active">
+      <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+      <span class="text-[9px] tracking-wide font-black uppercase">Preview</span>
     </button>
 
   </nav>
@@ -720,19 +743,31 @@
       const container = document.getElementById('experience-editor-list');
       if (!container) return;
       container.innerHTML = appState.experiences.map((exp, idx) => `
-        <div class="p-4 rounded-2xl bg-white/40 dark:bg-slate-950/40 border border-slate-200/80 dark:border-white/10 space-y-2.5 relative backdrop-blur-md">
+        <div class="p-4 rounded-2xl bg-white/40 dark:bg-slate-950/40 border border-slate-200/80 dark:border-white/10 space-y-3.5 relative backdrop-blur-md">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Position #${idx + 1}</span>
+            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Position #${idx + 1}</span>
             <button onclick="removeExperience(${exp.id})" class="text-[10px] font-bold text-red-500 hover:text-red-600 tap-active">
               Remove
             </button>
           </div>
-          <div class="grid grid-cols-2 gap-2">
-            <input type="text" value="${exp.role || ''}" placeholder="Role Title" oninput="updateExp(${exp.id}, 'role', this.value)" class="bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 text-xs font-semibold outline-none focus:ring-1 focus:ring-emerald-500 transition" />
-            <input type="text" value="${exp.company || ''}" placeholder="Company" oninput="updateExp(${exp.id}, 'company', this.value)" class="bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 text-xs font-semibold outline-none focus:ring-1 focus:ring-emerald-500 transition" />
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-[8px] font-black uppercase text-slate-500 tracking-wider">Role Title</label>
+              <input type="text" value="${exp.role || ''}" placeholder="Role Title" oninput="updateExp(${exp.id}, 'role', this.value)" class="w-full mt-1 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 px-3 text-xs font-semibold outline-none focus:ring-1 focus:ring-emerald-500 transition" />
+            </div>
+            <div>
+              <label class="text-[8px] font-black uppercase text-slate-500 tracking-wider">Company</label>
+              <input type="text" value="${exp.company || ''}" placeholder="Company" oninput="updateExp(${exp.id}, 'company', this.value)" class="w-full mt-1 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 px-3 text-xs font-semibold outline-none focus:ring-1 focus:ring-emerald-500 transition" />
+            </div>
           </div>
-          <input type="text" value="${exp.dates || ''}" placeholder="Dates e.g., 2022 - Present" oninput="updateExp(${exp.id}, 'dates', this.value)" class="w-full bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 text-[10px] outline-none focus:ring-1 focus:ring-emerald-500 transition" />
-          <textarea rows="2" placeholder="Key responsibilities & metric achievements..." oninput="updateExp(${exp.id}, 'desc', this.value)" class="w-full bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 text-xs leading-relaxed outline-none focus:ring-1 focus:ring-emerald-500 transition">${exp.desc || ''}</textarea>
+          <div>
+            <label class="text-[8px] font-black uppercase text-slate-500 tracking-wider">Dates Active</label>
+            <input type="text" value="${exp.dates || ''}" placeholder="Dates e.g., 2022 - Present" oninput="updateExp(${exp.id}, 'dates', this.value)" class="w-full mt-1 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 px-3 text-xs outline-none focus:ring-1 focus:ring-emerald-500 transition" />
+          </div>
+          <div>
+            <label class="text-[8px] font-black uppercase text-slate-500 tracking-wider">Key Metrics & Responsibilities</label>
+            <textarea rows="2" placeholder="Key responsibilities & metric achievements..." oninput="updateExp(${exp.id}, 'desc', this.value)" class="w-full mt-1 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 px-3 text-xs leading-relaxed outline-none focus:ring-1 focus:ring-emerald-500 transition">${exp.desc || ''}</textarea>
+          </div>
         </div>
       `).join('');
     }
@@ -769,17 +804,26 @@
       const container = document.getElementById('education-editor-list');
       if (!container) return;
       container.innerHTML = appState.education.map((edu, idx) => `
-        <div class="p-4 rounded-2xl bg-white/40 dark:bg-slate-950/40 border border-slate-200/80 dark:border-white/10 space-y-2.5 relative backdrop-blur-md">
+        <div class="p-4 rounded-2xl bg-white/40 dark:bg-slate-950/40 border border-slate-200/80 dark:border-white/10 space-y-3.5 relative backdrop-blur-md">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Degree #${idx + 1}</span>
+            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Degree #${idx + 1}</span>
             <button onclick="removeEducation(${edu.id})" class="text-[10px] font-bold text-red-500 hover:text-red-600 tap-active">
               Remove
             </button>
           </div>
-          <input type="text" value="${edu.degree || ''}" placeholder="Degree Title" oninput="updateEdu(${edu.id}, 'degree', this.value)" class="w-full bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 text-xs font-semibold outline-none focus:ring-1 focus:ring-emerald-500 transition" />
-          <div class="grid grid-cols-2 gap-2">
-            <input type="text" value="${edu.school || ''}" placeholder="University / Institute" oninput="updateEdu(${edu.id}, 'school', this.value)" class="bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 text-xs outline-none focus:ring-1 focus:ring-emerald-500 transition" />
-            <input type="text" value="${edu.year || ''}" placeholder="Graduation Year" oninput="updateEdu(${edu.id}, 'year', this.value)" class="bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 text-xs outline-none focus:ring-1 focus:ring-emerald-500 transition" />
+          <div>
+            <label class="text-[8px] font-black uppercase text-slate-500 tracking-wider">Degree Title</label>
+            <input type="text" value="${edu.degree || ''}" placeholder="Degree Title" oninput="updateEdu(${edu.id}, 'degree', this.value)" class="w-full mt-1 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 px-3 text-xs font-semibold outline-none focus:ring-1 focus:ring-emerald-500 transition" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-[8px] font-black uppercase text-slate-500 tracking-wider">University / Institute</label>
+              <input type="text" value="${edu.school || ''}" placeholder="University / Institute" oninput="updateEdu(${edu.id}, 'school', this.value)" class="w-full mt-1 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 px-3 text-xs outline-none focus:ring-1 focus:ring-emerald-500 transition" />
+            </div>
+            <div>
+              <label class="text-[8px] font-black uppercase text-slate-500 tracking-wider">Year</label>
+              <input type="text" value="${edu.year || ''}" placeholder="Graduation Year" oninput="updateEdu(${edu.id}, 'year', this.value)" class="w-full mt-1 bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 rounded-xl p-2 px-3 text-xs outline-none focus:ring-1 focus:ring-emerald-500 transition" />
+            </div>
           </div>
         </div>
       `).join('');
@@ -920,22 +964,22 @@
         const offset = idx - activeIdx;
         const absOffset = Math.abs(offset);
         
-        let translateX = offset * 115; // horizontal spatial spacing
-        let translateZ = -absOffset * 120; // 3D depth shift
-        let rotateY = offset * -28; // perspective angle tilt
-        let opacity = 1 - absOffset * 0.28;
-        let scale = 1 - absOffset * 0.12;
+        let translateX = offset * 125; // spatial spacing horizontal
+        let translateZ = -absOffset * 150; // 3D depth shift
+        let rotateY = offset * -32; // perspective angle tilt
+        let opacity = 1 - absOffset * 0.32;
+        let scale = 1 - absOffset * 0.15;
 
         if (offset === 0) {
-          card.style.transform = `translateX(0px) translateZ(60px) rotateY(0deg) scale(1.05)`;
+          card.style.transform = `translateX(0px) translateZ(80px) rotateY(0deg) scale(1.08)`;
           card.style.opacity = '1';
           card.style.zIndex = '30';
-          card.classList.add('ring-2', 'ring-emerald-500', 'ring-offset-2', 'ring-offset-transparent');
+          card.classList.add('ring-2', 'ring-emerald-500', 'ring-offset-4', 'ring-offset-transparent');
         } else {
           card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
           card.style.opacity = `${opacity}`;
           card.style.zIndex = `${20 - absOffset}`;
-          card.classList.remove('ring-2', 'ring-emerald-500', 'ring-offset-2', 'ring-offset-transparent');
+          card.classList.remove('ring-2', 'ring-emerald-500', 'ring-offset-4', 'ring-offset-transparent');
         }
       });
     }
@@ -950,29 +994,56 @@
       }
     }
 
-    // Touch physics drag swipe for 3D Coverflow
-    let touchStartX = 0;
-    let touchEndX = 0;
+    // Touch & Mouse Drag Physics for 3D Coverflow
+    let isDragging = false;
+    let startX = 0;
+    let currentDragOffset = 0;
     const coverflowViewport = document.getElementById('coverflow-container');
 
     if (coverflowViewport) {
+      // Touch Support
       coverflowViewport.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        currentDragOffset = 0;
       }, { passive: true });
 
-      coverflowViewport.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
+      coverflowViewport.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        currentDragOffset = e.touches[0].clientX - startX;
       }, { passive: true });
+
+      coverflowViewport.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        handleDragRelease();
+      }, { passive: true });
+
+      // Mouse Support for Desktop
+      coverflowViewport.addEventListener('mousedown', e => {
+        isDragging = true;
+        startX = e.clientX;
+        currentDragOffset = 0;
+      });
+
+      window.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        currentDragOffset = e.clientX - startX;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        handleDragRelease();
+      });
     }
 
-    function handleSwipe() {
-      const diff = touchEndX - touchStartX;
-      if (Math.abs(diff) > 40) {
+    function handleDragRelease() {
+      if (Math.abs(currentDragOffset) > 50) {
         const currentIdx = templatesList.indexOf(appState.template || 'modern');
-        if (diff < 0 && currentIdx < templatesList.length - 1) {
+        if (currentDragOffset < 0 && currentIdx < templatesList.length - 1) {
           selectTemplate(templatesList[currentIdx + 1]);
-        } else if (diff > 0 && currentIdx > 0) {
+        } else if (currentDragOffset > 0 && currentIdx > 0) {
           selectTemplate(templatesList[currentIdx - 1]);
         }
       }
@@ -990,95 +1061,95 @@
 
       if (appState.template === 'modern') {
         headerHTML = `
-          <div class="border-b-2 pb-4 mb-5" style="border-color: ${color}">
-            <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 uppercase">${appState.personal.name || 'YOUR NAME'}</h1>
-            <p class="text-xs font-bold uppercase tracking-widest mt-1" style="color: ${color}">${appState.personal.role || ''}</p>
-            <p class="text-[10px] text-slate-500 mt-1 font-medium">${appState.personal.email || ''}  •  ${appState.personal.phone || ''}  •  ${appState.personal.location || ''}</p>
+          <div class="border-b-2 pb-5 mb-6" style="border-color: ${color}">
+            <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase">${appState.personal.name || 'YOUR NAME'}</h1>
+            <p class="text-xs font-extrabold uppercase tracking-widest mt-1.5" style="color: ${color}">${appState.personal.role || ''}</p>
+            <p class="text-[10px] text-slate-500 mt-2 font-medium">${appState.personal.email || ''}  •  ${appState.personal.phone || ''}  •  ${appState.personal.location || ''}</p>
           </div>
         `;
       } else if (appState.template === 'minimal') {
         headerHTML = `
-          <div class="text-center border-b pb-4 mb-5 border-slate-200">
-            <h1 class="text-2xl font-black text-slate-900 tracking-tight">${appState.personal.name || 'YOUR NAME'}</h1>
-            <p class="text-xs font-semibold text-slate-600 uppercase tracking-widest mt-0.5">${appState.personal.role || ''}</p>
-            <p class="text-[9.5px] text-slate-500 mt-1">${appState.personal.email || ''} | ${appState.personal.phone || ''} | ${appState.personal.location || ''}</p>
+          <div class="text-center border-b pb-5 mb-6 border-slate-200">
+            <h1 class="text-3xl font-black text-slate-900 tracking-tight">${appState.personal.name || 'YOUR NAME'}</h1>
+            <p class="text-xs font-bold text-slate-650 uppercase tracking-widest mt-1" style="color: ${color}">${appState.personal.role || ''}</p>
+            <p class="text-[10px] text-slate-500 mt-2">${appState.personal.email || ''} | ${appState.personal.phone || ''} | ${appState.personal.location || ''}</p>
           </div>
         `;
       } else if (appState.template === 'tech') {
         headerHTML = `
-          <div class="p-4 rounded-xl mb-5" style="background-color: ${color}10; border-left: 4px solid ${color}">
-            <h1 class="text-xl font-bold text-slate-900 font-mono">&lt;${appState.personal.name || 'YOUR NAME'}&gt;</h1>
-            <p class="text-xs font-bold uppercase tracking-wider mt-0.5" style="color: ${color}">${appState.personal.role || ''}</p>
-            <p class="text-[9.5px] text-slate-600 font-mono mt-1">${appState.personal.email || ''} // ${appState.personal.phone || ''}</p>
+          <div class="p-5 rounded-2xl mb-6" style="background-color: ${color}10; border-left: 4px solid ${color}">
+            <h1 class="text-2xl font-bold text-slate-900 font-mono">&lt;${appState.personal.name || 'YOUR NAME'}&gt;</h1>
+            <p class="text-xs font-black uppercase tracking-wider mt-1" style="color: ${color}">${appState.personal.role || ''}</p>
+            <p class="text-[10px] text-slate-600 font-mono mt-2">${appState.personal.email || ''} // ${appState.personal.phone || ''} // ${appState.personal.location || ''}</p>
           </div>
         `;
       } else if (appState.template === 'serif') {
         headerHTML = `
-          <div class="border-b-2 pb-3 mb-5 border-slate-300">
-            <h1 class="text-2xl font-bold text-slate-900 font-serif italic">${appState.personal.name || 'YOUR NAME'}</h1>
-            <p class="text-xs font-bold uppercase tracking-widest mt-1" style="color: ${color}">${appState.personal.role || ''}</p>
-            <p class="text-[10px] text-slate-600 mt-1 italic">${appState.personal.email || ''}  —  ${appState.personal.phone || ''}</p>
+          <div class="border-b pb-4 mb-6 border-slate-300">
+            <h1 class="text-3xl font-bold text-slate-900 font-serif italic tracking-tight">${appState.personal.name || 'YOUR NAME'}</h1>
+            <p class="text-xs font-black uppercase tracking-widest mt-1.5" style="color: ${color}">${appState.personal.role || ''}</p>
+            <p class="text-[10px] text-slate-600 mt-2 italic font-medium">${appState.personal.email || ''}  —  ${appState.personal.phone || ''}  —  ${appState.personal.location || ''}</p>
           </div>
         `;
       }
 
-      container.className = `a4-container rounded-3xl p-8 text-slate-900 flex flex-col justify-between relative ${fontClass}`;
+      container.className = `a4-container rounded-[32px] p-10 text-slate-900 flex flex-col justify-between relative ${fontClass}`;
 
       container.innerHTML = `
         <div>
           ${headerHTML}
 
-          <div class="mb-5">
-            <h2 class="text-[11px] font-extrabold uppercase tracking-wider mb-1.5 flex items-center gap-2" style="color: ${color}">
+          <div class="mb-6">
+            <h2 class="text-xs font-black uppercase tracking-widest mb-2 flex items-center gap-2" style="color: ${color}">
               <span>PROFESSIONAL SUMMARY</span>
               <span class="flex-1 h-[1px] bg-slate-200"></span>
             </h2>
-            <p class="text-[10px] text-slate-700 leading-relaxed font-normal">${appState.summary || ''}</p>
+            <p class="text-[10.5px] text-slate-700 leading-relaxed font-normal">${appState.summary || ''}</p>
           </div>
 
-          <div class="mb-5">
-            <h2 class="text-[11px] font-extrabold uppercase tracking-wider mb-2 flex items-center gap-2" style="color: ${color}">
+          <div class="mb-6">
+            <h2 class="text-xs font-black uppercase tracking-widest mb-3.5 flex items-center gap-2" style="color: ${color}">
               <span>WORK EXPERIENCE</span>
               <span class="flex-1 h-[1px] bg-slate-200"></span>
             </h2>
-            <div class="space-y-3">
+            <div class="space-y-4">
               ${(appState.experiences || []).map(exp => `
                 <div>
                   <div class="flex justify-between items-baseline">
-                    <span class="text-[10.5px] font-bold text-slate-900">${exp.role || ''}</span>
-                    <span class="text-[9px] font-medium text-slate-500">${exp.dates || ''}</span>
+                    <span class="text-[11px] font-bold text-slate-900">${exp.role || ''}</span>
+                    <span class="text-[9.5px] font-semibold text-slate-500">${exp.dates || ''}</span>
                   </div>
-                  <div class="text-[9.5px] font-semibold" style="color: ${color}">${exp.company || ''}</div>
-                  <p class="text-[9.5px] text-slate-600 mt-1 leading-relaxed">${exp.desc || ''}</p>
+                  <div class="text-[10px] font-extrabold" style="color: ${color}">${exp.company || ''}</div>
+                  <p class="text-[10px] text-slate-600 mt-1.5 leading-relaxed font-normal">${exp.desc || ''}</p>
                 </div>
               `).join('')}
             </div>
           </div>
 
-          <div class="mb-5">
-            <h2 class="text-[11px] font-extrabold uppercase tracking-wider mb-2 flex items-center gap-2" style="color: ${color}">
+          <div class="mb-6">
+            <h2 class="text-xs font-black uppercase tracking-widest mb-3 flex items-center gap-2" style="color: ${color}">
               <span>EDUCATION</span>
               <span class="flex-1 h-[1px] bg-slate-200"></span>
             </h2>
-            <div class="space-y-2">
+            <div class="space-y-2.5">
               ${(appState.education || []).map(edu => `
                 <div class="flex justify-between items-baseline">
                   <div>
-                    <span class="text-[10px] font-bold text-slate-900">${edu.degree || ''}</span>
-                    <p class="text-[9px] text-slate-600">${edu.school || ''}</p>
+                    <span class="text-[10.5px] font-bold text-slate-900">${edu.degree || ''}</span>
+                    <p class="text-[9.5px] text-slate-650">${edu.school || ''}</p>
                   </div>
-                  <span class="text-[9px] text-slate-500 font-medium">${edu.year || ''}</span>
+                  <span class="text-[9.5px] text-slate-500 font-semibold">${edu.year || ''}</span>
                 </div>
               `).join('')}
             </div>
           </div>
         </div>
 
-        <div class="pt-3 border-t border-slate-100">
-          <h2 class="text-[11px] font-extrabold uppercase tracking-wider mb-2" style="color: ${color}">SKILLS & ATS KEYWORDS</h2>
+        <div class="pt-4 border-t border-slate-150">
+          <h2 class="text-xs font-black uppercase tracking-widest mb-2.5" style="color: ${color}">SKILLS & ATS KEYWORDS</h2>
           <div class="flex flex-wrap gap-1.5">
             ${skillChips.map(chip => `
-              <span class="px-2.5 py-1 rounded-md text-[9px] font-extrabold" style="background-color: ${color}15; color: ${color}">
+              <span class="px-2.5 py-1 rounded-md text-[9px] font-extrabold tracking-wide uppercase" style="background-color: ${color}15; color: ${color}">
                 ${chip}
               </span>
             `).join('')}
@@ -1102,12 +1173,26 @@
     }
 
     function aiPolishSummary() {
-      const polished = "Accomplished Mobile Systems Architect with extensive expertise in cross-platform Android runtime optimization, offline-first sync engines, and automated deployment pipelines that boost application metrics by up to 45%.";
-      appState.summary = polished;
-      const el = document.getElementById('in-summary');
-      if (el) el.value = polished;
-      saveState();
-      showToast('Summary AI polished!', '✨');
+      const btn = document.getElementById('ai-polish-btn');
+      const btnText = document.getElementById('ai-btn-text');
+      if (btn && btnText) {
+        btnText.innerText = "⏳ Enhancing...";
+        btn.disabled = true;
+      }
+
+      setTimeout(() => {
+        const polished = "Accomplished Mobile Systems Architect with extensive expertise in cross-platform Android runtime optimization, offline-first sync engines, and automated deployment pipelines that boost application metrics by up to 45%.";
+        appState.summary = polished;
+        const el = document.getElementById('in-summary');
+        if (el) el.value = polished;
+        saveState();
+        showToast('Summary AI polished!', '✨');
+        
+        if (btn && btnText) {
+          btnText.innerText = "✨ AI Enhance";
+          btn.disabled = false;
+        }
+      }, 750);
     }
 
     function loadSampleData() {
