@@ -32,6 +32,7 @@ const allowedScripts = new Set([
   'js/template-filters-search-fix.js', 'js/screen-layout-fix.js',
   'js/premium-template-gallery.js', 'js/premium-template-actions.js',
   'js/template-heading-ui-fix.js', 'js/coverflow-premium-polish.js',
+  'js/ui-premium-finalizer.js',
 ]);
 const normalizeAsset = (value) => {
   const cleaned = value.trim().replace(/^\.\//, '');
