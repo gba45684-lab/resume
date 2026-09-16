@@ -1,6 +1,10 @@
-/* ResuMate native status-bar overlap fix. Moves only the header branding 20px down and 20px left on phones. */
+/* ResuMate native status-bar overlap fix. Moves only the header branding 20px left and 10px down on phones, with a subtle premium parallel finish. */
 @media (max-width:520px){
   .app-header .brand-lockup{
-    transform:translate(-20px,20px);
+    transform:translate3d(-20px,10px,0);
+    transform-origin:center;
+    will-change:transform;
+    filter:drop-shadow(0 1px 3px rgba(0,0,0,.12));
+    -webkit-font-smoothing:antialiased;
   }
 }
