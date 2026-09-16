@@ -45,6 +45,7 @@ const allowedScripts = new Set([
   'js/template-filters-search-fix.js',
   'js/screen-layout-fix.js',
   'js/premium-template-gallery.js',
+  'js/premium-template-actions.js',
 ]);
 
 const normalizeAsset = (value) => {
