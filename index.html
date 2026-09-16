@@ -425,7 +425,16 @@ button:focus-visible,.nav-item:focus-visible,.premium-chip:focus-visible,.icon-b
 @media(prefers-reduced-motion:reduce){#templatesScreen::before,#templatesScreen .template-card::before{animation:none!important}#templatesScreen .template-card,#templatesScreen .mini-paper,#templatesScreen .gallery-shine,#templatesScreen .template-preview::before,#resumateGalleryModal,#resumateGalleryModal .gallery-modal-box{transition:none!important}#templatesScreen .template-card:hover .mini-paper{transform:none!important}#templatesScreen .gallery-shine{display:none!important}}
 
 </style>
-<script>window.__RESUMATE_BUILD__ = 77;</script>
+<style data-ota-inline="css/statusbar-brand-fix.css">
+/* ResuMate native status-bar overlap fix. Moves only the header branding slightly downward on phones. */
+@media (max-width:520px){
+  .app-header .brand-lockup{
+    transform:translateY(10px);
+  }
+}
+
+</style>
+<script>window.__RESUMATE_BUILD__ = 78;</script>
 <script data-ota-inline="js/ota-bootstrap.js">
 /* ResuMate1-style GitHub-branch OTA bootstrap + long update alert. */
 (() => {
