@@ -425,7 +425,7 @@ button:focus-visible,.nav-item:focus-visible,.premium-chip:focus-visible,.icon-b
 @media(prefers-reduced-motion:reduce){#templatesScreen::before,#templatesScreen .template-card::before{animation:none!important}#templatesScreen .template-card,#templatesScreen .mini-paper,#templatesScreen .gallery-shine,#templatesScreen .template-preview::before,#resumateGalleryModal,#resumateGalleryModal .gallery-modal-box{transition:none!important}#templatesScreen .template-card:hover .mini-paper{transform:none!important}#templatesScreen .gallery-shine{display:none!important}}
 
 </style>
-<script>window.__RESUMATE_BUILD__ = 66;</script>
+<script>window.__RESUMATE_BUILD__ = 67;</script>
 <script data-ota-inline="js/ota-bootstrap.js">
 /* ResuMate1-style GitHub-branch OTA bootstrap + long update alert. */
 (() => {
@@ -592,9 +592,7 @@ button:focus-visible,.nav-item:focus-visible,.premium-chip:focus-visible,.icon-b
 <div class="app-shell">
   <header class="app-header">
     <button id="headerBack" class="header-icon hidden" aria-label="Back">‹</button>
-    <div class="brand-lockup">
-      <div class="brand-title">ResuMate</div>
-    </div>
+    <div class="brand-lockup"><div class="brand-title">ResuMate</div></div>
     <button id="premiumBtn" class="premium-chip" aria-label="Premium">♛ <span>PREMIUM</span></button>
   </header>
   <main id="screenRoot" class="screen-root">
@@ -1281,6 +1279,33 @@ const observer=new MutationObserver(()=>setTimeout(patch,30));observer.observe(d
   function build(){const screen=document.getElementById('templatesScreen');if(!screen||!screen.classList.contains('active')||built)return;injectStyle();screen.classList.add('premium-gallery-host');screen.innerHTML='<div class="premium-gallery-page"><section class="premium-hero"><span class="premium-eyebrow">ResuMate • Premium Collection</span><h1>Make your resume impossible to ignore.</h1><p>Five polished resume directions with immersive previews, subtle depth, and fast template selection.</p></section><div class="premium-gallery-toolbar" aria-label="Template filters"><button class="premium-gallery-filter active" data-filter="all">All</button><button class="premium-gallery-filter" data-filter="ats">ATS</button><button class="premium-gallery-filter" data-filter="creative">Creative</button><button class="premium-gallery-filter" data-filter="executive">Executive</button></div><section class="premium-gallery-grid" aria-label="Resume templates"></section></div>';const grid=screen.querySelector('.premium-gallery-grid');templates.forEach((t,i)=>{const c=card(t,i);c.dataset.filter=t.type.toLowerCase();grid.appendChild(c)});screen.querySelectorAll('.premium-gallery-filter').forEach(b=>b.onclick=()=>{screen.querySelectorAll('.premium-gallery-filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');const f=b.dataset.filter;screen.querySelectorAll('.premium-gallery-card').forEach(c=>c.hidden=f!=='all'&&c.dataset.filter!==f)});built=true}
   function watch(){const screen=document.getElementById('templatesScreen');if(!screen)return;observer=new MutationObserver(()=>{if(screen.classList.contains('active')){if(!screen.classList.contains('premium-gallery-host')){built=false;build()}}else built=false});observer.observe(screen,{childList:true,subtree:false});if(screen.classList.contains('active'))build()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch,{once:true});else watch();
+})();
+
+</script>
+<script data-ota-inline="js/premium-template-actions.js">
+/* Connect the premium gallery's five Use Template buttons to the existing ResuMate detail flow. */
+(() => {
+  'use strict';
+  const wire = () => {
+    const screen = document.getElementById('templatesScreen');
+    if (!screen?.classList.contains('active')) return;
+    if (!screen.querySelector('.premium-gallery-page')) {
+      screen.classList.remove('premium-gallery-host');
+      screen.appendChild(document.createComment('premium-gallery-remount'));
+      return;
+    }
+    screen.querySelectorAll('.premium-gallery-card').forEach((card, index) => {
+      const button = card.querySelector('.use-btn');
+      if (button) button.dataset.templateDetail = String(index + 1);
+    });
+  };
+  const start = () => {
+    const root = document.getElementById('screenRoot') || document.body;
+    new MutationObserver(wire).observe(root, {childList:true, subtree:true});
+    wire();
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once:true});
+  else start();
 })();
 
 </script>
