@@ -16,9 +16,8 @@ const sourceHtmlPath = resolve(root, 'www/index.html');
 const BUILD_MARKER = 'window.__RESUMATE_BUILD__ = 0;';
 const OTA_MARKER = 'window.__RESUMATE_OTA_PAYLOAD__ = true;';
 
-// Keep this allow-list explicit, but include the premium clone layer used by
-// the current main UI. Every stylesheet referenced by index.html that is
-// intended for the web/OTA payload must appear here.
+// Keep this allow-list explicit. Every local stylesheet/script referenced by
+// index.html and intended for the web/OTA payload must appear here.
 const allowedCss = new Set([
   'css/style.css', 'css/components.css', 'css/ui-fixes.css',
   'css/home-responsive-fix.css', 'css/home-fixed-viewport.css',
@@ -32,7 +31,7 @@ const allowedScripts = new Set([
   'js/preview-fullscreen-controls.js', 'js/template-label-integrity.js',
   'js/template-filters-search-fix.js', 'js/screen-layout-fix.js',
   'js/premium-template-gallery.js', 'js/premium-template-actions.js',
-  'js/template-heading-ui-fix.js',
+  'js/template-heading-ui-fix.js', 'js/coverflow-premium-polish.js',
 ]);
 const normalizeAsset = (value) => {
   const cleaned = value.trim().replace(/^\.\//, '');
