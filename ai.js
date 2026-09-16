@@ -24,8 +24,8 @@ async function callModel(model) {
 async function run() {
   let text = '';
   try {
-    console.log('🧠 Querying Gemini 3.6 Pro (Advanced Reasoning)...');
-    text = await callModel('gemini-3.6-pro');
+    console.log('🧠 Querying Gemini 3.1 Pro (Advanced Reasoning)...');
+    text = await callModel('gemini-3.1-pro');
   } catch (err) {
     console.log('⚡ Pro unavailable, switching to Gemini 3.6 Flash...');
     text = await callModel('gemini-3.6-flash');

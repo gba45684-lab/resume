@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <script>
     tailwind.config = {
@@ -48,9 +48,10 @@
     
     body {
       padding-top: var(--safe-top);
-      padding-bottom: calc(var(--safe-bottom) + 84px);
+      padding-bottom: calc(var(--safe-bottom) + 80px);
       user-select: none;
       touch-action: manipulation;
+      -webkit-font-smoothing: antialiased;
     }
 
     input, textarea, [contenteditable="true"] { 
@@ -64,7 +65,7 @@
       width: 794px;
       min-height: 1123px;
       background: #ffffff;
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3), 0 0 1px 1px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 1px 1px rgba(0, 0, 0, 0.05);
       transition: all 0.2s ease;
       color: #0f172a;
     }
@@ -79,7 +80,7 @@
         width: 100% !important;
         min-height: 100vh !important;
         margin: 0 !important;
-        padding: 2rem !important;
+        padding: 2.5rem !important;
         box-shadow: none !important;
         border-radius: 0 !important;
         transform: scale(1) !important;
@@ -88,16 +89,24 @@
     }
 
     .tap-active {
-      transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.1s ease;
+      transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.12s ease;
     }
     .tap-active:active {
       transform: scale(0.96);
-      opacity: 0.9;
+      opacity: 0.88;
     }
 
     .tpl-font-sans { font-family: 'Plus Jakarta Sans', sans-serif; }
     .tpl-font-serif { font-family: 'Playfair Display', serif; }
     .tpl-font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    .toast-animate {
+      animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translate(-50%, 1rem) scale(0.95); }
+      to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    }
   </style>
 </head>
 
@@ -114,16 +123,16 @@
           TapUniverse
           <span class="text-[9px] font-extrabold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 px-1.5 py-0.5 rounded-md tracking-wider">CV MAKER</span>
         </h1>
-        <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400">ATS Builder & Dynamic Studio</p>
+        <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400">ATS Resume Builder & Studio</p>
       </div>
     </div>
 
     <div class="flex items-center space-x-2">
-      <button onclick="loadSampleData()" title="Reset Sample Resume Data" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-bold tap-active flex items-center gap-1">
+      <button onclick="loadSampleData()" title="Reset Sample Data" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-bold tap-active flex items-center gap-1">
         <span>⚡ Demo</span>
       </button>
 
-      <button onclick="toggleTheme()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition tap-active">
+      <button onclick="toggleTheme()" aria-label="Toggle Theme" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition tap-active">
         <svg id="theme-icon-sun" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"/></svg>
         <svg id="theme-icon-moon" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
       </button>
@@ -205,12 +214,12 @@
           <span id="current-color-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Emerald Green</span>
         </div>
         <div class="flex items-center justify-between gap-2 pt-1">
-          <button onclick="setAccent('#059669', 'Emerald Green')" class="w-8 h-8 rounded-full bg-[#059669] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
-          <button onclick="setAccent('#2563eb', 'Royal Blue')" class="w-8 h-8 rounded-full bg-[#2563eb] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
-          <button onclick="setAccent('#4f46e5', 'Indigo Purple')" class="w-8 h-8 rounded-full bg-[#4f46e5] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
-          <button onclick="setAccent('#dc2626', 'Crimson Red')" class="w-8 h-8 rounded-full bg-[#dc2626] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
-          <button onclick="setAccent('#d97706', 'Amber Gold')" class="w-8 h-8 rounded-full bg-[#d97706] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
-          <button onclick="setAccent('#0f172a', 'Slate Dark')" class="w-8 h-8 rounded-full bg-[#0f172a] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
+          <button onclick="setAccent('#059669', 'Emerald Green')" class="w-8 h-8 rounded-full bg-[#059669] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active" aria-label="Emerald Green"></button>
+          <button onclick="setAccent('#2563eb', 'Royal Blue')" class="w-8 h-8 rounded-full bg-[#2563eb] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active" aria-label="Royal Blue"></button>
+          <button onclick="setAccent('#4f46e5', 'Indigo Purple')" class="w-8 h-8 rounded-full bg-[#4f46e5] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active" aria-label="Indigo Purple"></button>
+          <button onclick="setAccent('#dc2626', 'Crimson Red')" class="w-8 h-8 rounded-full bg-[#dc2626] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active" aria-label="Crimson Red"></button>
+          <button onclick="setAccent('#d97706', 'Amber Gold')" class="w-8 h-8 rounded-full bg-[#d97706] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active" aria-label="Amber Gold"></button>
+          <button onclick="setAccent('#0f172a', 'Slate Dark')" class="w-8 h-8 rounded-full bg-[#0f172a] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active" aria-label="Slate Dark"></button>
         </div>
       </div>
 
@@ -307,8 +316,9 @@
           <h2 class="text-base font-extrabold tracking-tight">Resume Editor</h2>
           <p class="text-[10px] text-slate-500">Live synchronization with printable sheet</p>
         </div>
-        <button onclick="switchScreen('preview')" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 tap-active">
-          View Preview →
+        <button onclick="switchScreen('preview')" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 tap-active flex items-center gap-1">
+          <span>View Preview</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
         </button>
       </div>
 
@@ -318,25 +328,25 @@
           <span>👤</span> Personal Details
         </h3>
         <div>
-          <label class="text-[10px] font-bold text-slate-500 uppercase">Full Name</label>
+          <label for="in-name" class="text-[10px] font-bold text-slate-500 uppercase">Full Name</label>
           <input id="in-name" type="text" placeholder="e.g. Alex Rivera" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold focus:border-emerald-500 outline-none transition" />
         </div>
         <div>
-          <label class="text-[10px] font-bold text-slate-500 uppercase">Professional Title</label>
+          <label for="in-role" class="text-[10px] font-bold text-slate-500 uppercase">Professional Title</label>
           <input id="in-role" type="text" placeholder="e.g. Senior Mobile Systems Architect" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold focus:border-emerald-500 outline-none transition" />
         </div>
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="text-[10px] font-bold text-slate-500 uppercase">Email</label>
+            <label for="in-email" class="text-[10px] font-bold text-slate-500 uppercase">Email</label>
             <input id="in-email" type="email" placeholder="alex@domain.com" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:border-emerald-500 outline-none transition" />
           </div>
           <div>
-            <label class="text-[10px] font-bold text-slate-500 uppercase">Phone</label>
+            <label for="in-phone" class="text-[10px] font-bold text-slate-500 uppercase">Phone</label>
             <input id="in-phone" type="text" placeholder="+1 (555) 019-2831" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:border-emerald-500 outline-none transition" />
           </div>
         </div>
         <div>
-          <label class="text-[10px] font-bold text-slate-500 uppercase">Location & Links</label>
+          <label for="in-location" class="text-[10px] font-bold text-slate-500 uppercase">Location & Links</label>
           <input id="in-location" type="text" placeholder="San Francisco, CA • linkedin.com/in/alex" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:border-emerald-500 outline-none transition" />
         </div>
       </div>
@@ -345,7 +355,7 @@
       <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
         <div class="flex items-center justify-between">
           <h3 class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-            <span>🎯</span> Profile Summary
+            <span>📝</span> Profile Summary
           </h3>
           <button onclick="aiPolishSummary()" class="text-[10px] font-extrabold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-lg tap-active transition flex items-center gap-1">
             <span>✨ AI Enhance</span>
@@ -360,8 +370,8 @@
           <h3 class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
             <span>💼</span> Work Experience
           </h3>
-          <button onclick="addExperience()" class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-1 rounded-lg tap-active">
-            + Add Position
+          <button onclick="addExperience()" class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-1 rounded-lg tap-active flex items-center gap-1">
+            <span>+ Add Position</span>
           </button>
         </div>
 
@@ -374,8 +384,8 @@
           <h3 class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
             <span>🎓</span> Education
           </h3>
-          <button onclick="addEducation()" class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-1 rounded-lg tap-active">
-            + Add School
+          <button onclick="addEducation()" class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-1 rounded-lg tap-active flex items-center gap-1">
+            <span>+ Add School</span>
           </button>
         </div>
 
@@ -424,8 +434,14 @@
 
   </main>
 
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="no-print fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold px-4 py-2.5 rounded-2xl shadow-xl hidden toast-animate flex items-center gap-2 border border-slate-700/50">
+    <span id="toast-icon">✨</span>
+    <span id="toast-msg">Action updated</span>
+  </div>
+
   <!-- FIXED BOTTOM NAVIGATION BAR -->
-  <nav class="no-print fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#070b12]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800/80 px-6 py-2 flex items-center justify-around shadow-2xl">
+  <nav class="no-print fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#070b12]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800/80 px-6 py-2.5 flex items-center justify-around shadow-2xl">
     
     <button onclick="switchScreen('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold transition tap-active">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -487,6 +503,23 @@
       template: 'modern'
     };
 
+    let toastTimer = null;
+    function showToast(msg, icon = '✨') {
+      const toast = document.getElementById('toast');
+      const msgEl = document.getElementById('toast-msg');
+      const iconEl = document.getElementById('toast-icon');
+      if (!toast || !msgEl) return;
+
+      msgEl.innerText = msg;
+      if (iconEl) iconEl.innerText = icon;
+      toast.classList.remove('hidden');
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2200);
+    }
+
     function saveState() {
       localStorage.setItem(STATE_KEY, JSON.stringify(appState));
       updateDashboardData();
@@ -506,19 +539,25 @@
     }
 
     function syncInputsFromState() {
-      document.getElementById('in-name').value = appState.personal.name || '';
-      document.getElementById('in-role').value = appState.personal.role || '';
-      document.getElementById('in-email').value = appState.personal.email || '';
-      document.getElementById('in-phone').value = appState.personal.phone || '';
-      document.getElementById('in-location').value = appState.personal.location || '';
-      document.getElementById('in-summary').value = appState.summary || '';
-      document.getElementById('in-skills').value = appState.skills || '';
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val || '';
+      };
+
+      setVal('in-name', appState.personal.name);
+      setVal('in-role', appState.personal.role);
+      setVal('in-email', appState.personal.email);
+      setVal('in-phone', appState.personal.phone);
+      setVal('in-location', appState.personal.location);
+      setVal('in-summary', appState.summary);
+      setVal('in-skills', appState.skills);
       
       renderExperienceEditors();
       renderEducationEditors();
       selectTemplate(appState.template || 'modern', false);
       if (appState.accentName) {
-        document.getElementById('current-color-label').innerText = appState.accentName;
+        const label = document.getElementById('current-color-label');
+        if (label) label.innerText = appState.accentName;
       }
     }
 
@@ -546,6 +585,7 @@
 
     function renderExperienceEditors() {
       const container = document.getElementById('experience-editor-list');
+      if (!container) return;
       container.innerHTML = appState.experiences.map((exp, idx) => `
         <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 space-y-2 relative">
           <div class="flex items-center justify-between">
@@ -555,11 +595,11 @@
             </button>
           </div>
           <div class="grid grid-cols-2 gap-2">
-            <input type="text" value="${exp.role}" placeholder="Role Title" oninput="updateExp(${exp.id}, 'role', this.value)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs font-semibold outline-none" />
-            <input type="text" value="${exp.company}" placeholder="Company" oninput="updateExp(${exp.id}, 'company', this.value)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs font-semibold outline-none" />
+            <input type="text" value="${exp.role || ''}" placeholder="Role Title" oninput="updateExp(${exp.id}, 'role', this.value)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs font-semibold outline-none focus:border-emerald-500 transition" />
+            <input type="text" value="${exp.company || ''}" placeholder="Company" oninput="updateExp(${exp.id}, 'company', this.value)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs font-semibold outline-none focus:border-emerald-500 transition" />
           </div>
-          <input type="text" value="${exp.dates}" placeholder="Dates e.g., 2022 - Present" oninput="updateExp(${exp.id}, 'dates', this.value)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-[10px] outline-none" />
-          <textarea rows="2" placeholder="Key responsibilities & metric achievements..." oninput="updateExp(${exp.id}, 'desc', this.value)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs leading-relaxed outline-none">${exp.desc}</textarea>
+          <input type="text" value="${exp.dates || ''}" placeholder="Dates e.g., 2022 - Present" oninput="updateExp(${exp.id}, 'dates', this.value)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-[10px] outline-none focus:border-emerald-500 transition" />
+          <textarea rows="2" placeholder="Key responsibilities & metric achievements..." oninput="updateExp(${exp.id}, 'desc', this.value)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs leading-relaxed outline-none focus:border-emerald-500 transition">${exp.desc || ''}</textarea>
         </div>
       `).join('');
     }
@@ -574,12 +614,14 @@
       });
       renderExperienceEditors();
       saveState();
+      showToast('New position added', '💼');
     }
 
     function removeExperience(id) {
       appState.experiences = appState.experiences.filter(e => e.id !== id);
       renderExperienceEditors();
       saveState();
+      showToast('Position removed', '🗑️');
     }
 
     function updateExp(id, field, value) {
@@ -592,6 +634,7 @@
 
     function renderEducationEditors() {
       const container = document.getElementById('education-editor-list');
+      if (!container) return;
       container.innerHTML = appState.education.map((edu, idx) => `
         <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 space-y-2 relative">
           <div class="flex items-center justify-between">
@@ -600,10 +643,10 @@
               Remove
             </button>
           </div>
-          <input type="text" value="${edu.degree}" placeholder="Degree Title" oninput="updateEdu(${edu.id}, 'degree', this.value)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs font-semibold outline-none" />
+          <input type="text" value="${edu.degree || ''}" placeholder="Degree Title" oninput="updateEdu(${edu.id}, 'degree', this.value)" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs font-semibold outline-none focus:border-emerald-500 transition" />
           <div class="grid grid-cols-2 gap-2">
-            <input type="text" value="${edu.school}" placeholder="University / Institute" oninput="updateEdu(${edu.id}, 'school', this.value)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs outline-none" />
-            <input type="text" value="${edu.year}" placeholder="Graduation Year" oninput="updateEdu(${edu.id}, 'year', this.value)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs outline-none" />
+            <input type="text" value="${edu.school || ''}" placeholder="University / Institute" oninput="updateEdu(${edu.id}, 'school', this.value)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs outline-none focus:border-emerald-500 transition" />
+            <input type="text" value="${edu.year || ''}" placeholder="Graduation Year" oninput="updateEdu(${edu.id}, 'year', this.value)" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-2 text-xs outline-none focus:border-emerald-500 transition" />
           </div>
         </div>
       `).join('');
@@ -618,12 +661,14 @@
       });
       renderEducationEditors();
       saveState();
+      showToast('Education entry added', '🎓');
     }
 
     function removeEducation(id) {
       appState.education = appState.education.filter(e => e.id !== id);
       renderEducationEditors();
       saveState();
+      showToast('Education entry removed', '🗑️');
     }
 
     function updateEdu(id, field, value) {
@@ -635,8 +680,10 @@
     }
 
     function updateDashboardData() {
-      document.getElementById('dash-name').innerText = appState.personal.name || 'Your Name';
-      document.getElementById('dash-role').innerText = appState.personal.role || 'Your Professional Title';
+      const nameEl = document.getElementById('dash-name');
+      const roleEl = document.getElementById('dash-role');
+      if (nameEl) nameEl.innerText = appState.personal.name || 'Your Name';
+      if (roleEl) roleEl.innerText = appState.personal.role || 'Your Professional Title';
 
       const chkContact = !!(appState.personal.name && appState.personal.email && appState.personal.phone);
       const chkSummary = !!(appState.summary && appState.summary.length > 25);
@@ -654,21 +701,24 @@
         circle.setAttribute('stroke-dasharray', `${score}, 100`);
       }
 
-      document.getElementById('dash-score').innerText = `${score}%`;
+      const scoreEl = document.getElementById('dash-score');
+      if (scoreEl) scoreEl.innerText = `${score}%`;
 
       const gradeText = document.getElementById('dash-grade-text');
-      if (score >= 100) {
-        gradeText.innerText = 'Excellent Match (Grade A)';
-        gradeText.className = 'text-emerald-400 font-bold';
-      } else if (score >= 75) {
-        gradeText.innerText = 'Good Match (Grade B)';
-        gradeText.className = 'text-teal-400 font-bold';
-      } else if (score >= 50) {
-        gradeText.innerText = 'Moderate Match (Grade C)';
-        gradeText.className = 'text-amber-400 font-bold';
-      } else {
-        gradeText.innerText = 'Incomplete CV';
-        gradeText.className = 'text-red-400 font-bold';
+      if (gradeText) {
+        if (score >= 100) {
+          gradeText.innerText = 'Excellent Match (Grade A)';
+          gradeText.className = 'text-emerald-400 font-bold';
+        } else if (score >= 75) {
+          gradeText.innerText = 'Good Match (Grade B)';
+          gradeText.className = 'text-teal-400 font-bold';
+        } else if (score >= 50) {
+          gradeText.innerText = 'Moderate Match (Grade C)';
+          gradeText.className = 'text-amber-400 font-bold';
+        } else {
+          gradeText.innerText = 'Incomplete CV';
+          gradeText.className = 'text-red-400 font-bold';
+        }
       }
 
       const updateCheckItem = (id, isDone) => {
@@ -686,7 +736,8 @@
 
       const items = [chkContact, chkSummary, chkExp, chkSkills];
       const doneCount = items.filter(Boolean).length;
-      document.getElementById('chk-count').innerText = `${doneCount}/4 Completed`;
+      const countEl = document.getElementById('chk-count');
+      if (countEl) countEl.innerText = `${doneCount}/4 Completed`;
     }
 
     function switchScreen(screen) {
@@ -712,14 +763,16 @@
         renderPreview();
         autoFitScale();
       }
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function setAccent(hexColor, name = '') {
       appState.accentColor = hexColor;
       if (name) appState.accentName = name;
-      document.getElementById('current-color-label').innerText = appState.accentName || 'Custom Color';
+      const label = document.getElementById('current-color-label');
+      if (label) label.innerText = appState.accentName || 'Custom Color';
       saveState();
+      showToast(`Color: ${appState.accentName}`, '🎨');
     }
 
     function selectTemplate(templateId, shouldSave = true) {
@@ -735,7 +788,10 @@
         }
       });
 
-      if (shouldSave) saveState();
+      if (shouldSave) {
+        saveState();
+        showToast(`Template updated`, '📄');
+      }
     }
 
     function renderPreview() {
@@ -753,7 +809,7 @@
           <div class="border-b-2 pb-4 mb-5" style="border-color: ${color}">
             <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 uppercase">${appState.personal.name || 'YOUR NAME'}</h1>
             <p class="text-xs font-bold uppercase tracking-widest mt-1" style="color: ${color}">${appState.personal.role || ''}</p>
-            <p class="text-[10px] text-slate-500 mt-1 font-medium">${appState.personal.email}  •  ${appState.personal.phone}  •  ${appState.personal.location}</p>
+            <p class="text-[10px] text-slate-500 mt-1 font-medium">${appState.personal.email || ''}  •  ${appState.personal.phone || ''}  •  ${appState.personal.location || ''}</p>
           </div>
         `;
       } else if (appState.template === 'minimal') {
@@ -761,7 +817,7 @@
           <div class="text-center border-b pb-4 mb-5 border-slate-200">
             <h1 class="text-2xl font-black text-slate-900 tracking-tight">${appState.personal.name || 'YOUR NAME'}</h1>
             <p class="text-xs font-semibold text-slate-600 uppercase tracking-widest mt-0.5">${appState.personal.role || ''}</p>
-            <p class="text-[9.5px] text-slate-500 mt-1">${appState.personal.email} | ${appState.personal.phone} | ${appState.personal.location}</p>
+            <p class="text-[9.5px] text-slate-500 mt-1">${appState.personal.email || ''} | ${appState.personal.phone || ''} | ${appState.personal.location || ''}</p>
           </div>
         `;
       } else if (appState.template === 'tech') {
@@ -769,7 +825,7 @@
           <div class="p-4 rounded-xl mb-5" style="background-color: ${color}10; border-left: 4px solid ${color}">
             <h1 class="text-xl font-bold text-slate-900 font-mono">&lt;${appState.personal.name || 'YOUR NAME'}&gt;</h1>
             <p class="text-xs font-bold uppercase tracking-wider mt-0.5" style="color: ${color}">${appState.personal.role || ''}</p>
-            <p class="text-[9.5px] text-slate-600 font-mono mt-1">${appState.personal.email} // ${appState.personal.phone}</p>
+            <p class="text-[9.5px] text-slate-600 font-mono mt-1">${appState.personal.email || ''} // ${appState.personal.phone || ''}</p>
           </div>
         `;
       } else if (appState.template === 'serif') {
@@ -777,7 +833,7 @@
           <div class="border-b-2 pb-3 mb-5 border-slate-300">
             <h1 class="text-2xl font-bold text-slate-900 font-serif italic">${appState.personal.name || 'YOUR NAME'}</h1>
             <p class="text-xs font-bold uppercase tracking-widest mt-1" style="color: ${color}">${appState.personal.role || ''}</p>
-            <p class="text-[10px] text-slate-600 mt-1 italic">${appState.personal.email}  —  ${appState.personal.phone}</p>
+            <p class="text-[10px] text-slate-600 mt-1 italic">${appState.personal.email || ''}  —  ${appState.personal.phone || ''}</p>
           </div>
         `;
       }
@@ -805,11 +861,11 @@
               ${(appState.experiences || []).map(exp => `
                 <div>
                   <div class="flex justify-between items-baseline">
-                    <span class="text-[10.5px] font-bold text-slate-900">${exp.role}</span>
-                    <span class="text-[9px] font-medium text-slate-500">${exp.dates}</span>
+                    <span class="text-[10.5px] font-bold text-slate-900">${exp.role || ''}</span>
+                    <span class="text-[9px] font-medium text-slate-500">${exp.dates || ''}</span>
                   </div>
-                  <div class="text-[9.5px] font-semibold" style="color: ${color}">${exp.company}</div>
-                  <p class="text-[9.5px] text-slate-600 mt-1 leading-relaxed">${exp.desc}</p>
+                  <div class="text-[9.5px] font-semibold" style="color: ${color}">${exp.company || ''}</div>
+                  <p class="text-[9.5px] text-slate-600 mt-1 leading-relaxed">${exp.desc || ''}</p>
                 </div>
               `).join('')}
             </div>
@@ -824,10 +880,10 @@
               ${(appState.education || []).map(edu => `
                 <div class="flex justify-between items-baseline">
                   <div>
-                    <span class="text-[10px] font-bold text-slate-900">${edu.degree}</span>
-                    <p class="text-[9px] text-slate-600">${edu.school}</p>
+                    <span class="text-[10px] font-bold text-slate-900">${edu.degree || ''}</span>
+                    <p class="text-[9px] text-slate-600">${edu.school || ''}</p>
                   </div>
-                  <span class="text-[9px] text-slate-500 font-medium">${edu.year}</span>
+                  <span class="text-[9px] text-slate-500 font-medium">${edu.year || ''}</span>
                 </div>
               `).join('')}
             </div>
@@ -857,15 +913,17 @@
     function autoFitScale() {
       const screenWidth = window.innerWidth - 32;
       const a4Width = 794;
-      const computedScale = Math.min(1.0, Math.max(0.4, screenWidth / a4Width));
+      const computedScale = Math.min(1.0, Math.max(0.38, screenWidth / a4Width));
       setZoom(computedScale);
     }
 
     function aiPolishSummary() {
       const polished = "Accomplished Mobile Systems Architect with extensive expertise in cross-platform Android runtime optimization, offline-first sync engines, and automated deployment pipelines that boost application metrics by up to 45%.";
       appState.summary = polished;
-      document.getElementById('in-summary').value = polished;
+      const el = document.getElementById('in-summary');
+      if (el) el.value = polished;
       saveState();
+      showToast('Summary AI polished!', '✨');
     }
 
     function loadSampleData() {
@@ -909,12 +967,15 @@
       };
       syncInputsFromState();
       saveState();
+      showToast('Sample data loaded', '⚡');
     }
 
     function toggleTheme() {
       const isDark = document.documentElement.classList.toggle('dark');
-      document.getElementById('theme-icon-sun').classList.toggle('hidden', !isDark);
-      document.getElementById('theme-icon-moon').classList.toggle('hidden', isDark);
+      const sunIcon = document.getElementById('theme-icon-sun');
+      const moonIcon = document.getElementById('theme-icon-moon');
+      if (sunIcon) sunIcon.classList.toggle('hidden', !isDark);
+      if (moonIcon) moonIcon.classList.toggle('hidden', isDark);
       localStorage.setItem('tapuniverse_theme', isDark ? 'dark' : 'light');
     }
 
@@ -923,7 +984,8 @@
     }
 
     window.addEventListener('resize', () => {
-      if (!document.getElementById('screen-preview').classList.contains('hidden')) {
+      const previewScr = document.getElementById('screen-preview');
+      if (previewScr && !previewScr.classList.contains('hidden')) {
         autoFitScale();
       }
     });
@@ -931,8 +993,10 @@
     window.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem('tapuniverse_theme') === 'light') {
         document.documentElement.classList.remove('dark');
-        document.getElementById('theme-icon-sun').classList.add('hidden');
-        document.getElementById('theme-icon-moon').classList.remove('hidden');
+        const sunIcon = document.getElementById('theme-icon-sun');
+        const moonIcon = document.getElementById('theme-icon-moon');
+        if (sunIcon) sunIcon.classList.add('hidden');
+        if (moonIcon) moonIcon.classList.remove('hidden');
       }
       loadState();
     });
