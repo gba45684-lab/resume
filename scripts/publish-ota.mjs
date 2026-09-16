@@ -16,11 +16,15 @@ const sourceHtmlPath = resolve(root, 'www/index.html');
 const BUILD_MARKER = 'window.__RESUMATE_BUILD__ = 0;';
 const OTA_MARKER = 'window.__RESUMATE_OTA_PAYLOAD__ = true;';
 
+// Keep this allow-list explicit, but include the premium clone layer used by
+// the current main UI. Every stylesheet referenced by index.html that is
+// intended for the web/OTA payload must appear here.
 const allowedCss = new Set([
   'css/style.css', 'css/components.css', 'css/ui-fixes.css',
   'css/home-responsive-fix.css', 'css/home-fixed-viewport.css',
   'css/templates-scroll-fix.css', 'css/premium-polish.css',
   'css/premium-template-gallery.css', 'css/statusbar-brand-fix.css',
+  'css/premium-clone-ui.css',
 ]);
 const allowedScripts = new Set([
   'js/ota-bootstrap.js', 'js/templates.js', 'js/app.js', 'js/ui-integrity.js',
