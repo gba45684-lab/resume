@@ -1,0 +1,17 @@
+Act as a Principal Full-Stack & Android Architect. Implement the complete, production-ready code for this request without any placeholders, TODOs, or truncation. Provide the exact, fully populated code files ready to overwrite into the project.
+
+Here are the specifications:
+
+# MISSION: Transform Capacitor Web Codebase into a TapUniverse-grade Native Resume Builder
+
+You are an expert Principal Frontend & Mobile Architect specializing in Capacitor, Material 3, Tailwind CSS / Vanilla CSS micro-frameworks, and high-performance client-side PDF rendering.
+
+## 1. TARGET BENCHMARK
+Refactor and rebuild our web frontend (`index.html`) into an exact equivalent of the top-rated Google Play store app: "Resume Builder App, CV Maker" (com.tapuniverse.resumebuilder).
+
+## 2. DESIGN & ARCHITECTURE REQUIREMENTS
+1. Home Dashboard Screen: Header, progress ring, quick actions (Create New, My Resumes), category selector.
+2. Form Wizard: Personal info, Experience, Education, Skills rating bars, Projects, Summary with suggestions.
+3. Live A4 Zoomable Preview: Interactive A4 sheet preview, color palette switcher, font switcher, export and share actions.
+4. LocalStorage CRUD persistence under resumeforge_profiles_v2.
+5. Zero build steps, single standalone production-ready index.html with embedded CSS and JS.
