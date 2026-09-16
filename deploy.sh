@@ -2,7 +2,7 @@
 set -e
 
 MSG="${1:-Auto-update resume studio}"
-URL="https://resume-gba45684-9133s-projects.vercel.app"
+URL="https://resume-rho-six-33.vercel.app"
 
 echo "🚀 Staging and committing changes..."
 git add .
