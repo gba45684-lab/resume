@@ -1,76 +1,42 @@
 const fs = require('fs');
 const { execSync } = require('child_process');
 
-const promptText = process.argv.slice(2).join(' ');
-const apiKey = process.env.GEMINI_API_KEY;
+const prompt = process.argv.slice(2).join(' ');
+const key = process.env.GEMINI_API_KEY;
+if (!prompt || !key) { console.error('Usage: ai "instruction" (ensure GEMINI_API_KEY is set)'); process.exit(1); }
 
-if (!promptText) {
-  console.error('❌ Error: Provide an instruction. Example: ai "add a print button"');
-  process.exit(1);
+const oldCode = fs.existsSync('index.html') ? fs.readFileSync('index.html', 'utf8') : '';
+const reqBody = (model) => ({
+  url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+  body: JSON.stringify({
+    contents: [{ parts: [{ text: `You are an expert mobile frontend engineer. Refactor this single-file index.html. Output ONLY valid complete HTML. No markdown backticks, no fences, no notes.\n\nCODE:\n${oldCode}\n\nREQUEST:\n${prompt}` }] }]
+  })
+});
+
+async function callModel(model) {
+  const { url, body } = reqBody(model);
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.candidates?.[0]?.content?.parts?.[0]?.text;
 }
-if (!apiKey) {
-  console.error('❌ Error: GEMINI_API_KEY not found in environment.');
-  process.exit(1);
-}
-
-const htmlPath = './index.html';
-if (!fs.existsSync(htmlPath)) {
-  console.error('❌ Error: index.html not found. Make sure you are in ~/resume');
-  process.exit(1);
-}
-
-const currentHtml = fs.readFileSync(htmlPath, 'utf8');
-
-const systemPrompt = `You are an expert front-end developer modifying a single-file application (index.html).
-Read the user instruction and the current code, and output ONLY the complete updated HTML file.
-Do NOT output markdown backticks (\`\`\`html), fences, or conversational text. Output pure HTML only.`;
-
-const fullPrompt = `${systemPrompt}\n\n[CURRENT CODE]:\n${currentHtml}\n\n[USER REQUEST]:\n${promptText}`;
 
 async function run() {
-  console.log('🤖 Sending instruction to Gemini 3.6 Flash...');
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`;
-
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ contents: [{ parts: [{ text: fullPrompt }] }] })
-  });
-
-  if (!res.ok) {
-    console.error('❌ API Error:', await res.text());
-    process.exit(1);
-  }
-
-  const data = await res.json();
-  let newCode = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!newCode) {
-    console.error('❌ No code returned by the model.');
-    process.exit(1);
-  }
-
-  // Strip accidental markdown artifacts
-  newCode = newCode.trim()
-    .replace(/^```html\s*/i, '')
-    .replace(/^```\s*/i, '')
-    .replace(/```$/i, '')
-    .trim();
-
-  // Create backup and save
-  fs.copyFileSync(htmlPath, `${htmlPath}.bak`);
-  fs.writeFileSync(htmlPath, newCode, 'utf8');
-  console.log('✅ index.html updated successfully.');
-
-  // Push to GitHub & deploy OTA
-  console.log('🚀 Triggering deploy pipeline...');
+  let text = '';
   try {
-    execSync(`./deploy.sh "AI: ${promptText.replace(/"/g, '\\"')}"`, { stdio: 'inherit' });
+    console.log('🧠 Querying Gemini 3.6 Pro (Advanced Reasoning)...');
+    text = await callModel('gemini-3.6-pro');
   } catch (err) {
-    console.error('❌ Deployment script hit an issue.');
+    console.log('⚡ Pro unavailable, switching to Gemini 3.6 Flash...');
+    text = await callModel('gemini-3.6-flash');
   }
-}
 
-run().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+  let code = (text || '').trim().replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```$/i, '').trim();
+  if (!code) { console.error('❌ Error: No code received.'); process.exit(1); }
+
+  fs.copyFileSync('index.html', 'index.html.bak');
+  fs.writeFileSync('index.html', code, 'utf8');
+  console.log('✅ index.html updated.');
+  execSync(`./deploy.sh "AI: ${prompt.replace(/["`$]/g, '')}"`, { stdio: 'inherit' });
+}
+run().catch(e => { console.error('Fatal:', e.message); process.exit(1); });

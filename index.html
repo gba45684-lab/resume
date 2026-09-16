@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>ResumeForge Native Studio - Mobile Resume Builder</title>
+  <title>TapUniverse CV Maker - Mobile Resume Builder</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,31 +37,36 @@
   <style>
     :root {
       --accent-color: #059669;
-      --accent-light: #ecfdf5;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
     
-    * { -webkit-tap-highlight-color: transparent; }
+    * { 
+      -webkit-tap-highlight-color: transparent; 
+      box-sizing: border-box;
+    }
+    
     body {
       padding-top: var(--safe-top);
-      padding-bottom: calc(var(--safe-bottom) + 80px);
+      padding-bottom: calc(var(--safe-bottom) + 84px);
       user-select: none;
+      touch-action: manipulation;
     }
-    input, textarea, [contenteditable="true"] { user-select: auto; }
 
-    /* Hide scrollbars for slick mobile app feel */
+    input, textarea, [contenteditable="true"] { 
+      user-select: auto; 
+    }
+
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* A4 Aspect Ratio Canvas & Print Rules */
     .a4-container {
-      width: 100%;
-      max-width: 794px; /* A4 width at 96 DPI */
-      min-height: 1123px; /* A4 height at 96 DPI */
+      width: 794px;
+      min-height: 1123px;
       background: #ffffff;
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2), 0 0 1px 1px rgba(0, 0, 0, 0.05);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3), 0 0 1px 1px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease;
+      color: #0f172a;
     }
 
     @media print {
@@ -74,22 +79,22 @@
         width: 100% !important;
         min-height: 100vh !important;
         margin: 0 !important;
-        padding: 2.5rem !important;
+        padding: 2rem !important;
         box-shadow: none !important;
         border-radius: 0 !important;
+        transform: scale(1) !important;
       }
       .no-print { display: none !important; }
     }
 
-    /* Custom Switch & Range Animations */
     .tap-active {
-      transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.1s ease;
     }
     .tap-active:active {
       transform: scale(0.96);
+      opacity: 0.9;
     }
 
-    /* Template dynamic font classes */
     .tpl-font-sans { font-family: 'Plus Jakarta Sans', sans-serif; }
     .tpl-font-serif { font-family: 'Playfair Display', serif; }
     .tpl-font-mono { font-family: 'JetBrains Mono', monospace; }
@@ -98,9 +103,7 @@
 
 <body class="bg-slate-100 dark:bg-[#070b12] text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
 
-  <!-- ============================================== -->
-  <!-- TOP APP HEADER BAR -->
-  <!-- ============================================== -->
+  <!-- TOP HEADER BAR -->
   <header class="no-print sticky top-0 z-40 bg-white/90 dark:bg-[#0d1322]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 px-4 py-3 flex items-center justify-between shadow-xs">
     <div class="flex items-center space-x-2.5">
       <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
@@ -108,16 +111,15 @@
       </div>
       <div>
         <h1 class="font-extrabold text-sm tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-          ResumeForge
-          <span class="text-[9px] font-extrabold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 px-1.5 py-0.5 rounded-md tracking-wider">TAP NATIVE</span>
+          TapUniverse
+          <span class="text-[9px] font-extrabold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 px-1.5 py-0.5 rounded-md tracking-wider">CV MAKER</span>
         </h1>
-        <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400">ATS Studio & Live CV Builder</p>
+        <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400">ATS Builder & Dynamic Studio</p>
       </div>
     </div>
 
-    <!-- Header Quick Action Buttons -->
     <div class="flex items-center space-x-2">
-      <button onclick="loadSampleData()" title="Load Sample Resume Data" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-bold tap-active flex items-center gap-1">
+      <button onclick="loadSampleData()" title="Reset Sample Resume Data" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-bold tap-active flex items-center gap-1">
         <span>⚡ Demo</span>
       </button>
 
@@ -126,21 +128,17 @@
         <svg id="theme-icon-moon" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
       </button>
 
-      <button onclick="handleExportPdf()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs shadow-md shadow-emerald-600/20 flex items-center space-x-1.5 tap-active">
+      <button onclick="handleExportPdf()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs shadow-md shadow-emerald-600/20 flex items-center space-x-1.5 tap-active">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
         <span>Export</span>
       </button>
     </div>
   </header>
 
-  <!-- ============================================== -->
-  <!-- MAIN CONTENT CONTAINER -->
-  <!-- ============================================== -->
+  <!-- MAIN CONTAINER -->
   <main class="flex-1 max-w-xl w-full mx-auto p-4 space-y-4">
 
-    <!-- ============================================== -->
-    <!-- SCREEN 1: TAPUNIVERSE DASHBOARD / HOME -->
-    <!-- ============================================== -->
+    <!-- SCREEN 1: DASHBOARD / HOME -->
     <div id="screen-dashboard" class="space-y-4">
       
       <!-- Profile Readiness Card with Circular Progress Ring -->
@@ -149,27 +147,27 @@
         <div class="flex items-center justify-between relative z-10">
           <div class="space-y-1.5 pr-2">
             <span class="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-800/50">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ATS Score Engine
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ATS Readiness
             </span>
             <h2 id="dash-name" class="text-xl font-black tracking-tight text-white leading-tight">Alex Rivera</h2>
             <p id="dash-role" class="text-xs font-medium text-slate-300">Senior Mobile Systems Architect</p>
           </div>
 
-          <!-- Interactive Circular Progress Ring -->
+          <!-- Circular ATS Score Ring -->
           <div class="relative w-20 h-20 flex-shrink-0 flex items-center justify-center">
             <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
               <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              <path id="progress-circle" class="text-emerald-500 transition-all duration-700 ease-out" stroke-dasharray="85, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path id="progress-circle" class="text-emerald-500 transition-all duration-700 ease-out" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
             </svg>
             <div class="absolute flex flex-col items-center justify-center text-center">
-              <span id="dash-score" class="text-base font-black text-white leading-none">85%</span>
+              <span id="dash-score" class="text-base font-black text-white leading-none">0%</span>
               <span class="text-[8px] uppercase tracking-wider font-bold text-emerald-400 mt-0.5">Score</span>
             </div>
           </div>
         </div>
 
         <div class="mt-4 pt-3.5 border-t border-slate-800/80 flex items-center justify-between text-xs">
-          <span class="text-slate-400 font-medium">ATS Grade: <strong id="dash-grade-text" class="text-emerald-400 font-bold">Strong match</strong></span>
+          <span class="text-slate-400 font-medium">ATS Grade: <strong id="dash-grade-text" class="text-emerald-400 font-bold">Calculating...</strong></span>
           <button onclick="switchScreen('editor')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 tap-active">
             <span>Optimise CV</span>
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -177,7 +175,7 @@
         </div>
       </div>
 
-      <!-- Quick Action Cards Grid -->
+      <!-- Quick Action Grid -->
       <div class="grid grid-cols-2 gap-3">
         <button onclick="switchScreen('editor')" class="flex items-center space-x-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs hover:border-emerald-500/50 tap-active transition text-left">
           <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
@@ -194,39 +192,38 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
           </div>
           <div>
-            <h3 class="font-extrabold text-xs text-slate-900 dark:text-white">Live Preview</h3>
-            <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400">Interactive A4 sheet</p>
+            <h3 class="font-extrabold text-xs text-slate-900 dark:text-white">Live A4 Preview</h3>
+            <p class="text-[10px] font-medium text-slate-500 dark:text-slate-400">Printable sheet view</p>
           </div>
         </button>
       </div>
 
-      <!-- Quick Color Palette & Styling Dock -->
+      <!-- Color Palette Dock -->
       <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-2.5">
         <div class="flex items-center justify-between">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Accent Theme Color</h3>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Accent Color Theme</h3>
           <span id="current-color-label" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Emerald Green</span>
         </div>
         <div class="flex items-center justify-between gap-2 pt-1">
-          <button onclick="setAccent('#059669', 'Emerald Green')" class="w-8 h-8 rounded-full bg-[#059669] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active flex items-center justify-center text-white text-xs"></button>
-          <button onclick="setAccent('#2563eb', 'Royal Blue')" class="w-8 h-8 rounded-full bg-[#2563eb] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active flex items-center justify-center text-white text-xs"></button>
-          <button onclick="setAccent('#4f46e5', 'Indigo Purple')" class="w-8 h-8 rounded-full bg-[#4f46e5] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active flex items-center justify-center text-white text-xs"></button>
-          <button onclick="setAccent('#dc2626', 'Crimson Red')" class="w-8 h-8 rounded-full bg-[#dc2626] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active flex items-center justify-center text-white text-xs"></button>
-          <button onclick="setAccent('#d97706', 'Amber Gold')" class="w-8 h-8 rounded-full bg-[#d97706] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active flex items-center justify-center text-white text-xs"></button>
-          <button onclick="setAccent('#0f172a', 'Slate Dark')" class="w-8 h-8 rounded-full bg-[#0f172a] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active flex items-center justify-center text-white text-xs"></button>
+          <button onclick="setAccent('#059669', 'Emerald Green')" class="w-8 h-8 rounded-full bg-[#059669] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
+          <button onclick="setAccent('#2563eb', 'Royal Blue')" class="w-8 h-8 rounded-full bg-[#2563eb] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
+          <button onclick="setAccent('#4f46e5', 'Indigo Purple')" class="w-8 h-8 rounded-full bg-[#4f46e5] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
+          <button onclick="setAccent('#dc2626', 'Crimson Red')" class="w-8 h-8 rounded-full bg-[#dc2626] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
+          <button onclick="setAccent('#d97706', 'Amber Gold')" class="w-8 h-8 rounded-full bg-[#d97706] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
+          <button onclick="setAccent('#0f172a', 'Slate Dark')" class="w-8 h-8 rounded-full bg-[#0f172a] ring-2 ring-offset-2 ring-transparent dark:ring-offset-slate-900 hover:scale-110 transition tap-active"></button>
         </div>
       </div>
 
-      <!-- Multi-Template Selector Cards -->
+      <!-- Layout Templates Selector -->
       <div class="space-y-3">
         <div class="flex justify-between items-center px-1">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Layout Templates</h3>
-          <span class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">4 Styles Switcher</span>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Resume Style Templates</h3>
+          <span class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">4 Switchable Styles</span>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-          <!-- Template 1: Modern -->
           <div onclick="selectTemplate('modern')" id="card-tpl-modern" class="p-3 rounded-2xl bg-white dark:bg-slate-900 border-2 border-emerald-500 shadow-sm cursor-pointer tap-active transition">
-            <div class="w-full h-20 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 flex flex-col justify-between p-2 mb-2 border border-emerald-100 dark:border-emerald-900/40">
+            <div class="w-full h-16 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 flex flex-col justify-between p-2 mb-2 border border-emerald-100 dark:border-emerald-900/40">
               <div class="w-1/2 h-2 bg-emerald-600 rounded-xs"></div>
               <div class="space-y-1">
                 <div class="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-xs"></div>
@@ -234,25 +231,23 @@
               </div>
             </div>
             <p class="font-extrabold text-xs text-slate-900 dark:text-white">Modern Executive</p>
-            <p class="text-[10px] text-slate-500">Split bar, clean hierarchy</p>
+            <p class="text-[10px] text-slate-500">Split header bar, sharp hierarchy</p>
           </div>
 
-          <!-- Template 2: Minimal -->
           <div onclick="selectTemplate('minimal')" id="card-tpl-minimal" class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs cursor-pointer tap-active transition">
-            <div class="w-full h-20 rounded-lg bg-slate-100 dark:bg-slate-800/40 flex flex-col justify-between p-2 mb-2 border border-slate-200 dark:border-slate-800">
-              <div class="w-1/3 h-2 bg-slate-800 dark:bg-slate-200 rounded-xs"></div>
+            <div class="w-full h-16 rounded-lg bg-slate-100 dark:bg-slate-800/40 flex flex-col justify-between p-2 mb-2 border border-slate-200 dark:border-slate-800">
+              <div class="w-1/3 h-2 bg-slate-800 dark:bg-slate-200 rounded-xs mx-auto"></div>
               <div class="space-y-1">
                 <div class="w-full h-1 bg-slate-300 dark:bg-slate-700 rounded-xs"></div>
                 <div class="w-2/3 h-1 bg-slate-300 dark:bg-slate-700 rounded-xs"></div>
               </div>
             </div>
             <p class="font-extrabold text-xs text-slate-900 dark:text-white">Clean Minimalist</p>
-            <p class="text-[10px] text-slate-500">Pure ATS single column</p>
+            <p class="text-[10px] text-slate-500">Centered classic ATS layout</p>
           </div>
 
-          <!-- Template 3: Tech -->
           <div onclick="selectTemplate('tech')" id="card-tpl-tech" class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs cursor-pointer tap-active transition">
-            <div class="w-full h-20 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 flex flex-col justify-between p-2 mb-2 border border-indigo-100 dark:border-indigo-900/40">
+            <div class="w-full h-16 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 flex flex-col justify-between p-2 mb-2 border border-indigo-100 dark:border-indigo-900/40">
               <div class="w-2/3 h-2 bg-indigo-600 rounded-xs"></div>
               <div class="flex gap-1">
                 <div class="w-4 h-2 bg-indigo-300 rounded-xs"></div>
@@ -260,19 +255,18 @@
               </div>
             </div>
             <p class="font-extrabold text-xs text-slate-900 dark:text-white">Developer Mono</p>
-            <p class="text-[10px] text-slate-500">JetBrains Code & Tags</p>
+            <p class="text-[10px] text-slate-500">Code tag styling & JetBrains font</p>
           </div>
 
-          <!-- Template 4: Serif -->
           <div onclick="selectTemplate('serif')" id="card-tpl-serif" class="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs cursor-pointer tap-active transition">
-            <div class="w-full h-20 rounded-lg bg-amber-50 dark:bg-amber-950/30 flex flex-col justify-between p-2 mb-2 border border-amber-100 dark:border-amber-900/40">
+            <div class="w-full h-16 rounded-lg bg-amber-50 dark:bg-amber-950/30 flex flex-col justify-between p-2 mb-2 border border-amber-100 dark:border-amber-900/40">
               <div class="w-1/2 h-2.5 bg-amber-800 rounded-xs"></div>
               <div class="space-y-1">
                 <div class="w-full h-1 bg-amber-200 dark:bg-slate-700 rounded-xs"></div>
               </div>
             </div>
             <p class="font-extrabold text-xs text-slate-900 dark:text-white">Elegant Serif</p>
-            <p class="text-[10px] text-slate-500">Editorial Playfair style</p>
+            <p class="text-[10px] text-slate-500">Playfair font & classic typography</p>
           </div>
         </div>
       </div>
@@ -281,39 +275,37 @@
       <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
         <h3 class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 flex items-center justify-between">
           <span>ATS Checklist</span>
-          <span id="chk-count" class="text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">4/4 Done</span>
+          <span id="chk-count" class="text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">0/4 Completed</span>
         </h3>
         <div class="space-y-2 text-xs">
           <div id="chk-item-contact" class="flex items-center justify-between text-slate-700 dark:text-slate-300">
-            <span class="flex items-center gap-2"><span>👤</span> Contact Information Complete</span>
-            <span class="text-emerald-500 font-bold">✓</span>
+            <span class="flex items-center gap-2"><span>👤</span> Personal & Contact Details</span>
+            <span id="chk-icon-contact" class="text-slate-400 font-bold">○</span>
           </div>
           <div id="chk-item-summary" class="flex items-center justify-between text-slate-700 dark:text-slate-300">
-            <span class="flex items-center gap-2"><span>📝</span> Impact Professional Profile</span>
-            <span class="text-emerald-500 font-bold">✓</span>
+            <span class="flex items-center gap-2"><span>📝</span> Impact Professional Summary</span>
+            <span id="chk-icon-summary" class="text-slate-400 font-bold">○</span>
           </div>
           <div id="chk-item-exp" class="flex items-center justify-between text-slate-700 dark:text-slate-300">
-            <span class="flex items-center gap-2"><span>💼</span> Employment History Listed</span>
-            <span class="text-emerald-500 font-bold">✓</span>
+            <span class="flex items-center gap-2"><span>💼</span> Employment History Entries</span>
+            <span id="chk-icon-exp" class="text-slate-400 font-bold">○</span>
           </div>
           <div id="chk-item-skills" class="flex items-center justify-between text-slate-700 dark:text-slate-300">
-            <span class="flex items-center gap-2"><span>⚡</span> ATS Keywords & Skill Tags</span>
-            <span class="text-emerald-500 font-bold">✓</span>
+            <span class="flex items-center gap-2"><span>⚡</span> Technical Skills & Keywords</span>
+            <span id="chk-icon-skills" class="text-slate-400 font-bold">○</span>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- ============================================== -->
     <!-- SCREEN 2: EDITOR WIZARD -->
-    <!-- ============================================== -->
     <div id="screen-editor" class="space-y-4 hidden">
       
       <div class="flex items-center justify-between pb-1 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h2 class="text-base font-extrabold tracking-tight">Resume Information</h2>
-          <p class="text-[10px] text-slate-500">Real-time sync to printable preview</p>
+          <h2 class="text-base font-extrabold tracking-tight">Resume Editor</h2>
+          <p class="text-[10px] text-slate-500">Live synchronization with printable sheet</p>
         </div>
         <button onclick="switchScreen('preview')" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 tap-active">
           View Preview →
@@ -327,25 +319,25 @@
         </h3>
         <div>
           <label class="text-[10px] font-bold text-slate-500 uppercase">Full Name</label>
-          <input id="in-name" type="text" value="Alex Rivera" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold focus:border-emerald-500 outline-none transition" />
+          <input id="in-name" type="text" placeholder="e.g. Alex Rivera" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold focus:border-emerald-500 outline-none transition" />
         </div>
         <div>
           <label class="text-[10px] font-bold text-slate-500 uppercase">Professional Title</label>
-          <input id="in-role" type="text" value="Senior Mobile Systems Architect" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold focus:border-emerald-500 outline-none transition" />
+          <input id="in-role" type="text" placeholder="e.g. Senior Mobile Systems Architect" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold focus:border-emerald-500 outline-none transition" />
         </div>
         <div class="grid grid-cols-2 gap-2.5">
           <div>
             <label class="text-[10px] font-bold text-slate-500 uppercase">Email</label>
-            <input id="in-email" type="email" value="alex.rivera@forge.io" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:border-emerald-500 outline-none transition" />
+            <input id="in-email" type="email" placeholder="alex@domain.com" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:border-emerald-500 outline-none transition" />
           </div>
           <div>
             <label class="text-[10px] font-bold text-slate-500 uppercase">Phone</label>
-            <input id="in-phone" type="text" value="+1 (555) 019-2831" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:border-emerald-500 outline-none transition" />
+            <input id="in-phone" type="text" placeholder="+1 (555) 019-2831" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:border-emerald-500 outline-none transition" />
           </div>
         </div>
         <div>
-          <label class="text-[10px] font-bold text-slate-500 uppercase">Location / Links</label>
-          <input id="in-location" type="text" value="San Francisco, CA • linkedin.com/in/alexrivera" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:border-emerald-500 outline-none transition" />
+          <label class="text-[10px] font-bold text-slate-500 uppercase">Location & Links</label>
+          <input id="in-location" type="text" placeholder="San Francisco, CA • linkedin.com/in/alex" class="w-full mt-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs focus:border-emerald-500 outline-none transition" />
         </div>
       </div>
 
@@ -359,23 +351,21 @@
             <span>✨ AI Enhance</span>
           </button>
         </div>
-        <textarea id="in-summary" rows="3" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-xs leading-relaxed focus:border-emerald-500 outline-none transition">Results-driven Mobile Systems Architect with 7+ years of experience designing high-throughput offline engines, cross-platform Android runtime optimizations, and automated deployment pipelines.</textarea>
+        <textarea id="in-summary" rows="3" placeholder="Write a concise overview of your key accomplishments and skills..." class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-xs leading-relaxed focus:border-emerald-500 outline-none transition"></textarea>
       </div>
 
-      <!-- Experience Section (Dynamic List) -->
+      <!-- Experience Section -->
       <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
         <div class="flex items-center justify-between">
           <h3 class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
             <span>💼</span> Work Experience
           </h3>
           <button onclick="addExperience()" class="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-1 rounded-lg tap-active">
-            + Add Job
+            + Add Position
           </button>
         </div>
 
-        <div id="experience-editor-list" class="space-y-3">
-          <!-- Experience Items Dynamic Container -->
-        </div>
+        <div id="experience-editor-list" class="space-y-3"></div>
       </div>
 
       <!-- Education Section -->
@@ -389,25 +379,21 @@
           </button>
         </div>
 
-        <div id="education-editor-list" class="space-y-3">
-          <!-- Education Items Dynamic Container -->
-        </div>
+        <div id="education-editor-list" class="space-y-3"></div>
       </div>
 
       <!-- Technical Skills Section -->
       <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
         <h3 class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-          <span>🛠️</span> Technical Skills & Tools
+          <span>🛠️</span> Technical Skills & Keywords
         </h3>
-        <input id="in-skills" type="text" value="Android Architecture, TypeScript, Kotlin, Capacitor, Vercel CI/CD, SQLite, Tailwind CSS, Jetpack Compose, GraphQL" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-medium focus:border-emerald-500 outline-none transition" />
-        <p class="text-[9.5px] text-slate-400">Separate skills with commas to render as high-impact ATS keywords.</p>
+        <input id="in-skills" type="text" placeholder="Android, TypeScript, Kotlin, React Native, GraphQL" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-medium focus:border-emerald-500 outline-none transition" />
+        <p class="text-[9.5px] text-slate-400">Separate skills with commas to render as high-impact ATS keyword tags.</p>
       </div>
 
     </div>
 
-    <!-- ============================================== -->
     <!-- SCREEN 3: LIVE A4 PREVIEW & CONTROLS -->
-    <!-- ============================================== -->
     <div id="screen-preview" class="space-y-4 hidden">
       
       <!-- Preview Controls Dock -->
@@ -416,24 +402,21 @@
           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Zoom:</span>
           <button onclick="setZoom(0.85)" class="px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-bold tap-active">85%</button>
           <button onclick="setZoom(1.0)" class="px-2 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 text-xs font-bold tap-active">100%</button>
+          <button onclick="autoFitScale()" class="px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-bold tap-active">Fit Mobile</button>
         </div>
 
-        <div class="flex items-center space-x-2">
-          <button onclick="handleExportPdf()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20 tap-active flex items-center gap-1">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-            <span>Print / Save PDF</span>
-          </button>
-        </div>
+        <button onclick="handleExportPdf()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20 tap-active flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          <span>Print / PDF</span>
+        </button>
       </div>
 
-      <!-- Interactive A4 Printable Sheet Container -->
-      <div class="overflow-x-auto pb-6 no-scrollbar flex justify-center">
+      <!-- Printable A4 View Container -->
+      <div class="overflow-x-auto pb-6 no-scrollbar flex justify-center items-start">
         <div id="preview-zoom-wrapper" class="origin-top transition-transform duration-200">
-          
           <div id="printable-resume" class="a4-container rounded-2xl p-8 text-slate-900 font-sans flex flex-col justify-between relative">
-            <!-- Dynamic Content Injected Here by JS -->
+            <!-- Dynamic CV Content Injected via JS -->
           </div>
-
         </div>
       </div>
 
@@ -441,9 +424,7 @@
 
   </main>
 
-  <!-- ============================================== -->
-  <!-- FIXED BOTTOM NAVIGATION BAR (TAPUNIVERSE STYLE) -->
-  <!-- ============================================== -->
+  <!-- FIXED BOTTOM NAVIGATION BAR -->
   <nav class="no-print fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#070b12]/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800/80 px-6 py-2 flex items-center justify-around shadow-2xl">
     
     <button onclick="switchScreen('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-emerald-600 dark:text-emerald-400 font-bold transition tap-active">
@@ -458,18 +439,15 @@
 
     <button onclick="switchScreen('preview')" id="nav-preview" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium transition tap-active">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-      <span class="text-[9.5px]">Preview</span>
+      <span class="text-[9.5px]">A4 Preview</span>
     </button>
 
   </nav>
 
-  <!-- ============================================== -->
-  <!-- APPLICATION LOGIC & DATA ENGINE -->
-  <!-- ============================================== -->
+  <!-- APPLICATION LOGIC & STATE ENGINE -->
   <script>
-    const STATE_KEY = 'tapuniverse_resumeforge_v2';
+    const STATE_KEY = 'tapuniverse_resumeforge_v3';
 
-    // Application State Object
     let appState = {
       personal: {
         name: 'Alex Rivera',
@@ -509,7 +487,6 @@
       template: 'modern'
     };
 
-    // Save and Load logic
     function saveState() {
       localStorage.setItem(STATE_KEY, JSON.stringify(appState));
       updateDashboardData();
@@ -521,14 +498,13 @@
       if (saved) {
         try {
           appState = { ...appState, ...JSON.parse(saved) };
-        } catch (e) { console.error('Failed to parse state:', e); }
+        } catch (e) { console.error('Failed to parse saved state', e); }
       }
       syncInputsFromState();
       updateDashboardData();
       renderPreview();
     }
 
-    // Sync input fields from state object
     function syncInputsFromState() {
       document.getElementById('in-name').value = appState.personal.name || '';
       document.getElementById('in-role').value = appState.personal.role || '';
@@ -546,7 +522,6 @@
       }
     }
 
-    // Event listeners for basic input fields
     const bindField = (id, keyPath) => {
       const el = document.getElementById(id);
       if (!el) return;
@@ -569,7 +544,6 @@
     bindField('in-summary', 'summary');
     bindField('in-skills', 'skills');
 
-    // Experience Management
     function renderExperienceEditors() {
       const container = document.getElementById('experience-editor-list');
       container.innerHTML = appState.experiences.map((exp, idx) => `
@@ -591,14 +565,13 @@
     }
 
     function addExperience() {
-      const newExp = {
+      appState.experiences.push({
         id: Date.now(),
         role: 'Senior Software Engineer',
         company: 'Innovate Tech',
         dates: '2021 - 2023',
-        desc: 'Built scalable backend microservices and accelerated app client responsiveness.'
-      };
-      appState.experiences.push(newExp);
+        desc: 'Built scalable client runtime architectures and optimized cross-platform deployment modules.'
+      });
       renderExperienceEditors();
       saveState();
     }
@@ -617,7 +590,6 @@
       }
     }
 
-    // Education Management
     function renderEducationEditors() {
       const container = document.getElementById('education-editor-list');
       container.innerHTML = appState.education.map((edu, idx) => `
@@ -638,13 +610,12 @@
     }
 
     function addEducation() {
-      const newEdu = {
+      appState.education.push({
         id: Date.now(),
         degree: 'M.S. Software Architecture',
         school: 'Stanford University',
         year: '2020 - 2022'
-      };
-      appState.education.push(newEdu);
+      });
       renderEducationEditors();
       saveState();
     }
@@ -663,23 +634,21 @@
       }
     }
 
-    // Dynamic ATS Readiness & Score Engine
     function updateDashboardData() {
       document.getElementById('dash-name').innerText = appState.personal.name || 'Your Name';
-      document.getElementById('dash-role').innerText = appState.personal.role || 'Your Professional Role';
+      document.getElementById('dash-role').innerText = appState.personal.role || 'Your Professional Title';
 
-      // Compute ATS completeness score
+      const chkContact = !!(appState.personal.name && appState.personal.email && appState.personal.phone);
+      const chkSummary = !!(appState.summary && appState.summary.length > 25);
+      const chkExp = !!(appState.experiences && appState.experiences.length > 0);
+      const chkSkills = !!(appState.skills && appState.skills.split(',').filter(Boolean).length >= 3);
+
       let score = 0;
-      if (appState.personal.name) score += 15;
-      if (appState.personal.role) score += 10;
-      if (appState.personal.email && appState.personal.phone) score += 15;
-      if (appState.summary && appState.summary.length > 30) score += 20;
-      if (appState.experiences && appState.experiences.length > 0) score += 20;
-      if (appState.skills && appState.skills.split(',').length >= 3) score += 20;
+      if (chkContact) score += 25;
+      if (chkSummary) score += 25;
+      if (chkExp) score += 25;
+      if (chkSkills) score += 25;
 
-      score = Math.min(100, Math.max(10, score));
-
-      // Update Circular Progress Ring (circumference = 100)
       const circle = document.getElementById('progress-circle');
       if (circle) {
         circle.setAttribute('stroke-dasharray', `${score}, 100`);
@@ -688,29 +657,38 @@
       document.getElementById('dash-score').innerText = `${score}%`;
 
       const gradeText = document.getElementById('dash-grade-text');
-      if (score >= 85) {
-        gradeText.innerText = 'Strong ATS Match (Grade A)';
+      if (score >= 100) {
+        gradeText.innerText = 'Excellent Match (Grade A)';
         gradeText.className = 'text-emerald-400 font-bold';
-      } else if (score >= 60) {
-        gradeText.innerText = 'Moderate ATS Match (Grade B)';
+      } else if (score >= 75) {
+        gradeText.innerText = 'Good Match (Grade B)';
+        gradeText.className = 'text-teal-400 font-bold';
+      } else if (score >= 50) {
+        gradeText.innerText = 'Moderate Match (Grade C)';
         gradeText.className = 'text-amber-400 font-bold';
       } else {
-        gradeText.innerText = 'Needs Detail (Grade C)';
+        gradeText.innerText = 'Incomplete CV';
         gradeText.className = 'text-red-400 font-bold';
       }
 
-      // Update Checklist Status
-      const chkContact = appState.personal.email && appState.personal.phone;
-      const chkSummary = appState.summary && appState.summary.length > 20;
-      const chkExp = appState.experiences && appState.experiences.length > 0;
-      const chkSkills = appState.skills && appState.skills.length > 5;
+      const updateCheckItem = (id, isDone) => {
+        const icon = document.getElementById(`chk-icon-${id}`);
+        if (icon) {
+          icon.innerText = isDone ? '✓' : '○';
+          icon.className = isDone ? 'text-emerald-500 font-bold' : 'text-slate-400 font-bold';
+        }
+      };
+
+      updateCheckItem('contact', chkContact);
+      updateCheckItem('summary', chkSummary);
+      updateCheckItem('exp', chkExp);
+      updateCheckItem('skills', chkSkills);
 
       const items = [chkContact, chkSummary, chkExp, chkSkills];
-      const count = items.filter(Boolean).length;
-      document.getElementById('chk-count').innerText = `${count}/4 Done`;
+      const doneCount = items.filter(Boolean).length;
+      document.getElementById('chk-count').innerText = `${doneCount}/4 Completed`;
     }
 
-    // Navigation & Screen Switcher
     function switchScreen(screen) {
       ['dashboard', 'editor', 'preview'].forEach(s => {
         const scrEl = document.getElementById(`screen-${s}`);
@@ -732,11 +710,11 @@
 
       if (screen === 'preview') {
         renderPreview();
+        autoFitScale();
       }
       window.scrollTo(0, 0);
     }
 
-    // Color Palette Switcher
     function setAccent(hexColor, name = '') {
       appState.accentColor = hexColor;
       if (name) appState.accentName = name;
@@ -744,7 +722,6 @@
       saveState();
     }
 
-    // Template Selection
     function selectTemplate(templateId, shouldSave = true) {
       appState.template = templateId;
       ['modern', 'minimal', 'tech', 'serif'].forEach(t => {
@@ -761,18 +738,15 @@
       if (shouldSave) saveState();
     }
 
-    // Live Render Engine for Printable A4 Sheet
     function renderPreview() {
       const container = document.getElementById('printable-resume');
       if (!container) return;
 
       const color = appState.accentColor || '#059669';
       const fontClass = appState.template === 'serif' ? 'tpl-font-serif' : (appState.template === 'tech' ? 'tpl-font-mono' : 'tpl-font-sans');
-
       const skillChips = (appState.skills || '').split(',').map(s => s.trim()).filter(Boolean);
 
       let headerHTML = '';
-      let layoutClass = fontClass;
 
       if (appState.template === 'modern') {
         headerHTML = `
@@ -800,7 +774,7 @@
         `;
       } else if (appState.template === 'serif') {
         headerHTML = `
-          <div class="border-b-2 pb-3 mb-5 border-amber-900/30">
+          <div class="border-b-2 pb-3 mb-5 border-slate-300">
             <h1 class="text-2xl font-bold text-slate-900 font-serif italic">${appState.personal.name || 'YOUR NAME'}</h1>
             <p class="text-xs font-bold uppercase tracking-widest mt-1" style="color: ${color}">${appState.personal.role || ''}</p>
             <p class="text-[10px] text-slate-600 mt-1 italic">${appState.personal.email}  —  ${appState.personal.phone}</p>
@@ -808,22 +782,20 @@
         `;
       }
 
-      container.className = `a4-container rounded-2xl p-8 text-slate-900 flex flex-col justify-between relative ${layoutClass}`;
+      container.className = `a4-container rounded-2xl p-8 text-slate-900 flex flex-col justify-between relative ${fontClass}`;
 
       container.innerHTML = `
         <div>
           ${headerHTML}
 
-          <!-- Professional Profile -->
           <div class="mb-5">
             <h2 class="text-[11px] font-extrabold uppercase tracking-wider mb-1.5 flex items-center gap-2" style="color: ${color}">
-              <span>SUMMARY</span>
+              <span>PROFESSIONAL SUMMARY</span>
               <span class="flex-1 h-[1px] bg-slate-200"></span>
             </h2>
             <p class="text-[10px] text-slate-700 leading-relaxed font-normal">${appState.summary || ''}</p>
           </div>
 
-          <!-- Employment History -->
           <div class="mb-5">
             <h2 class="text-[11px] font-extrabold uppercase tracking-wider mb-2 flex items-center gap-2" style="color: ${color}">
               <span>WORK EXPERIENCE</span>
@@ -843,7 +815,6 @@
             </div>
           </div>
 
-          <!-- Education Section -->
           <div class="mb-5">
             <h2 class="text-[11px] font-extrabold uppercase tracking-wider mb-2 flex items-center gap-2" style="color: ${color}">
               <span>EDUCATION</span>
@@ -863,12 +834,11 @@
           </div>
         </div>
 
-        <!-- Technical Skills -->
         <div class="pt-3 border-t border-slate-100">
           <h2 class="text-[11px] font-extrabold uppercase tracking-wider mb-2" style="color: ${color}">SKILLS & ATS KEYWORDS</h2>
           <div class="flex flex-wrap gap-1.5">
             ${skillChips.map(chip => `
-              <span class="px-2.5 py-1 rounded-md text-[9px] font-extrabold" style="background-color: ${color}12; color: ${color}">
+              <span class="px-2.5 py-1 rounded-md text-[9px] font-extrabold" style="background-color: ${color}15; color: ${color}">
                 ${chip}
               </span>
             `).join('')}
@@ -877,7 +847,6 @@
       `;
     }
 
-    // Interactive Zoom Controls for Mobile Preview
     function setZoom(scale) {
       const wrapper = document.getElementById('preview-zoom-wrapper');
       if (wrapper) {
@@ -885,15 +854,20 @@
       }
     }
 
-    // AI Summary Polish Quick Action
+    function autoFitScale() {
+      const screenWidth = window.innerWidth - 32;
+      const a4Width = 794;
+      const computedScale = Math.min(1.0, Math.max(0.4, screenWidth / a4Width));
+      setZoom(computedScale);
+    }
+
     function aiPolishSummary() {
-      const polished = "Accomplished Mobile Systems Architect specializing in distributed client sync engines, cross-platform Android native integrations, and resilient CI/CD pipelines that optimize client runtime benchmarks by up to 40%.";
+      const polished = "Accomplished Mobile Systems Architect with extensive expertise in cross-platform Android runtime optimization, offline-first sync engines, and automated deployment pipelines that boost application metrics by up to 45%.";
       appState.summary = polished;
       document.getElementById('in-summary').value = polished;
       saveState();
     }
 
-    // Load Sample Data Preset
     function loadSampleData() {
       appState = {
         personal: {
@@ -937,25 +911,23 @@
       saveState();
     }
 
-    // Theme Switcher (Dark/Light)
     function toggleTheme() {
-      const htmlEl = document.documentElement;
-      const isDark = htmlEl.classList.toggle('dark');
+      const isDark = document.documentElement.classList.toggle('dark');
       document.getElementById('theme-icon-sun').classList.toggle('hidden', !isDark);
       document.getElementById('theme-icon-moon').classList.toggle('hidden', isDark);
       localStorage.setItem('tapuniverse_theme', isDark ? 'dark' : 'light');
     }
 
-    // Export PDF / Print Bridge
     function handleExportPdf() {
-      if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.PdfExportPlugin) {
-        window.Capacitor.Plugins.PdfExportPlugin.savePdf({ html: document.getElementById('printable-resume').outerHTML });
-      } else {
-        window.print();
-      }
+      window.print();
     }
 
-    // Initial Startup Boot
+    window.addEventListener('resize', () => {
+      if (!document.getElementById('screen-preview').classList.contains('hidden')) {
+        autoFitScale();
+      }
+    });
+
     window.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem('tapuniverse_theme') === 'light') {
         document.documentElement.classList.remove('dark');
