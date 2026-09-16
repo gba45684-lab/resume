@@ -426,10 +426,10 @@ button:focus-visible,.nav-item:focus-visible,.premium-chip:focus-visible,.icon-b
 
 </style>
 <style data-ota-inline="css/statusbar-brand-fix.css">
-/* ResuMate native status-bar overlap fix. Moves only the header branding 20px left and 10px down on phones, with a subtle premium parallel finish. */
+/* ResuMate native status-bar overlap fix. Moves only the header branding 20px left and 20px down on phones, preserving the premium parallel finish. */
 @media (max-width:520px){
   .app-header .brand-lockup{
-    transform:translate3d(-20px,10px,0);
+    transform:translate3d(-20px,20px,0);
     transform-origin:center;
     will-change:transform;
     filter:drop-shadow(0 1px 3px rgba(0,0,0,.12));
@@ -438,7 +438,7 @@ button:focus-visible,.nav-item:focus-visible,.premium-chip:focus-visible,.icon-b
 }
 
 </style>
-<script>window.__RESUMATE_BUILD__ = 81;</script>
+<script>window.__RESUMATE_BUILD__ = 82;</script>
 <script data-ota-inline="js/ota-bootstrap.js">
 /* ResuMate1-style GitHub-branch OTA bootstrap + long update alert. */
 (() => {
