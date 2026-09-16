@@ -1,17 +1,11 @@
-/* Connect the premium gallery's five Use Template buttons to the existing ResuMate detail flow. */
+/* Preserve the real registry id on every Coverflow Use Template action. */
 (() => {
   'use strict';
   const wire = () => {
     const screen = document.getElementById('templatesScreen');
-    if (!screen?.classList.contains('active')) return;
-    if (!screen.querySelector('.premium-gallery-page')) {
-      screen.classList.remove('premium-gallery-host');
-      screen.appendChild(document.createComment('premium-gallery-remount'));
-      return;
-    }
-    screen.querySelectorAll('.premium-gallery-card').forEach((card, index) => {
-      const button = card.querySelector('.use-btn');
-      if (button) button.dataset.templateDetail = String(index + 1);
+    if (!screen?.classList.contains('coverflow-template-host')) return;
+    screen.querySelectorAll('.cf-card[data-template-id]').forEach(card => {
+      card.dataset.templateDetail = card.dataset.templateId;
     });
   };
   const start = () => {
