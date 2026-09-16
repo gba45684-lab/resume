@@ -1,9 +1,9 @@
 {
-  "version": "1.0.68",
-  "build": 68,
+  "version": "1.0.69",
+  "build": 69,
   "schemaVersion": 3,
-  "updated": "2026-09-16T08:46:03.863Z",
-  "sha256": "b6d5426506984eb690e396fb706e0db3e3f0daa0bc3cddb01e3d6bce532ef6a8",
+  "updated": "2026-09-16T08:46:17.706Z",
+  "sha256": "cd2271ae201e439a70576dd09b19fb0de57238e4cb1ce1a85b9190800f74d43d",
   "rollbackEnabled": true,
   "bundle": "index.html"
 }
