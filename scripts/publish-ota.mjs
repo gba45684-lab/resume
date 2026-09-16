@@ -2,7 +2,7 @@
 // Builds a self-contained HTML payload for the `ota` branch.
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { resolve, dirname, relative } from 'node:path';
+import { resolve, relative } from 'node:path';
 
 const build = Number.parseInt(process.argv[2], 10);
 const outDirArg = process.argv[3];
@@ -29,6 +29,7 @@ const allowedCss = new Set([
   'css/home-fixed-viewport.css',
   'css/templates-scroll-fix.css',
   'css/premium-polish.css',
+  'css/premium-template-gallery.css',
 ]);
 
 const allowedScripts = new Set([
@@ -43,6 +44,7 @@ const allowedScripts = new Set([
   'js/template-label-integrity.js',
   'js/template-filters-search-fix.js',
   'js/screen-layout-fix.js',
+  'js/premium-template-gallery.js',
 ]);
 
 const normalizeAsset = (value) => {
@@ -72,7 +74,8 @@ const selectedScripts = [...new Set(scriptRefs.filter((ref) => allowedScripts.ha
 
 for (const ref of selectedCss) {
   const file = resolve(root, 'www', ref);
-  if (!relative(resolve(root, 'www'), file) || relative(resolve(root, 'www'), file).startsWith('..')) {
+  const relativeFile = relative(resolve(root, 'www'), file);
+  if (!relativeFile || relativeFile.startsWith('..')) {
     throw new Error(`CSS path escapes www/: ${ref}`);
   }
   html = html.replace(
@@ -83,7 +86,8 @@ for (const ref of selectedCss) {
 
 for (const ref of selectedScripts) {
   const file = resolve(root, 'www', ref);
-  if (!relative(resolve(root, 'www'), file) || relative(resolve(root, 'www'), file).startsWith('..')) {
+  const relativeFile = relative(resolve(root, 'www'), file);
+  if (!relativeFile || relativeFile.startsWith('..')) {
     throw new Error(`JS path escapes www/: ${ref}`);
   }
   html = html.replace(
