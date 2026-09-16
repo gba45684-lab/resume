@@ -46,6 +46,7 @@ const allowedScripts = new Set([
   'js/screen-layout-fix.js',
   'js/premium-template-gallery.js',
   'js/premium-template-actions.js',
+  'js/template-heading-ui-fix.js',
 ]);
 
 const normalizeAsset = (value) => {
